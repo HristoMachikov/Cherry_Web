@@ -1,0 +1,77 @@
+<section class="contacts">
+    <div class="contact-header">
+        <h1>Създай нов сорт</h1>
+    </div>
+    <div class="contact-form">
+        <form action='/cherry/create' method="POST">
+            {{!-- <div class="title">
+                <h6>Изпратете запитване</h6>
+            </div> --}}
+            {{!-- <div class="name">
+                <p class="firstname">
+                    <label for="firstname">Име:<span>*</span></label>
+                    <input type="text" name="firstname" id="firstname">
+                    <span>Име</span>
+                </p>
+                <p class="lastname">
+                    <label for="lastname">Фамилия:<span>*</span></label>
+                    <input type="text" name="lastname" id="lastname">
+                    <span>Фамилия</span>
+                </p>
+            </div> --}}
+            <p class="sort">
+                <label for="sort">Име:<span>*</span></label>
+                <input type="text" name="sort" id="sort" placeholder="Type cherry sort here" value="{{cherry.sort}}">
+            </p>
+            <p class="price">
+                <label for="price">Цена:<span>*</span></label>
+                <input type="text" name="price" id="price" placeholder="Type price per 1 kilogram" value="{{cherry.price}}">
+            </p>
+            <p class="imagePath">
+                <label for="imagePath">Снимка:<span>*</span></label>
+                <input type="text" name="imagePath" id="imagePath" placeholder="Type image path" value="{{cherry.imagePath}}">
+            </p>
+            <p class="description">
+                <label for="description">Съобщение:<span>*</span></label>
+                <textarea name="description" id="description" rows="5" placeholder="Type some description...">{{cherry.description}}</textarea>
+            </p>
+            <p class="check-box">
+                <label for="check-box">Public</label>
+                <input type="checkbox" class="checkbox" id="check-box" name="checkBox" {{#if cherry.isPublic}}checked{{/if}}/>
+            </p>
+            <div class="form-btn">
+                <p class="btn">
+                    <button type="submit" class="primary-btn">Създай</button>
+                </p>
+                {{!-- <p class="btn">
+                    <a class="primary-btn" href="/Cherry_Jekyll/contacts/">Изчисти</a>
+                </p> --}}
+            </div>
+
+        </form>
+    </div>
+</section>
+
+
+
+
+{{!-- <form class="text-center border border-light p-5" action='/course/create' method="POST">
+    <h1>Create Course</h1>
+    <div class="form-group">
+        <label for="title">Course Title</label>
+        <input type="text" class="form-control" placeholder="Course name" id="title" name="title" value="{{course.title}}">
+    </div>
+    <div class="form-group">
+        <label for="description">Course Description</label>
+        <textarea class="form-control" placeholder="Description" id="description" name="description">{{course.description}}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="imageUrl">Image url</label>
+        <input type="text" class="form-control" placeholder="Image Url" id="imageUrl" name="imageUrl" value="{{course.imageUrl}}">
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="check-box" name="checkBox"{{#if course.isPublic}} checked{{/if}}>
+        <label class="form-check-label" for="check-box">Public</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form> --}}

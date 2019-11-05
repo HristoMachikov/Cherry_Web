@@ -1,0 +1,78 @@
+<section class="site-section home">
+    <article class="sorts" id="sorts">
+        {{#if cherrys}}
+        <header>
+            <h2>Предлагани сортове</h2><span></span>
+        </header>
+        <ul>
+            {{#each cherrys}}
+            <li class="site-section-inner">
+                <p class="imges">
+                    <img src="{{imagePath}}" alt="van">
+                    {{!-- <img src="/Cherry_Jekyll/assets/Van.jpg" alt="van"> --}}
+                </p>
+                <p class="header">
+                </p>
+                <h3>{{sort}}</h3>
+                {{!-- <h3>Ван</h3> --}}
+                <p>
+                    <h4>{{price}} лв/кг</h4>
+                </p>
+                <p class="description">
+                    {{description}}
+                    {{!-- Сорт късни тъмно червени череши с къса дръжка. Концентрирано сладки. --}}
+                </p>
+                <a class="primary-btn" href="/cherry/details/{{id}}">Детайли</a>
+                <a class="primary-btn" href="/user/new-order">Поръчай</a>
+            </li>
+            {{/each}}
+            {{!-- <li class="site-section-inner">
+                <p class="imges">
+                    <img src="/Cherry_Jekyll/assets/Napoleon.jpg" alt="napolon">
+                </p>
+                <p class="header">
+                </p>
+                <h3>Наполеон</h3>
+                <p></p>
+                <p class="description">
+                    Сорт късни розови череши. Сладко - кисели на вкус. Отлични за компот и сладко.
+                </p>
+            </li> --}}
+        </ul>
+        {{else}}
+        <header>
+            <h2>Няма създадени сортове. Моля създайте!</h2><span></span>
+            {{!-- <h2>Към момента няма предлагани сортове!</h2><span></span> --}}
+        </header>
+        {{/if}}
+    </article>
+</section>
+
+{{!-- <div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Video Tutorials</h1>
+    <p class="lead">Start Self-Study Today: It'll Change Your Life</p>
+  </div>
+</div>
+
+<div>
+  <h1 class="text-center">Top Courses</h1>
+  <div class="container mt-3">
+    <div class="row d-flex justify-content-center">
+
+      <div class="card-deck">
+        {{#each topCourses}}
+
+        <div class="card mb-4">
+          <img class="card-img-top" src="{{this.imageUrl}}" alt="Card image cap" width="400">
+          <div class="card-body">
+            <h4 class="card-title">{{this.title}}</h4>
+            <p class="card-text">{{this.description}}</p>
+          </div>
+        </div>
+        {{/each}}
+
+      </div>
+    </div>
+  </div>
+</div> --}}

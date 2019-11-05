@@ -1,0 +1,53 @@
+<section class="site-section registration">
+    <form action='/user/register' method="POST" class="main-form">
+        <fieldset class="main-form-fieldsed">
+            <legend class="main-form-legent">Регистрация</legend>
+            <p class="form-field username">
+                <label for="username">Име</label>
+                <input class="form-input" type="text" name="username" id="username" value="{{username}}">
+                <span></span>
+            </p>
+            <p class="form-field password">
+                <label for="password">Парола</label>
+                <input class="form-input" type="password" name="password" id="password" value="{{password}}">
+                <span></span>
+            </p>
+            <p class="form-field password ">
+                <label for="repeatPassword">Повтори Парола</label>
+                <input class="form-input" type="password" name="repeatPassword" id="repeatPassword" value="{{repeatPassword}}">
+                <span></span>
+            </p>
+            <p class="form-field email last">
+                <label for="email">E-mail</label>
+                <input class="form-input" type="email" name="email" id="email" value="{{email}}">
+                <span></span>
+            </p>
+            <p class="form-btn">
+                <button class="primary-btn" type="submit">Регистрираи се</button>
+                {{!-- <a class="primary-btn" href="/Cherry_Jekyll">Регистрираи се</a> --}}
+                <!-- <input class="primary-btn" type="submit" value="Registration"> -->
+            </p>
+
+            <p class="question">Ако имаш регистрация, избери <a href="/user/login/">Вход</a>!
+            </p>
+        </fieldset>
+    </form>
+
+</section>
+
+
+{{!-- <form class="text-center border border-light p-5" action='/user/register' method="POST">
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" placeholder="Username" name="username" value="{{username}}">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" placeholder="Password" name="password" value="{{password}}">
+    </div>
+    <div class="form-group">
+        <label for="repeatPassword">Repeat Password</label>
+        <input type="password" class="form-control" placeholder="Password" name="repeatPassword" value="{{repeatPassword}}">
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form> --}}

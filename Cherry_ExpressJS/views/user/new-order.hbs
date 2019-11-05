@@ -1,0 +1,40 @@
+<section class="site-section home">
+
+    <article class="schedule" id="schedule">
+        <header>
+            <h2>Списък</h2><span></span>
+        </header>
+        <table class="main-table">
+            <thead>
+                <tr>
+                    <th>Снимка</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
+                    <th>Сума</th>
+                    <th>Детайли</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <td>1</td>
+                <td>
+                    <input type="number" min="0" max="999" name="quantity" value="{{order.quantity}}" <span> x </span>
+                    <select name="weigth" id="weigth">
+                        <option value="6">6 kg</option>
+                        <option value="8">8 kg</option>
+                        <option value="10">10 kg</option>
+                        <option value="12">12 kg</option>
+                    </select>
+                </td>
+                <td>2.50 лв</td>
+                <td>2.50 лв</td>
+                <td><a href="/cherry/details">Виж</a></td>
+                <td><a class="primary-btn" href="/user/remove/">Изтрии</a><a class="primary-btn" href="#">Refresh</a></td>
+            </tbody>
+        </table>
+        <form id="order-form" action="/order/create" method="post"></form>
+        <a class="primary-btn" href="/">Вземи още</a>
+        <a class="primary-btn" href="javascript:document.getElementById('order-form').submit()">Поръчай!</a>
+    </article>
+
+</section>

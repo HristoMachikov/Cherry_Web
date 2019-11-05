@@ -1,0 +1,35 @@
+<section class="site-section home">
+
+    <article class="schedule" id="schedule">
+        <header>
+            <h2>Чакащи поръчки</h2><span></span>
+        </header>
+        <table class="main-table">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Дата</th>
+                    <th>Общо</th>
+                    <th>Статус</th>
+                    <th>Детайли</th>
+                    {{!-- <th>Action</th> --}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each pendingOrders}}
+                <tr>
+                    <td>1</td>
+                    <td>21.07.2019г. 12:35:30</td>
+                    <td>222.50 лв</td>
+                    <td>Чакаща</td>
+                    <td><a href="/cherry/details">Виж</a></td>
+                    {{!-- <td><a class="primary-btn" href="#">Изтрии</a><a class="primary-btn" href="#">Одобри</a></td> --}}
+                </tr>
+                {{else}}
+                <p>В момента няма направени поръчки!</p>
+                {{#each}}
+            </tbody>
+        </table>
+    </article>
+
+</section>
