@@ -104,18 +104,19 @@ function newOrderGet(req, res) {
     } else {
         Cherry.findById(cherryId).then(currProd => {
             const { sort, description, imagePath, price } = currProd;
-            currProd.weigth = 0;
-            currProd.quantity = 0;
-            currProd.subTotal = 0;
-            currProd.options = options(currProd);
+            // currProd.weigth = 0;
+            // currProd.quantity = 0;
+            // currProd.subTotal = 0;
+            // currProd.options = options(currProd);
             return Promise.all([
                 currProd,
-                State.create({ sort, description, imagePath, price, creatorId: user._id }),
+                State.create({ sort, description, imagePath, price, creatorId: user._id, cherryId: currProd._id }),
 
                 // User.updateOne({ _id: user.id }, { $set: { expenses: user.expenses.filter(id => id.toString() !== expenseId) } }),
                 // Expense.deleteOne({ _id: expenseId })
             ]);
-        }).then(([article, userUpdated, expenseDeleted]) => {
+        }).then(([currProd, newStateProd]) => {
+            console.log(newStateProd); S
             res.redirect('/');
         }).catch(err => {
             handleError(err, res);

@@ -1,32 +1,35 @@
 <section class="site-section home">
-    <article class="sorts" id="sorts">
-        {{#if cherrys}}
-        <header>
-            <h2>Предлагани сортове</h2><span></span>
-        </header>
-        <ul>
-            {{#each cherrys}}
-            <li class="site-section-inner">
-                <p class="imges">
-                    <img src="{{imagePath}}" alt="van">
-                    {{!-- <img src="/Cherry_Jekyll/assets/Van.jpg" alt="van"> --}}
-                </p>
-                <p class="header">
-                </p>
-                <h3>{{sort}}</h3>
-                {{!-- <h3>Ван</h3> --}}
-                <p>
-                    <h4>{{price}} лв/кг</h4>
-                </p>
-                <p class="description">
-                    {{description}}
-                    {{!-- Сорт късни тъмно червени череши с къса дръжка. Концентрирано сладки. --}}
-                </p>
-                <a class="primary-btn" href="/cherry/details/{{_id}}">Детайли</a>
-                <a class="primary-btn" href="/user/new-order/{{_id}}">Поръчай</a>
-            </li>
-            {{/each}}
-            {{!-- <li class="site-section-inner">
+  <article class="sorts" id="sorts">
+    {{#if cherrys}}
+    <header>
+      <h2>Предлагани сортове</h2><span></span>
+    </header>
+    <ul>
+      {{#each cherrys}}
+      <li class="site-section-inner">
+        <p class="imges">
+          <img src="{{imagePath}}" alt="van">
+          {{!-- <img src="/Cherry_Jekyll/assets/Van.jpg" alt="van"> --}}
+        </p>
+        <p class="header">
+        </p>
+        <h3>{{sort}}</h3>
+        {{!-- <h3>Ван</h3> --}}
+        <p>
+          <h4>{{price}} лв/кг</h4>
+        </p>
+        <p class="description">
+          {{description}}
+          {{!-- Сорт късни тъмно червени череши с къса дръжка. Концентрирано сладки. --}}
+        </p>
+        <p>
+          <a class="primary-btn" href="/cherry/details/{{_id}}">Детайли</a>
+          <a class="primary-btn" href="/user/new-order/{{_id}}">Поръчай</a>
+        </p>
+        <br>
+      </li>
+      {{/each}}
+      {{!-- <li class="site-section-inner">
                 <p class="imges">
                     <img src="/Cherry_Jekyll/assets/Napoleon.jpg" alt="napolon">
                 </p>
@@ -38,14 +41,14 @@
                     Сорт късни розови череши. Сладко - кисели на вкус. Отлични за компот и сладко.
                 </p>
             </li> --}}
-        </ul>
-        {{else}}
-        <header>
-            <h2>Няма създадени сортове. Моля създайте!</h2><span></span>
-            {{!-- <h2>Към момента няма предлагани сортове!</h2><span></span> --}}
-        </header>
-        {{/if}}
-    </article>
+    </ul>
+    {{else}}
+    <header>
+      <h2>Няма създадени сортове. Моля създайте!</h2><span></span>
+      {{!-- <h2>Към момента няма предлагани сортове!</h2><span></span> --}}
+    </header>
+    {{/if}}
+  </article>
 </section>
 
 {{!-- <div class="jumbotron jumbotron-fluid">
