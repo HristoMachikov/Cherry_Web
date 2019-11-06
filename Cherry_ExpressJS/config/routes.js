@@ -20,7 +20,9 @@ module.exports = (app) => {
     app.get('/cherry/create', auth(), cherryController.createGet);
     app.post('/cherry/create', auth(), cherryController.createPost);
 
-
+    app.get('/user/remove/:id', auth(), userController.removeProdGet);
+    app.get('/user/new-order/:id', auth(), userController.newOrderGet);
+    app.post('/user/new-order/:id', auth(), userController.newOrderPost);
     app.get('/user/login', userController.loginGet);
     app.post('/user/login', userController.loginPost);
     app.get('/user/register', userController.registerGet);

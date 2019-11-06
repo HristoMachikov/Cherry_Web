@@ -30,7 +30,7 @@ function createPost(req, res) {
 }
 
 function editGet(req, res) {
-    let id = req.params.id;
+    const id = req.params.id;
     const { user } = req;
     Cherry.findById(Object(id), function (err, cherry) {
         if (err) {

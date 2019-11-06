@@ -19,14 +19,13 @@ module.exports = {
     //         { level: 5, levelName: "Expert" },
     //         { level: 6, levelName: "Hardcore" }
     //     ],
-    // options: (elem) => {
-    //     return [
-    //         { index: 1, title: '1 - Very Easy', selected: 1 === elem.difficulty },
-    //         { index: 2, title: '2 - Easy', selected: 2 === elem.difficulty },
-    //         { index: 3, title: '3 - Medium (Standard 3x3)', selected: 3 === elem.difficulty },
-    //         { index: 4, title: '4 - Intermediate', selected: 4 === elem.difficulty },
-    //         { index: 5, title: '5 - Expert', selected: 5 === elem.difficulty },
-    //         { index: 6, title: '6 - Hardcore', selected: 6 === elem.difficulty }
-    //     ]
-    // }
+    options: (elem) => {
+        return [
+            { value: 0, title: '0 kg', selected: 0 === elem.weigth },
+            { value: 6, title: '6 kg', selected: 6 === elem.weigth },
+            { value: 8, title: '8 kg', selected: 8 === elem.weigth },
+            { value: 10, title: '10 kg', selected: 10 === elem.weigth },
+            { value: 12, title: '12 kg', selected: 12 === elem.weigth }
+        ]
+    }
 };
