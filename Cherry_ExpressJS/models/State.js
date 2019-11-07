@@ -4,7 +4,6 @@ const stateSchema = new Schema({
     sort: {
         type: Schema.Types.String,
         required: [true, 'Sort is required'],
-        unique: true
     },
     description: {
         type: Schema.Types.String,
@@ -27,7 +26,7 @@ const stateSchema = new Schema({
         default: 0
     },
     creatorId: { type: Schema.Types.ObjectId },
-    cherryId: { type: Schema.Types.ObjectId },
+    cherryId: { type: Schema.Types.ObjectId }
 
 });
 

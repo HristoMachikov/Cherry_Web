@@ -16,35 +16,41 @@
                 </tr>
             </thead>
             <tbody>
-                {{#each states}}
-                <td><img src="{{imagePath}}" alt="{{imagePath}}" width="100px"></td>
-                <td>{{sort}}</td>
-                <td>{{price}} лв.</td>
-                <td>
-                    <input type="number" min="0" max="999" name="quantity" value="{{quantity}}">
-                    <span> x </span>
-                    <select name="weigth" id="weigth">
-                        {{#each options}}
-                        <option value="{{value}}" {{#if selected}} selected{{/if}}>{{title}}</option>
-                        {{/each}}
-                        {{!-- <option value="0">0 kg</option>
+                {{#each arrCherry}}
+                <tr>
+                    <form id="refresh-form" action="/user/new-order/{{_id}}" method="post">
+                        <td><img src="{{imagePath}}" alt="{{imagePath}}" width="100px"></td>
+                        <td>{{sort}}</td>
+                        <td>{{price}} лв.</td>
+                        <td>
+                            <input type="number" min="0" max="999" name="quantity" value="{{quantity}}">
+                            <span> x </span>
+                            <select name="weigth" id="weigth">
+                                {{#each options}}
+                                <option value="{{value}}" {{#if selected}} selected{{/if}}>{{title}}</option>
+                                {{/each}}
+                                {{!-- <option value="0">0 kg</option>
                         <option value="6">6 kg</option>
                         <option value="8">8 kg</option>
                         <option value="10">10 kg</option>
                         <option value="12">12 kg</option> --}}
-                    </select>
-                </td>
+                            </select>
+                        </td>
 
-                <td>
-                    <input type="text" disabled name="subTotal" value="{{subTotal}}" maxlength="50" width="100px">
-                    <span> лв.</span>
-                </td>
-                <td>
-                    <form id="refresh-form" action="/user/new-order/{{id}}" method="post"></form>
-                    <a class="primary-btn" href="/user/remove/{{id}}">Изтрии</a>
-                    <a class="primary-btn"
-                        href="javascript:document.getElementById('refresh-form').submit()">Refresh</a>
-                </td>
+                        <td>
+                            <input type="text" disabled name="subTotal" value="{{subTotal}}" maxlength="50"
+                                width="100px">
+                            <span> лв.</span>
+                        </td>
+                        <td>
+
+                            <a class="primary-btn" href="/user/remove/{{_id}}">Изтрии</a>
+                            <button class="primary-btn" type="submit"
+                                {{!-- href="javascript:document.getElementById('refresh-form').submit()" --}}
+                                >Refresh</button>
+                        </td>
+                    </form>
+                </tr>
                 {{else}}
                 <header>
                     <h4>Списъкът е празе!</h4><span></span>

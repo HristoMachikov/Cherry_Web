@@ -90,51 +90,63 @@ function logoutPost(req, res) {
 function newOrderGet(req, res) {
     let { user } = req;
     const cherryId = req.params.id;
-    // console.log(cherryId);
 
-    // user.lastProduct = cherryId;
-    // if (!res.locals.arrCherry) {
-    //     res.locals.arrCherry = [];
-    // }
-    // let resultProd = {};
-    // const alreadyAdded = res.locals.arrCherry.filter(elem => elem.id === cherryId);
     const alreadyAdded = user.cherries.includes(cherryId);
     if (alreadyAdded) {
-        // resultProd = alreadyAdded;
-
         State.find({ _id: { $in: user.states } }).then(states => {
-            let total = 0;
-            states.map(state => {
+            user.total = 0;
+            let arrCherry = states.map(function (state) {
                 state.options = options(state);
-                state.subTotal = Number(state.weigth) * Number(state.quantity)
-                total += Number(state.subTotal)
+                state.subTotal = Number(state.weigth) * Number(state.quantity);;
+                user.total += Number(state.subTotal);
+                return state;
             })
-            user.total = total;
-
-            res.render('user/new-order', { user, states });
+            // console.log(arrCherry);
+            res.render('user/new-order', { user, arrCherry });
         }).catch(err => {
             handleError(err, res);
             res.render('500', { errorMessage: err.message });
         });
 
     } else {
+
         //state->create/update
         Cherry.findById(cherryId).then(currProd => {
             const { sort, description, imagePath, price } = currProd;
+            console.log(currProd);
+            console.log(user);
             // currProd.weigth = 0;
             // currProd.quantity = 0;
             // currProd.subTotal = 0;
             // currProd.options = options(currProd);
+            user.cherries.push(cherryId);
+            console.log(user.cherries);
             return Promise.all([
                 currProd,
-                State.create({ sort, description, imagePath, price, creatorId: user._id, cherryId: currProd._id }),
-
+                State.create({ sort, description, imagePath, price, creatorId: user.id, cherryId: currProd._id }),
+                User.updateOne({ _id: user.id }, { $set: { cherries: user.cherries } })
                 // User.updateOne({ _id: user.id }, { $set: { expenses: user.expenses.filter(id => id.toString() !== expenseId) } }),
                 // Expense.deleteOne({ _id: expenseId })
             ]);
-        }).then(([currProd, newStateProd]) => {
-            console.log(newStateProd);
-            res.redirect('/');
+        }).then(([currProd, newStateProd, updatedUser]) => {
+            // console.log(newStateProd);
+            // console.log("Hi");
+            user.states.push(newStateProd._id);
+            return Promise.all([
+                State.find({ creatorId: user.id }),
+                User.updateOne({ _id: user.id }, { $set: { states: user.states } })
+            ])
+        }).then(([states, updatedUser]) => {
+
+            user.total = 0;
+            let arrCherry = states.map(function (state) {
+                state.options = options(state);
+                state.subTotal = Number(state.weigth) * Number(state.quantity);;
+                user.total += Number(state.subTotal);
+                return state;
+            })
+            // console.log(arrCherry);
+            res.render('user/new-order', { user, arrCherry });
         }).catch(err => {
             handleError(err, res);
             res.render('500', { errorMessage: err.message });
@@ -160,15 +172,29 @@ function newOrderGet(req, res) {
 
 function newOrderPost(req, res) {
     let { user } = req;
+    const { weigth } = req.body;
+    const { quantity } = req.body;
+    console.log(req.body);
+    console.log(weigth);
+    console.log(quantity);
+    State.updateOne({ _id: req.params.id }, { $set: { quantity, weigth } }).then(result => {
+        return State.find({ creatorId: user.id });
+    }).then(states => {
 
-    console.log(user)
-    let currTotal = 0;
-    user.arrCherry.foreach(elem => {
-        elem.subTotal = Number(elem.weigth) * Number(elem.quantity)
-        currTotal += elem.subTotal;
+        user.total = 0;
+        let arrCherry = states.map(function (state) {
+            state.options = options(state);
+            state.subTotal = Number(state.weigth) * Number(state.quantity);;
+            user.total += Number(state.subTotal);
+            return state;
+        })
+        // console.log(arrCherry);
+        res.render('user/new-order', { user, arrCherry });
+    }).catch(err => {
+        handleError(err, res);
+        res.render('500', { errorMessage: err.message });
     });
-    user.total = currTotal;
-    res.render('user/new-order', { user });
+
 }
 
 function removeProdGet(req, res) {
