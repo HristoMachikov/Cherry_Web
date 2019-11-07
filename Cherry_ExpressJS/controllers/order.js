@@ -1,6 +1,8 @@
 const Order = require('../models/Order');
-const { handleError, handleErrors } = require('./index');
-const Cherry = require('../models/Cherry')
+const { handleError, handleErrors, options } = require('./index');
+const Cherry = require('../models/Cherry');
+const State = require('../models/State');
+const User = require('../models/User');
 
 // function createLectureGet(req, res) {
 //     const { user } = req;
@@ -16,36 +18,77 @@ const Cherry = require('../models/Cherry')
 //     })
 // }
 
-function createOrderPost(req, res) {
-    // let { title = null, videoUrl = null } = req.body;
-    // const { user } = req;
-    // const lecture = { title, videoUrl };
-    // const courseId = req.params.id;
-    // lecture.course = courseId;
-    // Lecture.create(lecture).then((newLecture) => {
-    //     Promise.all([newLecture, Course.update({ _id: courseId }, { $push: { lectures: newLecture._id } })])
-    //         .then(([newLecture, course]) => {
-    //             console.log('Successfully added lecture!')
-    //             res.redirect('/');
-    //         }).catch(err => {
-    //             console.log(err);
-    //         })
-    // }).catch(err => {
-    //     handleErrors(err, res);
-
-    //     Course.findById(courseId).then(course => {
-    //         Promise.all([course, Lecture.find({ 'course': courseId })]).then(([course, lectures]) => {
-    //             res.render('admin/create-lecture', { user, lectures, course, lecture });
-    //         });
-    //     }).catch(err => {
-    //         handleErrors(err, res);
-    //     })
-    // })
+function calcSubTotal(states) {
+    let arrCherry = states.map(function (state) {
+        state.options = options(state);
+        state.subTotal = (Number(state.price) * Number(state.weigth) * Number(state.quantity)).toFixed(2);
+        return state;
+    })
+    return arrCherry;
 }
 
-function editOrderPost(req, res) {}
+// function calcTotal(user, states) {
+//     user.total = 0;
+//     states.forEach(function (state) {
+//         state.options = options(state);
+//         state.subTotal = (Number(state.price) * Number(state.weigth) * Number(state.quantity)).toFixed(2);
+//         user.total += Number(state.subTotal);
+//     })
 
-function pendingOrdersGet(req, res) {}
+//     user.total = user.total.toFixed(2);
+//     return user;
+// }
+
+function createOrderPost(req, res) {
+    let { total = null } = req.body;
+    let { user } = req;
+    console.log(req.query);
+    console.log(user);
+    State.find({ _id: { $in: user.states } }).then(states => {
+        user.total = 0;
+        states.forEach(function (state) {
+            state.options = options(state);
+            state.subTotal = (Number(state.price) * Number(state.weigth) * Number(state.quantity)).toFixed(2);
+            user.total += Number(state.subTotal);
+        });
+        user.total = user.total.toFixed(2);
+        const cherryArrayJson = JSON.stringify(calcSubTotal(states));
+        console.log(cherryArrayJson);
+        // let updateUserStates = user.states.filter(id => id.toString() !== stateId);
+        // let updateUserCherries = user.cherries.filter(id => id.toString() !== state.cherryId.toString());
+        return Promise.all([
+            states,
+            Order.create({ total:user.total, creatorId: user._id, cherryArray: cherryArrayJson }),
+            User.updateOne({ _id: user.id }, { $set: { states: [], cherries: [] } }),
+            State.deleteMany({ _id: { $in: user.states } })
+        ]);
+    }).then(([states, newOrder, updatedUser, deletedStates]) => {
+        console.log("Hi");
+        user.orders.push(newOrder._id);
+        return User.updateOne({ _id: user.id }, { $set: { orders: user.orders } })
+    }).then(updatedUser => {
+        res.redirect('/');
+    }).catch(err => {
+        handleError(err, res);
+        res.render('500', { errorMessage: err.message });
+    });
+}
+
+function myOrdersGet(req, res) {
+    let { user } = req;
+    Order.find({ _id: { $in: user.orders } }).then(orders => {
+        console.log("Hi")
+        console.log(orders);
+        res.render('user/my-orders', {orders,user});
+    }).catch(err => {
+        handleError(err, res);
+        res.render('500', { errorMessage: err.message });
+    })
+}
+
+function editOrderPost(req, res) { }
+
+function pendingOrdersGet(req, res) { }
 
 // function deleteLectureGet(req, res) {
 //     const lectureId = req.params.id
@@ -87,6 +130,7 @@ module.exports = {
     pendingOrdersGet,
     createOrderPost,
     editOrderPost,
+    myOrdersGet
     // deleteLectureGet,
     // playGet
 }

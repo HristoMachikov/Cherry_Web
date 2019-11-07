@@ -23,7 +23,7 @@ const stateSchema = new Schema({
     },
     quantity: {
         type: Schema.Types.Number,
-        default: 0
+        default: 1
     },
     creatorId: { type: Schema.Types.ObjectId },
     cherryId: { type: Schema.Types.ObjectId }

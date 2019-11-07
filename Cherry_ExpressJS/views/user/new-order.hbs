@@ -21,9 +21,9 @@
                     <form id="refresh-form" action="/user/new-order/{{_id}}" method="post">
                         <td><img src="{{imagePath}}" alt="{{imagePath}}" width="100px"></td>
                         <td>{{sort}}</td>
-                        <td>{{price}} лв.</td>
+                        <td>{{price}} лв</td>
                         <td>
-                            <input type="number" min="0" max="999" name="quantity" value="{{quantity}}">
+                            <input type="number" min="1" max="999" name="quantity" value="{{quantity}}">
                             <span> x </span>
                             <select name="weigth" id="weigth">
                                 {{#each options}}
@@ -40,7 +40,7 @@
                         <td>
                             <input type="text" disabled name="subTotal" value="{{subTotal}}" maxlength="50"
                                 width="100px">
-                            <span> лв.</span>
+                            <span> лв</span>
                         </td>
                         <td>
 
@@ -58,11 +58,14 @@
                 {{/each}}
             </tbody>
         </table>
-        <form id="order-form" action="/order/create" method="post"></form>
+        {{!-- <form id="order-form" action="/order/create" method="post"> --}}
         <a class="primary-btn" href="/">Вземи още</a>
         <input type="text" disabled name="total" value="{{user.total}}">
         <span> лв.</span>
-        <a class="primary-btn" href="javascript:document.getElementById('order-form').submit()">Поръчай!</a>
+        <a class="primary-btn" href="/order/create"
+        {{!-- href="javascript:document.getElementById('order-form').submit()" --}}
+        >Поръчай!</a>
+        {{!-- </form> --}}
     </article>
 
 </section>

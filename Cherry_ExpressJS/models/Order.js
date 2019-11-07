@@ -5,16 +5,17 @@ const orderSchema = new Schema({
         type: Schema.Types.Number,
         required: [true, 'Total is required']
     },
-    date:{
+    date: {
         type: Schema.Types.Date,
         required: [true, 'Date is required'],
         default: Date.now
     },
     status: {
         type: Schema.Types.String,
-        required: [true, 'Status is required']
+        required: [true, 'Status is required'],
+        default: "Pendding"
     },
-    cherryArray: [{ type: Schema.Types.String}],
+    cherryArray: [{ type: Schema.Types.String }],
     creatorId: { type: Schema.Types.ObjectId }
 });
 

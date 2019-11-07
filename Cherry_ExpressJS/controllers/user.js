@@ -1,12 +1,13 @@
 const User = require('../models/User');
 const TokenBlacklist = require('../models/TokenBlacklist');
-const { handleError, handleErrors } = require('./index');
+const { handleError, handleErrors, options } = require('./index');
 const utils = require('../utils');
 const encryption = require('../utils/encryption');
 const { userCookieName } = require('../app-config');
 const Cherry = require('../models/Cherry');
-const { options } = require('./index');
+// const { options } = require('./index');
 const State = require('../models/State');
+const Order = require('../models/Order');
 
 function loginGet(req, res) {
     res.render('user/login');
@@ -87,6 +88,19 @@ function logoutPost(req, res) {
     })
 }
 
+function calcTotalAndSubTotal(user, states) {
+    user.total = 0;
+    let arrCherry = states.map(function (state) {
+        state.options = options(state);
+        state.subTotal = (Number(state.price) * Number(state.weigth) * Number(state.quantity)).toFixed(2);
+        user.total += Number(state.subTotal);
+        return state;
+    })
+    // console.log(arrCherry);
+    user.total = user.total.toFixed(2);
+    return { user, arrCherry };
+}
+
 function newOrderGet(req, res) {
     let { user } = req;
     const cherryId = req.params.id;
@@ -94,79 +108,32 @@ function newOrderGet(req, res) {
     const alreadyAdded = user.cherries.includes(cherryId);
     if (alreadyAdded) {
         State.find({ _id: { $in: user.states } }).then(states => {
-            user.total = 0;
-            let arrCherry = states.map(function (state) {
-                state.options = options(state);
-                state.subTotal = Number(state.weigth) * Number(state.quantity);;
-                user.total += Number(state.subTotal);
-                return state;
-            })
-            // console.log(arrCherry);
-            res.render('user/new-order', { user, arrCherry });
+            res.render('user/new-order', calcTotalAndSubTotal(user, states));
         }).catch(err => {
             handleError(err, res);
             res.render('500', { errorMessage: err.message });
         });
-
     } else {
-
-        //state->create/update
         Cherry.findById(cherryId).then(currProd => {
             const { sort, description, imagePath, price } = currProd;
-            console.log(currProd);
-            console.log(user);
-            // currProd.weigth = 0;
-            // currProd.quantity = 0;
-            // currProd.subTotal = 0;
-            // currProd.options = options(currProd);
             user.cherries.push(cherryId);
-            console.log(user.cherries);
             return Promise.all([
                 currProd,
                 State.create({ sort, description, imagePath, price, creatorId: user.id, cherryId: currProd._id }),
                 User.updateOne({ _id: user.id }, { $set: { cherries: user.cherries } })
-                // User.updateOne({ _id: user.id }, { $set: { expenses: user.expenses.filter(id => id.toString() !== expenseId) } }),
-                // Expense.deleteOne({ _id: expenseId })
             ]);
         }).then(([currProd, newStateProd, updatedUser]) => {
-            // console.log(newStateProd);
-            // console.log("Hi");
             user.states.push(newStateProd._id);
             return Promise.all([
                 State.find({ creatorId: user.id }),
                 User.updateOne({ _id: user.id }, { $set: { states: user.states } })
-            ])
+            ]);
         }).then(([states, updatedUser]) => {
-
-            user.total = 0;
-            let arrCherry = states.map(function (state) {
-                state.options = options(state);
-                state.subTotal = Number(state.weigth) * Number(state.quantity);;
-                user.total += Number(state.subTotal);
-                return state;
-            })
-            // console.log(arrCherry);
-            res.render('user/new-order', { user, arrCherry });
+            res.render('user/new-order', calcTotalAndSubTotal(user, states));
         }).catch(err => {
             handleError(err, res);
             res.render('500', { errorMessage: err.message });
         });
-
-        //     currProd.weigth = 0;
-        //     currProd.quantity = 0;
-        //     currProd.subTotal = 0;
-        //     currProd.options = options(currProd);
-
-        //     res.locals.arrCherry.push(currProd)
-        //     user.arrCherry = res.locals.arrCherry;
-        //     console.log(res.locals.arrCherry);
-        //     res.render('user/new-order', { user });
-
-        // }).catch(err => {
-
-        //     handleErrors(err, res);
-        //     res.render('500', { errorMessage: err.message })
-        // })
     }
 }
 
@@ -174,39 +141,38 @@ function newOrderPost(req, res) {
     let { user } = req;
     const { weigth } = req.body;
     const { quantity } = req.body;
-    console.log(req.body);
-    console.log(weigth);
-    console.log(quantity);
     State.updateOne({ _id: req.params.id }, { $set: { quantity, weigth } }).then(result => {
         return State.find({ creatorId: user.id });
     }).then(states => {
-
-        user.total = 0;
-        let arrCherry = states.map(function (state) {
-            state.options = options(state);
-            state.subTotal = Number(state.weigth) * Number(state.quantity);;
-            user.total += Number(state.subTotal);
-            return state;
-        })
-        // console.log(arrCherry);
-        res.render('user/new-order', { user, arrCherry });
+        res.render('user/new-order', calcTotalAndSubTotal(user, states));
     }).catch(err => {
         handleError(err, res);
         res.render('500', { errorMessage: err.message });
     });
-
 }
 
 function removeProdGet(req, res) {
     let { user } = req;
-    console.log(user)
-    let prodId = req.params.id;
-    let newArrCherry = user.arrCherry.filter(elem => elem.id !== prodId)
-    console.log(newArrCherry);
-
-    user.arrCherry = newArrCherry;
-    newOrderPost();
+    const stateId = req.params.id;
+    State.findById(stateId).then((state) => {
+        let updateUserStates = user.states.filter(id => id.toString() !== stateId);
+        let updateUserCherries = user.cherries.filter(id => id.toString() !== state.cherryId.toString());
+        return Promise.all([
+            state,
+            User.updateOne({ _id: user.id }, { $set: { states: updateUserStates, cherries: updateUserCherries } }),
+            State.deleteOne({ _id: stateId })
+        ]);
+    }).then(([state, userUpdated, stateDeleted]) => {
+        return State.find({ creatorId: user.id });
+    }).then(states => {
+        res.render('user/new-order', calcTotalAndSubTotal(user, states));
+    }).catch(err => {
+        handleError(err, res);
+        res.render('500', { errorMessage: err.message });
+    });
 }
+
+
 
 module.exports = {
     loginGet,
