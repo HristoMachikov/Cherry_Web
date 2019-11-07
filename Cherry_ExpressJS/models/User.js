@@ -15,6 +15,8 @@ const userSchema = new Schema({
         unique: true,
     },
     orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
+    cherries: [{ type: Schema.Types.ObjectId, ref: "Cherry" }],
+    states: [{ type: Schema.Types.ObjectId, ref: "State" }],
     salt: { type: Schema.Types.String },
     roles: [{ type: Schema.Types.String }]
 })

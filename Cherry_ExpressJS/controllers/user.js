@@ -90,18 +90,35 @@ function logoutPost(req, res) {
 function newOrderGet(req, res) {
     let { user } = req;
     const cherryId = req.params.id;
-    console.log(cherryId);
+    // console.log(cherryId);
 
-    user.lastProduct = cherryId;
-    if (!res.locals.arrCherry) {
-        res.locals.arrCherry = [];
-    }
+    // user.lastProduct = cherryId;
+    // if (!res.locals.arrCherry) {
+    //     res.locals.arrCherry = [];
+    // }
     // let resultProd = {};
-    const alreadyAdded = res.locals.arrCherry.filter(elem => elem.id === cherryId);
-    if (alreadyAdded.length) {
+    // const alreadyAdded = res.locals.arrCherry.filter(elem => elem.id === cherryId);
+    const alreadyAdded = user.cherries.includes(cherryId);
+    if (alreadyAdded) {
         // resultProd = alreadyAdded;
-        res.render('user/new-order', { user });
+
+        State.find({ _id: { $in: user.states } }).then(states => {
+            let total = 0;
+            states.map(state => {
+                state.options = options(state);
+                state.subTotal = Number(state.weigth) * Number(state.quantity)
+                total += Number(state.subTotal)
+            })
+            user.total = total;
+
+            res.render('user/new-order', { user, states });
+        }).catch(err => {
+            handleError(err, res);
+            res.render('500', { errorMessage: err.message });
+        });
+
     } else {
+        //state->create/update
         Cherry.findById(cherryId).then(currProd => {
             const { sort, description, imagePath, price } = currProd;
             // currProd.weigth = 0;
@@ -116,7 +133,7 @@ function newOrderGet(req, res) {
                 // Expense.deleteOne({ _id: expenseId })
             ]);
         }).then(([currProd, newStateProd]) => {
-            console.log(newStateProd); S
+            console.log(newStateProd);
             res.redirect('/');
         }).catch(err => {
             handleError(err, res);
