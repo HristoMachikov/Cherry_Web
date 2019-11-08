@@ -735,16 +735,19 @@ blockquote .author:before {
         content: "Номер"; } }
     @media (max-width: 512px) {
       .site-section.home .schedule .main-table td:nth-of-type(2):before {
-        content: "Име"; } }
+        content: "Дата"; } }
     @media (max-width: 512px) {
       .site-section.home .schedule .main-table td:nth-of-type(3):before {
-        content: "Kg"; } }
+        content: "Общо"; } }
     @media (max-width: 512px) {
       .site-section.home .schedule .main-table td:nth-of-type(4):before {
-        content: "Забележки"; } }
+        content: "Статус"; } }
     @media (max-width: 512px) {
       .site-section.home .schedule .main-table td:nth-of-type(5):before {
-        content: "Доставка"; } }
+        content: "Детайли"; } }
+    @media (max-width: 512px) {
+      .site-section.home .schedule .main-table td:nth-of-type(6):before {
+        content: "Action"; } }
     .site-section.home .schedule .main-table td:nth-child(1) {
       flex: 0 0 5%; }
     .site-section.home .schedule .main-table td:nth-child(2) {
@@ -757,6 +760,54 @@ blockquote .author:before {
       flex: 0 0 10%; }
     .site-section.home .schedule .main-table td:nth-child(6) {
       flex: 0 0 32%; }
+
+
+      @media (max-width: 512px) {
+        .site-section.home .schedule .main-table.new-order th {
+          display: block; } }
+      .site-section.home .schedule .main-table.new-order th:nth-child(1) {
+        flex: 0 0 22%; }
+      .site-section.home .schedule .main-table.new-order th:nth-child(2) {
+        flex: 0 0 10%; }
+      .site-section.home .schedule .main-table.new-order th:nth-child(3) {
+        flex: 0 0 13%; }
+      .site-section.home .schedule .main-table.new-order th:nth-child(4) {
+        flex: 0 0 20%; }
+      .site-section.home .schedule .main-table.new-order th:nth-child(5) {
+        flex: 0 0 10%; }
+      .site-section.home .schedule .main-table.new-order th:nth-child(6) {
+        flex: 0 0 25%; }
+      @media (max-width: 512px) {
+        .site-section.home .schedule .main-table.new-order td:nth-of-type(1):before {
+          content: "Снимка"; } }
+      @media (max-width: 512px) {
+        .site-section.home .schedule .main-table.new-order td:nth-of-type(2):before {
+          content: "Сорт"; } }
+      @media (max-width: 512px) {
+        .site-section.home .schedule .main-table.new-order td:nth-of-type(3):before {
+          content: "Цена"; } }
+      @media (max-width: 512px) {
+        .site-section.home .schedule .main-table.new-order td:nth-of-type(4):before {
+          content: "Количество"; } }
+      @media (max-width: 512px) {
+        .site-section.home .schedule .main-table.new-order td:nth-of-type(5):before {
+          content: "Сума"; } }
+      @media (max-width: 512px) {
+        .site-section.home .schedule .main-table.new-order td:nth-of-type(6):before {
+          content: "Детайли"; } }
+      .site-section.home .schedule .main-table.new-order td:nth-child(1) {
+        flex: 0 0 22%; }
+      .site-section.home .schedule .main-table.new-order td:nth-child(2) {
+        flex: 0 0 10%; }
+      .site-section.home .schedule .main-table.new-order td:nth-child(3) {
+        flex: 0 0 13%; }
+      .site-section.home .schedule .main-table.new-order td:nth-child(4) {
+        flex: 0 0 20%; }
+      .site-section.home .schedule .main-table.new-order td:nth-child(5) {
+        flex: 0 0 10%; }
+      .site-section.home .schedule .main-table.new-order td:nth-child(6) {
+        flex: 0 0 25%; }
+
 
 .site-news {
   list-style: none outside;

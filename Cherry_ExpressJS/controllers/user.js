@@ -172,7 +172,15 @@ function removeProdGet(req, res) {
     });
 }
 
-
+function currentStateGet(req, res) {
+    let { user } = req;
+    State.find({ creatorId: user.id }).then(states => {
+        res.render('user/new-order', calcTotalAndSubTotal(user, states));
+    }).catch(err => {
+        handleError(err, res);
+        res.render('500', { errorMessage: err.message });
+    });
+}
 
 module.exports = {
     loginGet,
@@ -182,5 +190,6 @@ module.exports = {
     logoutPost,
     newOrderGet,
     newOrderPost,
-    removeProdGet
+    removeProdGet,
+    currentStateGet
 };

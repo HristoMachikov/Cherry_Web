@@ -15,15 +15,12 @@ function createPost(req, res) {
     const cherry = { sort, description, imagePath };
     price ? cherry.price = Number(price) : null;
     cherry.isPublic = checkBox === "on";
-    // cherry.lectures = [];
-    // cherry.usersEnrolled = [];
 
     Cherry.create(cherry).then(result => {
         console.log('Successfully added!');
         res.redirect('/');
     }).catch(err => {
         handleErrors(err, res);
-        // cube.options = options(cube);
         res.render('cherry/create', { cherry, user });
         return;
     })
@@ -37,7 +34,6 @@ function editGet(req, res) {
             handleErrors(err, res);
             return;
         }
-        // cube.options = options(cube);
         res.render('cherry/edit', { cherry, user });
     })
 }

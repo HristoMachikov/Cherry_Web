@@ -1,4 +1,3 @@
-
 module.exports = {
     handleErrors: (err, res, cubeBody) => {
         let errorsArr = [];
@@ -10,15 +9,6 @@ module.exports = {
     handleError: (err, res) => {
         res.locals.globalError = err;
     },
-    //  difficultyLevels:
-    //     [
-    //         { level: 1, levelName: "Very Easy" },
-    //         { level: 2, levelName: "Easy" },
-    //         { level: 3, levelName: "Medium (Standard 3x3)" },
-    //         { level: 4, levelName: "Intermediate" },
-    //         { level: 5, levelName: "Expert" },
-    //         { level: 6, levelName: "Hardcore" }
-    //     ],
     options: (elem) => {
         return [
             { value: 0, title: '0 kg', selected: 0 === elem.weigth },
@@ -27,5 +17,10 @@ module.exports = {
             { value: 10, title: '10 kg', selected: 10 === elem.weigth },
             { value: 12, title: '12 kg', selected: 12 === elem.weigth }
         ]
+    },
+    dateToString: (date) => {
+        let day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate()
+        let month = date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
+        return day + "." + month + "." + date.getFullYear() + 'г., ' + date.toLocaleTimeString() + 'ч.';
     }
 };

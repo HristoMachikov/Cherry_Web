@@ -6,12 +6,12 @@ const orderController = require('../controllers/order');
 const { auth } = require('../utils');
 
 module.exports = (app) => {
-
+   
+    app.get('/order/remove/:id', auth(), orderController.removeOrderGet);
+    app.get('/admin/pending-orders/:id', auth(), orderController.approveOrderGet);
     app.get('/admin/pending-orders', auth(), orderController.pendingOrdersGet);
-    app.post('/order/edit/:id', auth(), orderController.editOrderPost);
     app.get('/order/create', auth(), orderController.createOrderPost);
     app.get('/order/my-orders', auth(), orderController.myOrdersGet);
-   
 
     app.get('/cherry/details/:id', auth(), cherryController.detailsGet);
     // app.post('/cherry/details/:id', auth(), cherryController.detailsPost);
@@ -24,6 +24,7 @@ module.exports = (app) => {
     app.get('/user/remove/:id', auth(), userController.removeProdGet);
     app.get('/user/new-order/:id', auth(), userController.newOrderGet);
     app.post('/user/new-order/:id', auth(), userController.newOrderPost);
+    app.get('/user/current-state', auth(), userController.currentStateGet);
 
     app.get('/user/login', userController.loginGet);
     app.post('/user/login', userController.loginPost);
