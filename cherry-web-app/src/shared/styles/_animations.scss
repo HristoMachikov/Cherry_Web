@@ -1,0 +1,67 @@
+/* navigation */
+.site-header .menu:before {
+    transition: transform 0.5s ease-in;
+}
+
+.toggle-nav-btn:hover .menu:before {
+    transform: scale(1.5);
+}
+
+.toggle-nav:checked+.site-header .site-navigation ul {
+    & li {
+        animation: slidIn 0.7s linear;
+        animation-fill-mode: both;
+        @for $i from 1 through 7 {
+            &:nth-child(#{$i}) {
+                animation-delay: 0.1s * $i;
+            }
+        }
+    }
+}
+
+@keyframes slidIn {
+    from {
+        transform: translateX(-1em);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* gallery */
+
+.image-gallery input:checked+li img {
+    animation: showIn 1s linear;
+    animation-fill-mode: both;
+ }
+ 
+.image-gallery input:checked+li figcaption {
+    animation: showText 0.5s linear 1s;
+    animation-fill-mode: both;
+}
+
+
+@keyframes showIn {
+    from {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    to {
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes showText {
+    from {
+        opacity: 0;
+        transform: scale(1);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}

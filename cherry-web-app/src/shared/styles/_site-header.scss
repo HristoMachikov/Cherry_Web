@@ -1,0 +1,96 @@
+.site-header {
+    .image {
+        display: block;
+        width: 65px;
+        height: 60px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.3em;
+    }
+
+    .image img:before {
+        display: block;
+        content: '';
+        padding-top: 66.67%;
+    }
+
+    .image img {
+        width: 200%;
+        height: auto;
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 53%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
+
+    .site-logo {
+        position: relative;
+    }
+
+    .text {
+        font-family: 'PT Sans Narrow', Arial, sans-serif;
+        font-size: 18px;
+        color: var(--color-primary-site);
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        line-height: 1;
+        pointer-events: none;
+    }
+
+    // .toggle-nav {
+    //     &:checked+.site-header .site-navigation {
+    //         display: block;
+    //         flex-basis: 100%;
+    //         text-align: right;
+    //         position: absolute;
+    //         top: 100%;
+    //         left: 100%;
+    //         transform: translateX(calc(-100% - var(--spacing-layout-elements)));
+    //         z-index: 2;
+    //     }
+    //     &:checked+.site-header .site-navigation li {
+    //         text-align: center;
+    //         margin: 0.25em 0;
+    //     }
+    //     &:checked+.site-header .toggle-nav-btn .menu:before {
+    //         content: "\f00d";
+    //     }
+    // }
+    
+
+    .toggle-nav-btn {
+        display: inline-block;
+        text-align: right;
+        margin-left: auto;
+
+        @include mq(tablet){
+            display: none;
+        }
+
+        .menu:before {
+            display: inline-block;
+            content: '\f0c9';
+            font-family: "Font Awesome 5 Pro";
+            font-weight: 900;
+            padding: 0 0.25em;
+            color: var(--color-primary-site);
+            font-size: 2em;
+            border: 1px solid var(--color-border-defaut);
+            border-radius: 0.3em;
+        }
+        &:hover .menu:before {
+           border-color: var(--color-main-site);
+        }
+    }
+
+    @at-root .toggle-nav {
+        position: absolute;
+        opacity: 1;
+        pointer-events: none;
+        display: none;
+    }
+}

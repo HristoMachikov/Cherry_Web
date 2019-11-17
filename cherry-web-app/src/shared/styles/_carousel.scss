@@ -1,0 +1,65 @@
+.slideshow-css {
+    position: relative;
+    width: 100%;
+    margin: auto;
+    &:before {
+        display: block;
+        content: "";
+        padding-top: 66.66%;
+    }
+
+    .mySlides-css {
+        width: 100%;
+        height: auto;
+        position: absolute;
+        top: 0;
+        left: 50%;  
+        transform: translateX(-50%);
+        opacity: 0;
+        animation: slidin 25s linear;
+        animation-iteration-count: infinite;
+
+        &:before {
+            display: block;
+            content: "";
+            padding-top: 66.66%;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    
+        @for $i from 1 through 5 {
+            &:nth-child(#{$i}) {
+                animation-delay: ($i - 1) * 5s;
+            }
+        }
+    }
+}
+
+@keyframes slidin {
+    0% {
+        opacity: 0;
+    }
+    5% {
+        opacity: 0.5;
+    }
+    10% {
+        opacity: 1;
+    }
+    20% {
+        opacity: 1;
+    }
+    20.05% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}

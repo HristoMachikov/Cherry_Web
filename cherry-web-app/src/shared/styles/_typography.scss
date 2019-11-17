@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Sans:400,400i,700&display=swap&subset=cyrillic');
+*, *:before, *:after {
+    padding: 0;
+    margin: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-size: var(--font-size-phone, 14px);
+    font-family: 'PT Sans', Arial,  sans-serif;
+    line-height: 1.5;
+    box-sizing: border-box;
+
+    @include mq(phone-small) {
+        font-size: var(--font-size-phone-small, 12px);
+    }
+    @include mq(phone) {
+        font-size: var(--font-size-phone, 14px);
+    }
+    @include mq(tablet) {
+        font-size: var(--font-size-tablet, 16px);
+    }
+    @include mq(laptop) {
+        font-size: var(--font-size-laptop, 18px);
+    }
+    @include mq(desktop) {
+        font-size: var(--font-size-desktop, 21px);
+    }
+    @include mq(desktop-large) {
+        font-size: var(--font-size-desktop-large, 24px);
+    }
+    @include mq(desktop-huge) {
+        font-size: var(--font-size-desktop-huge, 27px);
+    }
+}
+
+p, ul, ol {
+    padding-bottom: 1.5em;
+}
+
+ul, ol {
+    padding-left: 2em;
+}
+
+ul ul, ul ol, ol ul, ol ol {
+    padding-left: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+ol>li>ol>li {
+    list-style-type: lower-roman;
+}
+
+article {
+    padding-bottom: 2rem;
+}
+
+body, table, form, select, option, input, textarea {
+    font: inherit;
+    background: var(--color-body-bgrd, #FFF);
+    color: var(--color-body-text, #000);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    font-size: 1em;
+    margin-bottom: 0.3em;
+}
+
+@each $h, $size in (h1: 2.6em, h2: 2.0em, h3: 1.8em, h4: 1.4em, h5: 1.2em, h6: 1em){
+    #{$h} {
+        font-size: $size;
+    }
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-link-defaut, #0A0);
+}
+
+blockquote {
+    padding: 1rem;
+}
+
+blockquote .author {
+    font-style: italic;
+    text-align: right;
+    opacity: 0.5;
+}
+
+blockquote .author:before {
+    display: inline-block;
+    content: '\2014';
+    padding-right: 0.5em;
+}

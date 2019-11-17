@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import Login from './Login';
 
-ReactDOM.render(<Login />, document.getElementById('root'));
+import './shared/styles/site.scss';
+
+import App from './components/App/App';
+
+ReactDOM.render(<App />, document.getElementById('root'));

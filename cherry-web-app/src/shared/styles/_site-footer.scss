@@ -1,0 +1,13 @@
+.main-footer {
+    .site-footer {
+        text-align: center;
+        padding: calc(var( --spacing-layout-elements, 2em) / 8) 0;
+        font-family: 'PT Sans Narrow', Arial, sans-serif;
+        text-align: center;
+        color: var(--color-primary-site);
+        
+        p {
+            padding: 0;
+        }
+    }
+}
