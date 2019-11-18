@@ -1,0 +1,41 @@
+<section class="site-section home">
+  <article class="sorts" id="sorts">
+    {{#if cherrys}}
+    <header>
+      <h2>Предлагани сортове</h2><span></span>
+    </header>
+    <ul>
+      {{#each cherrys}}
+      <li class="site-section-inner">
+        <p class="imges">
+          <img src="{{imagePath}}" alt="van">
+
+        </p>
+        <p class="header">
+        </p>
+        <h3>{{sort}}</h3>
+
+        <p>
+          <h4>{{price}} лв/кг</h4>
+        </p>
+        <p class="description">
+          {{description}}
+
+        </p>
+        <p>
+          <a class="primary-btn" href="/cherry/details/{{_id}}">Детайли</a>
+          <a class="primary-btn" href="/user/new-order/{{_id}}">Поръчай</a>
+        </p>
+        <br>
+      </li>
+      {{/each}}
+
+    </ul>
+    {{else}}
+    <header>
+      <h4>Няма създадени сортове. Моля създайте!</h4>
+
+    </header>
+    {{/if}}
+  </article>
+</section>

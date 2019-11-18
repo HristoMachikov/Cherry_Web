@@ -1,0 +1,22 @@
+<section class="site-section login">
+    <form action='/user/login' method="POST" class="main-form">
+        <fieldset class="main-form-fieldsed">
+            <legend class="main-form-legent">Вход</legend>
+            <p class="form-field username">
+                <label for="username">Име</label>
+                <input class="form-input" type="text" name="username" id="username" value="{{username}}">
+                <span></span>
+            </p>
+            <p class="form-field password last">
+                <label for="password">Парола</label>
+                <input class="form-input" type="password" name="password" id="password" value="{{password}}">
+                <span></span>
+            </p>
+            <p class="form-btn">
+                <button class="primary-btn" type="submit">Вход</button>
+            </p>
+            <p class="question">Имаш ли <a href="/user/register">Регистрация</a>?</p>
+        </fieldset>
+    </form>
+
+</section>

@@ -19,9 +19,9 @@ function Login() {
                         <span></span>
                     </p>
                     <p className="form-btn">
-                        <a className="primary-btn" href="/Cherry_Jekyll">Вход</a>
+                        <Link className="primary-btn" to="/">Вход</Link>
                     </p>
-                    <p className="question">Имаш ли <a href="/Cherry_Jekyll/registration/">Регистрация</a>?</p>
+                    <p className="question">Имаш ли <Link to="/user/register">Регистрация</Link>?</p>
                 </fieldset>
             </form>
         </section>

@@ -1,0 +1,38 @@
+<section class="site-section home">
+    <article class="schedule" id="schedule">
+        <header>
+            <h2>Моите поръчки</h2><span></span>
+        </header>
+        {{#if orders}}
+        <table class="main-table">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Дата</th>
+                    <th>Общо</th>
+                    <th>Статус</th>
+                    <th>Детайли</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each orders}}
+                <tr>
+                    <td>#{{@index}}</td>
+                    <td>{{dateToStr}}</td>
+                    <td>{{total}} лв</td>
+                    <td>{{status}}</td>
+                    <td><a href="/order/details/{{_id}}">Виж</a></td>
+                    <td>-</td>
+                    {{!-- <td><a class="primary-btn" href="#">Изтрии</a><a class="primary-btn" href="#">Одобри</a></td> --}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <header>
+            <h4>В момента няма направени поръчки!</h4>
+        </header>
+        {{/if}}
+    </article>
+</section>

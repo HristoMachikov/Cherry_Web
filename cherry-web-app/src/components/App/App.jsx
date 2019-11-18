@@ -1,14 +1,16 @@
-import React, { Fragment, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import {
     BrowserRouter as Router,
     Switch,
-    Route,
-    Link
+    Route
 } from 'react-router-dom';
 
 import Header from '../Header/Header';
-import About from '../About/About';
 import Footer from '../Footer/Footer';
+
+import About from '../About/About';
+import Menu from '../Menu/Menu';
+import Login from '../Login/Login';
 
 // const Login = React.lazy(() => import('../Login/Login'));
 // const Register = React.lazy(() => import('../Register/Register'));
@@ -25,19 +27,13 @@ function App() {
                     <div className="wrapper">
                         <Suspense fallback={<div>Loading...</div>}>
                             <Switch>
-                                {/* <Route path="/" exact render={() => <Main path="../logo192.png" />} />
-                <Route path="/post" render={() => <Create path="../logo192.png" />} /> */}
+                                <Route path="/user/login" component={Login} />
                                 <Route path="/about" component={About} />
-                                {/* <Route path="/login" component={Login} />
-                <Route path="/profile" render={() => <Profile path="../logo192.png" />} /> */}
-                                {/* <Route component={NotFound} /> */}
+                                <Route path="/" component={Menu} />
                             </Switch>
                         </Suspense>
-                        <About />
                     </div>
                 </main>
-
-
                 <Footer />
             </Router>
 

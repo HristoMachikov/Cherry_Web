@@ -1,0 +1,38 @@
+<section class="contacts">
+    <div class="contact-header">
+        <h1>Създай нов сорт</h1>
+    </div>
+    <div class="contact-form">
+        <form action='/cherry/create' method="POST">
+            <p class="sort">
+                <label for="sort">Име:<span>*</span></label>
+                <input type="text" name="sort" id="sort" placeholder="Type cherry sort here" value="{{cherry.sort}}">
+            </p>
+            <p class="price">
+                <label for="price">Цена:<span>*</span></label>
+                <input type="text" name="price" id="price" placeholder="Type price per 1 kilogram"
+                    value="{{cherry.price}}">
+            </p>
+            <p class="imagePath">
+                <label for="imagePath">Снимка:<span>*</span></label>
+                <input type="text" name="imagePath" id="imagePath" placeholder="Type image path"
+                    value="{{cherry.imagePath}}">
+            </p>
+            <p class="description">
+                <label for="description">Съобщение:<span>*</span></label>
+                <textarea name="description" id="description" rows="5"
+                    placeholder="Type some description...">{{cherry.description}}</textarea>
+            </p>
+            <p class="check-box">
+                <label for="check-box">Public</label>
+                <input type="checkbox" class="checkbox" id="check-box" name="checkBox"
+                    {{#if cherry.isPublic}}checked{{/if}} />
+            </p>
+            <div class="form-btn">
+                <p class="btn">
+                    <button type="submit" class="primary-btn">Създай</button>
+                </p>
+            </div>
+        </form>
+    </div>
+</section>
