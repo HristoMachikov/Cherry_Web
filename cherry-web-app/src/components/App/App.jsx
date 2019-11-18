@@ -11,6 +11,7 @@ import Footer from '../Footer/Footer';
 import About from '../About/About';
 import Menu from '../Menu/Menu';
 import Login from '../Login/Login';
+import Register from '../Register/Register';
 
 // const Login = React.lazy(() => import('../Login/Login'));
 // const Register = React.lazy(() => import('../Register/Register'));
@@ -27,6 +28,7 @@ function App() {
                     <div className="wrapper">
                         <Suspense fallback={<div>Loading...</div>}>
                             <Switch>
+                                <Route path="/user/register" component={Register} />
                                 <Route path="/user/login" component={Login} />
                                 <Route path="/about" component={About} />
                                 <Route path="/" component={Menu} />

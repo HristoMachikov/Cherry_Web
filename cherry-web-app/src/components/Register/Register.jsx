@@ -6,10 +6,12 @@ const camelCased = myString => (
     myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
 );
 
-class Login extends Component {
+class Register extends Component {
     state = {
         username: "",
+        email: "",
         password: "",
+        repeatPassword: "",
         errorMessages: []
     };
 
@@ -42,7 +44,7 @@ class Login extends Component {
     }
 
     render() {
-        const { username, password, errorMessages } = this.state;
+        const { username, password, repeatPassword, email, errorMessages } = this.state;
         return (
             <section className="site-section login">
                 {
@@ -53,11 +55,11 @@ class Login extends Component {
                     </ul> : null
                 }
                 <form onSubmit={this.handleLogin}
-                    action='/user/login'
+                    action='/user/register'
                     method="POST"
                     className="main-form">
                     <fieldset className="main-form-fieldsed">
-                        <legend className="main-form-legent">Вход</legend>
+                        <legend className="main-form-legent">Регистрация</legend>
                         <p className="form-field username">
                             <label htmlFor="username">Име</label>
                             <input
@@ -72,7 +74,7 @@ class Login extends Component {
                             />
                             <span></span>
                         </p>
-                        <p className="form-field password last">
+                        <p className="form-field password">
                             <label htmlFor="password">Парола</label>
                             <input
                                 className="form-input"
@@ -86,10 +88,38 @@ class Login extends Component {
                             />
                             <span></span>
                         </p>
-                        <p className="form-btn">
-                            <button className="primary-btn" type="submit">Вход</button>
+                        <p className="form-field password">
+                            <label htmlFor="password">Повтори Парола</label>
+                            <input
+                                className="form-input"
+                                type="password"
+                                name="repeatPassword"
+                                id="repeat-password"
+                                value={repeatPassword}
+                                onChange={this.handleFormElementChange}
+                                required
+                                onBlur={this.checkValidity}
+                            />
+                            <span></span>
                         </p>
-                        <p className="question">Имаш ли <Link to="/user/register">Регистрация</Link>?</p>
+                        <p className="form-field email last">
+                            <label htmlFor="email">E-mail</label>
+                            <input
+                                className="form-input"
+                                type="email"
+                                name="email"
+                                id="email"
+                                value={email}
+                                onChange={this.handleFormElementChange}
+                                required
+                                onBlur={this.checkValidity}
+                            />
+                            <span></span>
+                        </p>
+                        <p className="form-btn">
+                            <button className="primary-btn" type="submit">Регистрираи се</button>
+                        </p>
+                        <p className="question">Ако имаш регистрация, избери <Link to="/user/login">Вход</Link>!</p>
                     </fieldset>
                 </form>
             </section>
@@ -98,4 +128,4 @@ class Login extends Component {
 
 }
 
-export default Login;
+export default Register;
