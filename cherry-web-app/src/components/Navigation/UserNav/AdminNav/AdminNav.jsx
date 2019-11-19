@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 
@@ -7,17 +7,17 @@ function AdminNav({ isAdmin }) {
     
     return  isAdmin  ? <Fragment>
         <li>
-            <Link to="/cherry/create">Нов сорт</Link>
+            <NavLink to="/cherry/create" activeClassName="selected">Нов сорт</NavLink>
         </li>
         <li>
-            <Link to="/admin/pending-orders">Чакащи</Link>
+            <NavLink to="/admin/pending-orders" activeClassName="selected">Чакащи</NavLink>
         </li>
     </Fragment> : <Fragment>
         <li>
-            <Link to="/order/my-orders">Поръчани</Link>
+            <NavLink to="/order/my-orders" activeClassName="selected">Поръчани</NavLink>
         </li>
         <li>
-            <Link to="/user/current-state">Кошница</Link>
+            <NavLink to="/user/current-state" activeClassName="selected">Кошница</NavLink>
         </li>
     </Fragment>
 }

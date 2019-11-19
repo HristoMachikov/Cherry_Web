@@ -26,36 +26,36 @@ module.exports = {
         // }
 
         Cherry.find().then(cherrys => {
-            // if (user) {
-            //     // user.isAdmin = user.roles.includes('Admin');
-            //     if (user.isAdmin) {
-            //         res.render('admin/index', {
-            //             cherrys,
-            //             user
-            //         });
-            //         return;
-            //     }
-            //     // res.render('user/index', {
-            //     //     courses,
-            //     //     user
-            //     // });
-            //     // return;
-            //     // // cube.forEach(cube => cube.isCreator = cube.creatorId === user.id);
-            // }
+        //     if (user) {
+        //         // user.isAdmin = user.roles.includes('Admin');
+        //         if (user.isAdmin) {
+        //             res.render('admin/index', {
+        //                 cherrys,
+        //                 user
+        //             });
+        //             return;
+        //         }
+        //         // res.render('user/index', {
+        //         //     courses,
+        //         //     user
+        //         // });
+        //         // return;
+        //         // // cube.forEach(cube => cube.isCreator = cube.creatorId === user.id);
+        //     }
 
-            // // let topCourses = courses
-            // //     .filter(obj => obj.isPublic === true)
-            // //     .sort((a, b) => b.usersEnrolled.length - a.usersEnrolled.length)
-            // //     .splice(0, 3);
+        //     // let topCourses = courses
+        //     //     .filter(obj => obj.isPublic === true)
+        //     //     .sort((a, b) => b.usersEnrolled.length - a.usersEnrolled.length)
+        //     //     .splice(0, 3);
 
-            //     res.render('index', {
-            //         cherrys,
-            //         user
-            //     });
-            // })
-            // .catch(err => {
-            //     handleError(err, res);
-            // });
+        //     res.render('index', {
+        //         cherrys,
+        //         user
+        //     });
+        // })
+        //     .catch(err => {
+        //         handleError(err, res);
+        //     });
             res.send(cherrys);
         }).catch(next);
 
@@ -66,7 +66,8 @@ module.exports = {
     },
 
     notFound: (req, res) => {
-        res.render('404');
+        const { user } = req;
+        res.render('404', { user });
     },
     // search: (req, res) => {
     //     let {

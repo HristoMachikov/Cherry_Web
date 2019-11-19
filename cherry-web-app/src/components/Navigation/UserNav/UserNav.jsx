@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 
 import AdminNav from './AdminNav/AdminNav';
@@ -8,8 +8,8 @@ class UserNav extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            user: 0,
-            isAdmin: false
+            user: 1,
+            isAdmin: true
         }
     }
 
@@ -18,7 +18,7 @@ class UserNav extends React.Component {
         return user ? <Fragment>
             <AdminNav isAdmin={isAdmin} />
             <li>
-                <Link to="/user/logout">Изход</Link>
+                <NavLink to="/user/logout" activeClassName="selected">Изход</NavLink>
                 {/* <form id="logout-form" action="/user/logout" method="post"></form>
                         <Link to="javascript:document.getElementById('logout-form').submit()">
                             Изход
@@ -26,10 +26,10 @@ class UserNav extends React.Component {
             </li>
         </Fragment> : <Fragment>
                 <li>
-                    <Link to="/user/register">Регистрация</Link>
+                    <NavLink to="/user/register" activeClassName="selected">Регистрация</NavLink>
                 </li>
                 <li>
-                    <Link to="/user/login">Вход</Link>
+                    <NavLink to="/user/login" activeClassName="selected">Вход</NavLink>
                 </li>
             </Fragment>
     }

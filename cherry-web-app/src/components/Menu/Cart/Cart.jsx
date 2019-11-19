@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 
-function Cart({ id, imagePath, sort, price, description }) {
+function Cart({ id, imagePath, sort, price, description, isAdmin }) {
 
     return (<li className="site-section-inner">
         <p className="imges">
@@ -12,14 +12,22 @@ function Cart({ id, imagePath, sort, price, description }) {
         <p className="header"></p>
         <h3>{sort}</h3>
         {/* <p> */}
-            <h4>{price} лв/кг</h4>
+        <h4>{price} лв/кг</h4>
         {/* </p> */}
         <p className="description">
             {description}
         </p>
         <p>
-            <Link className="primary-btn" to={`/cherry/details/${id}`}>Детайли</Link>
-            <Link className="primary-btn" to={`/user/new-order/${id}`}>Поръчай</Link>
+            {isAdmin
+                ? <Fragment>
+                    <Link className="primary-btn" to={`/cherry/edit/${id}`}>Промени</Link>
+                    <Link className="primary-btn" to={`/cherry/remove/${id}`}>Изтрии</Link>
+                </Fragment>
+                : <Fragment>
+                    <Link className="primary-btn" to={`/cherry/details/${id}`}>Детайли</Link>
+                    <Link className="primary-btn" to={`/user/new-order/${id}`}>Поръчай</Link>
+                </Fragment>
+            }
         </p>
         <br />
     </li>)

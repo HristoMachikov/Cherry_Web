@@ -55,8 +55,8 @@ class Register extends Component {
                     </ul> : null
                 }
                 <form onSubmit={this.handleLogin}
-                    action='/user/register'
-                    method="POST"
+                    // action='/user/register'
+                    // method="POST"
                     className="main-form">
                     <fieldset className="main-form-fieldsed">
                         <legend className="main-form-legent">Регистрация</legend>

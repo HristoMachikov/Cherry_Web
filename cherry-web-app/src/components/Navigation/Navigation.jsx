@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import UserNav from './UserNav/UserNav';
 
@@ -7,10 +7,14 @@ function Navigation({ user, isAdmin }) {
     return (<nav className="site-navigation">
         <ul>
             <li>
-                <Link to="/about">Начало</Link>
+                <NavLink to="/about" activeClassName="selected">
+                    Начало
+                </NavLink >
+
+                {/* <Link to="/about">Начало</Link> */}
             </li>
             <li>
-                <Link to="/">Меню</Link>
+                <NavLink to="/" exact activeClassName="selected">Меню</NavLink>
             </li>
             <UserNav user={user} isAdmin={isAdmin} />
         </ul>

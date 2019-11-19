@@ -21,7 +21,7 @@
             }
             &:not(:first-child) {
                 @include mq(tablet) {
-                    padding-left: 0.3em;
+                    padding-left: 0.1em;
                 } 
             }
 

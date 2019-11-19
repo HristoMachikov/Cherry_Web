@@ -53,8 +53,8 @@ class Login extends Component {
                     </ul> : null
                 }
                 <form onSubmit={this.handleLogin}
-                    action='/user/login'
-                    method="POST"
+                    // action='/user/login'
+                    // method="POST"
                     className="main-form">
                     <fieldset className="main-form-fieldsed">
                         <legend className="main-form-legent">Вход</legend>

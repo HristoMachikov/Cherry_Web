@@ -6,7 +6,7 @@ const orderController = require('../controllers/order');
 const { auth } = require('../utils');
 
 module.exports = (app) => {
-   
+
     app.get('/order/remove/:id', auth(), orderController.removeOrderGet);
     app.get('/admin/pending-orders/:id', auth(), orderController.approveOrderGet);
     app.get('/admin/pending-orders', auth(), orderController.pendingOrdersGet);
@@ -15,11 +15,11 @@ module.exports = (app) => {
 
     app.get('/cherry/details/:id', auth(), cherryController.detailsGet);
     // app.post('/cherry/details/:id', auth(), cherryController.detailsPost);
-    app.get('/cherry/remove/:id', auth(), cherryController.removeGet);
-    app.get('/cherry/edit/:id', auth(), cherryController.editGet);
-    app.post('/cherry/edit/:id', auth(), cherryController.editPost);
-    app.get('/cherry/create', auth(), cherryController.createGet);
-    app.post('/cherry/create', auth(), cherryController.createPost);
+    app.get('/cherry/remove/:id', auth(true, true), cherryController.removeGet);
+    app.get('/cherry/edit/:id', auth(true, true), cherryController.editGet);
+    app.post('/cherry/edit/:id', auth(true, true), cherryController.editPost);
+    app.get('/cherry/create', auth(true, true), cherryController.createGet);
+    app.post('/cherry/create', auth(true, true), cherryController.createPost);
 
     app.get('/user/remove/:id', auth(), userController.removeProdGet);
     app.get('/user/new-order/:id', auth(), userController.newOrderGet);
@@ -35,5 +35,5 @@ module.exports = (app) => {
     // app.get('/search', auth(), homeController.search);
     app.get('/about', auth(false), homeController.about);
     app.get('/', auth(false), homeController.homeGet);
-    app.all('*', homeController.notFound);
+    app.all('*', auth(false), homeController.notFound);
 };
