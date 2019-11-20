@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 // import './shared/styles/_forms.scss';
 
 import cherryService from '../../../services/cherry-service';
@@ -14,18 +14,15 @@ class Edit extends Component {
         price: "",
         imagePath: "",
         description: "",
-        isPublic: this.checkBox,
-        checkBox: this.isPublic,
+        isPublic: false,
+        checkBox: false,
         errorMessages: []
     };
 
     componentDidMount = () => {
         const { id } = this.props.match.params;
-        console.log(id);
         cherryService.getEdit(id).then(cherry => {
-            console.log(cherry);
-            debugger;
-            this.setState({ ...cherry });
+            this.setState({ ...cherry[0], checkBox: !this.state.isPublic });
         }).catch(err => {
             console.log(err);
         })
@@ -33,6 +30,14 @@ class Edit extends Component {
 
     handleCreate = (event) => {
         event.preventDefault();
+        const { id } = this.props.match.params;
+        const { sort, description, imagePath, isPublic, price, _id } = this.state;
+        cherryService.postEdit(id, { sort, description, imagePath, isPublic, price, _id }).then(res => {
+            console.log(res);
+            <Redirect to="/" />
+        }).catch(err => {
+            console.log(err);
+        })
         console.dir(this.state);
     }
 
@@ -43,7 +48,7 @@ class Edit extends Component {
             const { checked } = event.target;
             this.setState({
                 [parsedId]: checked,
-                isPublic: this.state.checkBox
+                isPublic: !this.state.checkBox
             })
             return;
         }
@@ -147,10 +152,8 @@ class Edit extends Component {
                                 type="checkbox"
                                 id="check-box"
                                 name="checkBox"
-                                value={checkBox}
+                                checked={checkBox}
                                 onChange={this.handleFormElementChange}
-
-                            // {isPublic ? "checked" : ""} 
                             />
                         </div>
                         <div className="form-btn">

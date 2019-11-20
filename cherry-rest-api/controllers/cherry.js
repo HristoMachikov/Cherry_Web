@@ -37,19 +37,23 @@ function editGet(req, res, next) {
 }
 
 function editPost(req, res, next) {
-    let { sort, description, imagePath, checkBox, price } = req;
+    let { sort, description, imagePath, isPublic, price, _id } = req.body;
+    console.log( req.body)
     const { user } = req;
-    const cherry = { sort, description, imagePath }
+    const cherry = { sort, description, imagePath, isPublic}
     cherry.price = Number(price);
-    cherry.isPublic = checkBox === "on";
+    // cherry.isPublic = checkBox === "on";
     cherry._id = req.params.id;
     Cherry.updateOne({ _id: req.params.id }, { $set: cherry }, { runValidators: true }).then((result) => {
-        console.log('Successfully edited!')
-        res.redirect('/');
-    }).catch((err) => {
-        handleErrors(err, res);
-        res.render('cherry/edit', { cherry, user });
-    })
+        console.log(result)
+        res.send(result);
+    }).catch(next)
+    //     console.log('Successfully edited!')
+    //     res.redirect('/');
+    // }).catch((err) => {
+    //     handleErrors(err, res);
+    //     res.render('cherry/edit', { cherry, user });
+    // })
 }
 
 function detailsGet(req, res, next) {
