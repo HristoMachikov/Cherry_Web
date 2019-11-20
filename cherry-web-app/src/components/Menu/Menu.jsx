@@ -19,6 +19,8 @@ class Menu extends Component {
         cherryService.load().then(cherrys => {
             console.log(cherrys);
             this.setState({ cherrys });
+        }).catch(err => {
+            console.log(err);
         })
     }
 

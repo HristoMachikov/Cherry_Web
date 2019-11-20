@@ -2,20 +2,34 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 // import './shared/styles/_forms.scss';
 
+import cherryService from '../../../services/cherry-service';
+
 const camelCased = myString => (
     myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
 );
 
-class Create extends Component {
+class Edit extends Component {
     state = {
         sort: "",
         price: "",
         imagePath: "",
         description: "",
-        checkBox: false,
         isPublic: this.checkBox,
+        checkBox: this.isPublic,
         errorMessages: []
     };
+
+    componentDidMount = () => {
+        const { id } = this.props.match.params;
+        console.log(id);
+        cherryService.getEdit(id).then(cherry => {
+            console.log(cherry);
+            debugger;
+            this.setState({ ...cherry });
+        }).catch(err => {
+            console.log(err);
+        })
+    }
 
     handleCreate = (event) => {
         event.preventDefault();
@@ -59,7 +73,7 @@ class Create extends Component {
         return (
             <section className="contacts">
                 <div className="contact-header">
-                    <h1>Създай нов сорт</h1>
+                    <h1>Промени избраният сорт</h1>
                 </div>
                 {
                     errorMessages.length ? <ul>
@@ -141,7 +155,7 @@ class Create extends Component {
                         </div>
                         <div className="form-btn">
                             <p className="btn">
-                                <button type="submit" className="primary-btn">Създай</button>
+                                <button type="submit" className="primary-btn">Промени</button>
                             </p>
                         </div>
                     </form>
@@ -152,4 +166,4 @@ class Create extends Component {
 
 }
 
-export default Create;
+export default Edit;

@@ -26,20 +26,18 @@ function createPost(req, res) {
     })
 }
 
-function editGet(req, res) {
+function editGet(req, res, next) {
     const id = req.params.id;
     const { user } = req;
-    Cherry.findById(Object(id), function (err, cherry) {
-        if (err) {
-            handleErrors(err, res);
-            return;
-        }
-        res.render('cherry/edit', { cherry, user });
-    })
+    Cherry.find({ _id: id }).then(cherry => {
+        console.log(cherry)
+        res.send(cherry);
+        // res.render('cherry/edit', { cherry, user });
+    }).catch(next)
 }
 
-function editPost(req, res) {
-    let { sort, description, imagePath, checkBox, price } = req.body;
+function editPost(req, res, next) {
+    let { sort, description, imagePath, checkBox, price } = req;
     const { user } = req;
     const cherry = { sort, description, imagePath }
     cherry.price = Number(price);
