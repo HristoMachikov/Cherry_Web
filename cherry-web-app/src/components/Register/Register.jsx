@@ -2,31 +2,41 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 // import './shared/styles/_forms.scss';
 
-const camelCased = myString => (
-    myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
-);
+// const camelCased = myString => (
+//     myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
+// );
 
 class Register extends Component {
-    state = {
-        username: "",
-        email: "",
-        password: "",
-        repeatPassword: "",
-        errorMessages: []
-    };
 
-    handleLogin = (event) => {
-        event.preventDefault();
-        console.dir(this.state);
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            username: "",
+            email: "",
+            password: "",
+            repeatPassword: "",
+            errorMessages: []
+        };
+
+        this.handleSubmit = this.props.handleSubmit.bind(this);
+        this.handleFormElementChange = this.props.handleFormElementChange.bind(this);
+
     }
 
-    handleFormElementChange = (event) => {
-        const { value, id } = event.target;
-        const parsedId = camelCased(id);
-        this.setState({
-            [parsedId]: value
-        })
-    }
+
+    // handleSubmit = (event) => {
+    //     event.preventDefault();
+    //     console.dir(this.state);
+    // }
+
+    // handleFormElementChange = (event) => {
+    //     const { value, id } = event.target;
+    //     const parsedId = camelCased(id);
+    //     this.setState({
+    //         [parsedId]: value
+    //     })
+    // }
 
     checkValidity = (event) => {
         const { target } = event;
@@ -54,7 +64,7 @@ class Register extends Component {
                         }
                     </ul> : null
                 }
-                <form onSubmit={this.handleLogin}
+                <form onSubmit={(e) => this.handleSubmit(e, this.state)}
                     // action='/user/register'
                     // method="POST"
                     className="main-form">

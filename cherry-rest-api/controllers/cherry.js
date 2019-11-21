@@ -30,15 +30,16 @@ function editGet(req, res, next) {
     const id = req.params.id;
     const { user } = req;
     Cherry.find({ _id: id }).then(cherry => {
-        console.log(cherry)
         res.send(cherry);
         // res.render('cherry/edit', { cherry, user });
     }).catch(next)
 }
 
 function editPost(req, res, next) {
+    console.log( req)
     let { sort, description, imagePath, isPublic, price, _id } = req.body;
     console.log( req.body)
+    console.log( "server")
     const { user } = req;
     const cherry = { sort, description, imagePath, isPublic}
     cherry.price = Number(price);

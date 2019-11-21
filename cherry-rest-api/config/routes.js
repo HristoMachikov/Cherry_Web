@@ -17,7 +17,7 @@ module.exports = (app) => {
     // app.post('/cherry/details/:id', auth(), cherryController.detailsPost);
     app.get('/cherry/remove/:id', auth(true, true), cherryController.removeGet);
     app.get('/cherry/edit/:id', auth(false), cherryController.editGet);
-    app.post('/cherry/edit/:id', auth(true, true), cherryController.editPost);
+    app.post('/cherry/edit/:id', auth(false), cherryController.editPost);
     app.get('/cherry/create', auth(true, true), cherryController.createGet);
     app.post('/cherry/create', auth(true, true), cherryController.createPost);
 

@@ -14,40 +14,42 @@ function loginGet(req, res) {
 }
 function loginPost(req, res, next) {
     const { username, password } = req.body;
-    let userBody = { username, password };
-    // const regex = /^[a-zA-Z0-9]*[a-zA-Z0-9]$/;
-    if (!username || !password) {
-        const error = "Pleas fill all fields!";
-        handleError(error, res);
-        res.render('user/login', userBody);
-        return;
-    }
-    // if (!regex.test(password) || !regex.test(username)) {
-    //     const error = "Password and username should consist only with English letters and digits"
+    // let userBody = { username, password };
+    // // const regex = /^[a-zA-Z0-9]*[a-zA-Z0-9]$/;
+    // if (!username || !password) {
+    //     const error = "Pleas fill all fields!";
     //     handleError(error, res);
     //     res.render('user/login', userBody);
     //     return;
     // }
-    // if (username.length < 4 || password.length < 4) {
-    //     const error = "Password and username should be at least 4 characters long"
-    //     handleError(error, res);
-    //     res.render('user/login', userBody);
-    //     return;
-    // }
+    // // if (!regex.test(password) || !regex.test(username)) {
+    // //     const error = "Password and username should consist only with English letters and digits"
+    // //     handleError(error, res);
+    // //     res.render('user/login', userBody);
+    // //     return;
+    // // }
+    // // if (username.length < 4 || password.length < 4) {
+    // //     const error = "Password and username should be at least 4 characters long"
+    // //     handleError(error, res);
+    // //     res.render('user/login', userBody);
+    // //     return;
+    // // }
     User.findOne({ username })
         // .then((user) => Promise.all([user, user ? user.matchPassword(password) : false]))
         .then((user) => Promise.all([user, user ? user.matchPassword(password) : false]))
         .then(([user, match]) => {
             if (!match) {
                 const error = "Wrong password or username!";
-                handleError(error, res);
-                res.render('user/login', userBody);
+                res.status(401).send(error);
+                // handleError(error, res);
+                // res.render('user/login', userBody);
                 return;
             }
             const token = utils.jwt.createToken({ id: user._id });
             res.cookie(userCookieName, token);
-            res.redirect('/');
-        })
+            res.send(user);
+            // res.redirect('/');
+        }).catch(next);
     // .catch((err) => {
     //     handleErrors(err, res);
     //     res.render('user/login', userBody);
@@ -58,34 +60,40 @@ function registerGet(req, res) {
 }
 function registerPost(req, res, next) {
     const { username, password, repeatPassword, email } = req.body;
-    let userBody = { username, password, repeatPassword, email };
+    // let userBody = { username, password, repeatPassword, email };
 
-    if (password !== repeatPassword) {
-        const error = "Both passwords should match!"
-        handleError(error, res);
-        res.render('user/register', userBody);
-        return;
-    }
-    return User.create({ username, password, email, roles: ['User'] }).then(() => {
-        res.redirect('/user/login');
+    // if (password !== repeatPassword) {
+    //     const error = "Both passwords should match!"
+    //     handleError(error, res);
+    //     res.render('user/register', userBody);
+    //     return;
+    // }
+    return User.create({ username, password, email, roles: ['User'] }).then((newUser) => {
+        res.send(newUser);
+        // res.redirect('/user/login');
     }).catch(err => {
         if (err.name === 'MongoError' && err.code === 11000) {
             const error = "User with this email exist!"
-            handleError(error, res);
-            res.render('user/register', userBody);
+            res
+            // .status(11000)
+            .send(error);
+            // handleError(error, res);
+            // res.render('user/register', userBody);
             return;
         }
-        handleErrors(err, res);
-        res.render('user/register', userBody);
-        // next(err);
+        // handleErrors(err, res);
+        // res.render('user/register', userBody);
+        next(err);
     });
 }
 
 function logoutPost(req, res) {
     const token = req.cookies[userCookieName];
     TokenBlacklist.create({ token }).then(() => {
-        res.clearCookie(userCookieName).redirect('/');
-    })
+        res.clearCookie(userCookieName)
+        res.send('Logout successfully!');
+        // res.redirect('/');
+    }).catch(next);
 }
 
 function calcTotalAndSubTotal(user, states) {

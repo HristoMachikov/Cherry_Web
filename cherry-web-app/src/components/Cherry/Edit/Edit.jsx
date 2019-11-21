@@ -32,9 +32,10 @@ class Edit extends Component {
         event.preventDefault();
         const { id } = this.props.match.params;
         const { sort, description, imagePath, isPublic, price, _id } = this.state;
+        console.log(JSON.stringify({ sort, description, imagePath, isPublic, price, _id }))
         cherryService.postEdit(id, { sort, description, imagePath, isPublic, price, _id }).then(res => {
             console.log(res);
-            <Redirect to="/" />
+            // <Redirect to="/" />
         }).catch(err => {
             console.log(err);
         })
@@ -90,7 +91,7 @@ class Edit extends Component {
                 <div className="contact-form">
                     <form onSubmit={this.handleCreate}
                     // action='/cherry/create'
-                    // method="POST"
+                    method="POST"
                     >
 
                         <p className="sort">

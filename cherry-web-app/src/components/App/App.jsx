@@ -1,9 +1,5 @@
-import React, { Suspense } from 'react';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route
-} from 'react-router-dom';
+import React, { Component, Suspense } from 'react';
+import { Switch, Route } from 'react-router-dom';
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -19,31 +15,60 @@ import Edit from '../Cherry/Edit/Edit';
 // const Create = React.lazy(() => import('../Create'));
 // const NotFound = React.lazy(() => import('../NotFound'));
 
-function App() {
-    return (
-        <div className="main">
+const camelCased = myString => (
+    myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
+);
 
-            <Router>
-                <Header />
-                <main className="main-content">
-                    <div className="wrapper">
-                        <Suspense fallback={<div>Loading...</div>}>
-                            <Switch>
-                                <Route path="/cherry/edit/:id" render={({ match }) => <Edit match={match} />} />
-                                <Route path="/cherry/create" component={Create} />
-                                <Route path="/user/register" component={Register} />
-                                <Route path="/user/login" component={Login} />
-                                <Route path="/about" component={About} />
-                                <Route path="/" exact component={Menu} />
-                            </Switch>
-                        </Suspense>
-                    </div>
-                </main>
-                <Footer />
-            </Router>
+class App extends Component {
+    handleSubmit(event,data) {
+        event.preventDefault();
+        console.dir(data);
+    }
 
-        </div>
-    )
+    handleFormElementChange(event) {
+        const { value, id } = event.target;
+        const parsedId = camelCased(id);
+        this.setState({
+            [parsedId]: value
+        })
+    }
+
+    render() {
+        return (<div className="main">
+            <Header />
+            <main className="main-content">
+                <div className="wrapper">
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Switch>
+                            <Route
+                                path="/cherry/edit/:id"
+                                render={({ match }) => <Edit match={match} />}
+                            />
+                            <Route path="/cherry/create" component={Create} />
+                            <Route
+                                path="/user/register"
+                                render={() => <Register
+                                    handleSubmit={this.handleSubmit}
+                                    handleFormElementChange={this.handleFormElementChange}
+                                />}
+                            />
+                            <Route
+                                path="/user/login"
+                                render={() => <Login
+                                    handleSubmit={this.handleSubmit}
+                                    handleFormElementChange={this.handleFormElementChange}
+                                />}
+                            />
+
+                            <Route path="/about" component={About} />
+                            <Route path="/" exact component={Menu} />
+                        </Switch>
+                    </Suspense>
+                </div>
+            </main>
+            <Footer />
+        </div>)
+    }
 }
 
 export default App;

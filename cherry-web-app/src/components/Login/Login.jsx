@@ -2,29 +2,38 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 // import './shared/styles/_forms.scss';
 
-const camelCased = myString => (
-    myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
-);
+// const camelCased = myString => (
+//     myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
+// );
 
 class Login extends Component {
-    state = {
-        username: "",
-        password: "",
-        errorMessages: []
-    };
+    constructor(props) {
+        super(props)
 
-    handleLogin = (event) => {
-        event.preventDefault();
-        console.dir(this.state);
+        this.state = {
+            username: "",
+            password: "",
+            errorMessages: []
+        };
+
+        this.handleSubmit = this.props.handleSubmit.bind(this);
+        this.handleFormElementChange = this.props.handleFormElementChange.bind(this);
+
     }
 
-    handleFormElementChange = (event) => {
-        const { value, id } = event.target;
-        const parsedId = camelCased(id);
-        this.setState({
-            [parsedId]: value
-        })
-    }
+
+    // handleSubmit = (event) => {
+    //     event.preventDefault();
+    //     console.dir(this.state);
+    // }
+
+    // handleFormElementChange = (event) => {
+    //     const { value, id } = event.target;
+    //     const parsedId = camelCased(id);
+    //     this.setState({
+    //         [parsedId]: value
+    //     })
+    // }
 
     checkValidity = (event) => {
         const { target } = event;
@@ -43,6 +52,8 @@ class Login extends Component {
 
     render() {
         const { username, password, errorMessages } = this.state;
+
+        const resData = { username, password }
         return (
             <section className="site-section login">
                 {
@@ -52,7 +63,7 @@ class Login extends Component {
                         }
                     </ul> : null
                 }
-                <form onSubmit={this.handleLogin}
+                <form onSubmit={(e) => this.handleSubmit(e, resData)}
                     // action='/user/login'
                     // method="POST"
                     className="main-form">

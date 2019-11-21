@@ -8,7 +8,7 @@ class UserNav extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            user: 1,
+            user: 0,
             isAdmin: true
         }
     }
