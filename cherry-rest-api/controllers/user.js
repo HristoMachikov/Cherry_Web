@@ -40,14 +40,18 @@ function loginPost(req, res, next) {
         .then(([user, match]) => {
             if (!match) {
                 const error = "Wrong password or username!";
-                res.status(401).send(error);
+                res.status(401).send(JSON.stringify(error));
                 // handleError(error, res);
                 // res.render('user/login', userBody);
                 return;
             }
             const token = utils.jwt.createToken({ id: user._id });
             res.cookie(userCookieName, token);
-            res.send(user);
+
+            const { username, email, _id } = user;
+            const resUser = { username, email, _id }
+            resUser.isAdmin = user.roles.includes('Admin');
+            res.send(JSON.stringify(resUser));
             // res.redirect('/');
         }).catch(next);
     // .catch((err) => {
@@ -75,8 +79,8 @@ function registerPost(req, res, next) {
         if (err.name === 'MongoError' && err.code === 11000) {
             const error = "User with this email exist!"
             res
-            // .status(11000)
-            .send(error);
+                // .status(11000)
+                .send(error);
             // handleError(error, res);
             // res.render('user/register', userBody);
             return;
@@ -87,11 +91,11 @@ function registerPost(req, res, next) {
     });
 }
 
-function logoutPost(req, res) {
+function logoutGet(req, res, next) {
     const token = req.cookies[userCookieName];
     TokenBlacklist.create({ token }).then(() => {
         res.clearCookie(userCookieName)
-        res.send('Logout successfully!');
+        res.send(JSON.stringify('Logout successfully!'));
         // res.redirect('/');
     }).catch(next);
 }
@@ -195,7 +199,7 @@ module.exports = {
     loginPost,
     registerGet,
     registerPost,
-    logoutPost,
+    logoutGet,
     newOrderGet,
     newOrderPost,
     removeProdGet,

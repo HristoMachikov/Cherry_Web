@@ -18,10 +18,11 @@ const cherryService = {
         return fetch(`http://localhost:4000/cherry/edit/${id}`,
             {
                 method: "POST",
+                headers: {
+                    'Accept': 'application/json, text/plain',
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(body)
-                // headers: {
-                //     'Content-Type': 'application/json'
-                // }
             }).then((res) => {
                 return res.json()
             }).catch((myErr) => console.error(myErr));

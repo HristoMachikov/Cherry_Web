@@ -55,6 +55,7 @@ class Register extends Component {
 
     render() {
         const { username, password, repeatPassword, email, errorMessages } = this.state;
+        const postData = { username, password, repeatPassword, email }
         return (
             <section className="site-section login">
                 {
@@ -64,7 +65,7 @@ class Register extends Component {
                         }
                     </ul> : null
                 }
-                <form onSubmit={(e) => this.handleSubmit(e, this.state)}
+                <form onSubmit={(e) => this.handleSubmit(e, postData, false)}
                     // action='/user/register'
                     // method="POST"
                     className="main-form">

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Route, Link, Redirect } from 'react-router-dom';
 // import './shared/styles/_forms.scss';
 
 import cherryService from '../../../services/cherry-service';
@@ -22,24 +22,24 @@ class Edit extends Component {
     componentDidMount = () => {
         const { id } = this.props.match.params;
         cherryService.getEdit(id).then(cherry => {
-            this.setState({ ...cherry[0], checkBox: !this.state.isPublic });
+            this.setState({ ...cherry[0], checkBox: cherry[0].isPublic });
         }).catch(err => {
             console.log(err);
         })
     }
 
-    handleCreate = (event) => {
+    handleSubmit = (event) => {
         event.preventDefault();
         const { id } = this.props.match.params;
+        const { url } = this.props.match;
+        // console.log(this.props)
         const { sort, description, imagePath, isPublic, price, _id } = this.state;
-        console.log(JSON.stringify({ sort, description, imagePath, isPublic, price, _id }))
+        // console.log(JSON.stringify({ sort, description, imagePath, isPublic, price, _id }))
         cherryService.postEdit(id, { sort, description, imagePath, isPublic, price, _id }).then(res => {
             console.log(res);
-            // <Redirect to="/" />
         }).catch(err => {
             console.log(err);
         })
-        console.dir(this.state);
     }
 
     handleFormElementChange = (event) => {
@@ -49,7 +49,8 @@ class Edit extends Component {
             const { checked } = event.target;
             this.setState({
                 [parsedId]: checked,
-                isPublic: !this.state.checkBox
+                isPublic: checked
+                // isPublic: !this.state.checkBox
             })
             return;
         }
@@ -89,9 +90,9 @@ class Edit extends Component {
                     </ul> : null
                 }
                 <div className="contact-form">
-                    <form onSubmit={this.handleCreate}
-                    // action='/cherry/create'
-                    method="POST"
+                    <form onSubmit={this.handleSubmit}
+                        // action='/cherry/create'
+                        method="POST"
                     >
 
                         <p className="sort">

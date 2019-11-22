@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Navigation from '../Navigation/Navigation';
 
-function Header() {
+function Header({isAdmin, username}) {
     return (<header className="main-header">
         <div className="wrapper">
             <input type="checkbox" name="toggle" id="toggle" className="toggle-nav" />
@@ -17,7 +17,7 @@ function Header() {
                 <label htmlFor="toggle" className="toggle-nav-btn">
                     <span className="menu"></span>
                 </label>
-                <Navigation />
+                <Navigation isAdmin={isAdmin} username={username}/>
             </div>
         </div>
     </header>);

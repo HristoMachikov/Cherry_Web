@@ -11,8 +11,7 @@ class Menu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cherrys: null,
-            isAdmin: true
+            cherrys: null
         };
     }
     componentDidMount() {
@@ -25,7 +24,8 @@ class Menu extends Component {
     }
 
     render() {
-        const { cherrys, isAdmin } = this.state;
+        const { cherrys } = this.state;
+        const { isAdmin } = this.props;
 
         return cherrys ? <section className="site-section home">
             <article className="sorts" id="sorts">

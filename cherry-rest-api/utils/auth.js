@@ -41,8 +41,8 @@ function auth(redirectUnauthenticated = true, adminOnly = false) {
                 // res.render('404', { user: currUser });
                 // const originalUrl = req.originalUrl;
                 // console.log(originalUrl)
-
-                res.redirect('/');
+                res.status(401).send('[UNAUTHORIZED - ADMIN ONLY]');
+                // res.redirect('/');
                 return
             }
             if ([
@@ -51,8 +51,8 @@ function auth(redirectUnauthenticated = true, adminOnly = false) {
                 'jwt must be provided'
             ].includes(err.message)
             ) {
-                // res.status(401).send('[UNAUTHORIZED]');
-                res.redirect('/user/login');
+                res.status(401).send('[UNAUTHORIZED]');
+                // res.redirect('/user/login');
                 return;
             }
             next(err);

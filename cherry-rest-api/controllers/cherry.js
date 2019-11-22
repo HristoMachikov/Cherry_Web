@@ -36,18 +36,14 @@ function editGet(req, res, next) {
 }
 
 function editPost(req, res, next) {
-    console.log( req)
     let { sort, description, imagePath, isPublic, price, _id } = req.body;
-    console.log( req.body)
-    console.log( "server")
     const { user } = req;
     const cherry = { sort, description, imagePath, isPublic}
     cherry.price = Number(price);
     // cherry.isPublic = checkBox === "on";
     cherry._id = req.params.id;
     Cherry.updateOne({ _id: req.params.id }, { $set: cherry }, { runValidators: true }).then((result) => {
-        console.log(result)
-        res.send(result);
+        res.send(JSON.stringify("Successfully edited!"));
     }).catch(next)
     //     console.log('Successfully edited!')
     //     res.redirect('/');

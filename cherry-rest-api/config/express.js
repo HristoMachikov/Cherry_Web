@@ -18,6 +18,7 @@ module.exports = (app) => {
 
     //TODO: Setup the body parser
     app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
     // app.use(express.urlencoded({ extended: true }));
 
     //TODO: Setup the cookie parser

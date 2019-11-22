@@ -16,8 +16,8 @@ module.exports = (app) => {
     app.get('/cherry/details/:id', auth(), cherryController.detailsGet);
     // app.post('/cherry/details/:id', auth(), cherryController.detailsPost);
     app.get('/cherry/remove/:id', auth(true, true), cherryController.removeGet);
-    app.get('/cherry/edit/:id', auth(false), cherryController.editGet);
-    app.post('/cherry/edit/:id', auth(false), cherryController.editPost);
+    app.get('/cherry/edit/:id', auth(true, true), cherryController.editGet);
+    app.post('/cherry/edit/:id', auth(true, true), cherryController.editPost);
     app.get('/cherry/create', auth(true, true), cherryController.createGet);
     app.post('/cherry/create', auth(true, true), cherryController.createPost);
 
@@ -30,7 +30,7 @@ module.exports = (app) => {
     app.post('/user/login', userController.loginPost);
     app.get('/user/register', userController.registerGet);
     app.post('/user/register', userController.registerPost);
-    app.post('/user/logout', userController.logoutPost);
+    app.get('/user/logout', userController.logoutGet);
 
     // app.get('/search', auth(), homeController.search);
     app.get('/about', auth(false), homeController.about);

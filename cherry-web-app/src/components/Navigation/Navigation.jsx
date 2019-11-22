@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 import UserNav from './UserNav/UserNav';
 
-function Navigation({ user, isAdmin }) {
+function Navigation({ username, isAdmin }) {
     return (<nav className="site-navigation">
         <ul>
             <li>
@@ -16,7 +16,7 @@ function Navigation({ user, isAdmin }) {
             <li>
                 <NavLink to="/" exact activeClassName="selected">Меню</NavLink>
             </li>
-            <UserNav user={user} isAdmin={isAdmin} />
+            <UserNav username={username} isAdmin={isAdmin} />
         </ul>
     </nav>);
 }

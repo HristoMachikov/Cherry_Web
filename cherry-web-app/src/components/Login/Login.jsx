@@ -18,7 +18,6 @@ class Login extends Component {
 
         this.handleSubmit = this.props.handleSubmit.bind(this);
         this.handleFormElementChange = this.props.handleFormElementChange.bind(this);
-
     }
 
 
@@ -52,8 +51,7 @@ class Login extends Component {
 
     render() {
         const { username, password, errorMessages } = this.state;
-
-        const resData = { username, password }
+        const postData = { username, password }
         return (
             <section className="site-section login">
                 {
@@ -63,7 +61,7 @@ class Login extends Component {
                         }
                     </ul> : null
                 }
-                <form onSubmit={(e) => this.handleSubmit(e, resData)}
+                <form onSubmit={(e) => this.handleSubmit(e, postData, true)}
                     // action='/user/login'
                     // method="POST"
                     className="main-form">
