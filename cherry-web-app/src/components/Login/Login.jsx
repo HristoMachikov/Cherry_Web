@@ -1,10 +1,25 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+
+import * as yup from 'yup'
 // import './shared/styles/_forms.scss';
 
 // const camelCased = myString => (
 //     myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
 // );
+
+const schema = yup.object().shape({
+    username: yup
+    .string()
+    .required()
+    .min(4,"Името трябва да е минимум 4 символа!"),
+
+    password: yup
+    .string()
+    .required()
+    .min(4,"Паролата трябва да е минимум 4 символа!")
+
+  });
 
 class Login extends Component {
     constructor(props) {
@@ -61,7 +76,7 @@ class Login extends Component {
                         }
                     </ul> : null
                 }
-                <form onSubmit={(e) => this.handleSubmit(e, postData, true)}
+                <form onSubmit={(e) => this.handleSubmit(e, postData, true, this.props.history)}
                     // action='/user/login'
                     // method="POST"
                     className="main-form">
@@ -78,6 +93,7 @@ class Login extends Component {
                                 onChange={this.handleFormElementChange}
                                 required
                                 onBlur={this.checkValidity}
+                                minLength={4}
                             />
                             <span></span>
                         </p>

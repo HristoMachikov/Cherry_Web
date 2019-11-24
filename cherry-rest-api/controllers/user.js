@@ -47,12 +47,13 @@ function loginPost(req, res, next) {
             }
             const token = utils.jwt.createToken({ id: user._id });
             res.cookie(userCookieName, token);
+            res.send(user);
 
-            const { username, email, _id } = user;
-            const resUser = { username, email, _id }
-            resUser.isAdmin = user.roles.includes('Admin');
-            res.send(JSON.stringify(resUser));
-            // res.redirect('/');
+            // const { username, email, _id } = user;
+            // const resUser = { username, email, _id }
+            // resUser.isAdmin = user.roles.includes('Admin');
+            // res.send(JSON.stringify(resUser));
+            // // res.redirect('/');
         }).catch(next);
     // .catch((err) => {
     //     handleErrors(err, res);
@@ -80,7 +81,8 @@ function registerPost(req, res, next) {
             const error = "User with this email exist!"
             res
                 // .status(11000)
-                .send(error);
+                .status(401)
+                .send(JSON.stringify(error));
             // handleError(error, res);
             // res.render('user/register', userBody);
             return;

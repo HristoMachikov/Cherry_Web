@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+
+// import withForm from '../../shared/hocs/withForm';
+
+import * as yup from 'yup'
 // import './shared/styles/_forms.scss';
 
 // const camelCased = myString => (
 //     myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
 // );
 
+
 class Register extends Component {
+
+    // userOnChangeHandler = this.props.controlChangeHandlerFactory("username");
+    // passwordOnChangeHandler = this.props.controlChangeHandlerFactory("password");
+    // repeatPasswordOnChangeHandler = this.props.controlChangeHandlerFactory(" repeatPassword");
+    // emailOnChangeHandler = this.props.controlChangeHandlerFactory("email");
 
     constructor(props) {
         super(props)
@@ -16,7 +26,7 @@ class Register extends Component {
             email: "",
             password: "",
             repeatPassword: "",
-            errorMessages: []
+            errorMessages: null
         };
 
         this.handleSubmit = this.props.handleSubmit.bind(this);
@@ -38,36 +48,60 @@ class Register extends Component {
     //     })
     // }
 
-    checkValidity = (event) => {
-        const { target } = event;
-        if (!target.checkValidity()) {
+    // checkValidity = (event) => {
+    //     const { target } = event;
+    //     if (!target.checkValidity()) {
+    //         console.error("Something went wrong...")
+    //         console.error(target.validationMessage)
+    //         this.setState(({ errorMessages }) => ({
+    //             errorMessages: [target.runValidations]
+    //         }))
+    //     } else {
+    //         this.setState(() => ({
+    //             errorMessages: []
+    //         }))
+    //     }
+    // }
+    runValidations = () => {
+        schema.validate(this.state, { abortEarly: false }).then(() => {
+            // this.setState(() => ({
+            //     errorMessages: []
+            // }))
+        }).catch(err => {
             console.error("Something went wrong...")
-            console.error(target.validationMessage)
-            this.setState(({ errorMessages }) => ({
-                errorMessages: [target.validationMessage]
-            }))
-        } else {
-            this.setState(() => ({
-                errorMessages: []
-            }))
-        }
+            const errors = err.inner.reduce((acc, { path, message }) => {
+                acc[path] = (acc[path] || []).concat(message);
+                return acc;
+            }, {})
+            console.log(errors)
+            this.setState({
+                errorMessages: errors
+            })
+        })
     }
 
     render() {
         const { username, password, repeatPassword, email, errorMessages } = this.state;
         const postData = { username, password, repeatPassword, email }
+        const errorMessage = errorMessages
+            && (errorMessages["username"] && errorMessages["username"][0])
+            && (errorMessages["password"] && errorMessages["password"][0])
+            && (errorMessages["repeatPassword"] && errorMessages["repeatPassword"][0])
+            && (errorMessages["email"] && errorMessages["email"][0]);
+            console.log(errorMessage)
+    
         return (
             <section className="site-section login">
                 {
-                    errorMessages.length ? <ul>
-                        {
-                            errorMessages.map((message, idx) => <li key={idx}>{message}</li>)
-                        }
-                    </ul> : null
+                    errorMessage ?
+
+                        // errorMessages.map((message, idx) => <li key={idx}>{message}</li>)
+                        <div>{errorMessage}</div>
+
+                        : null
                 }
-                <form onSubmit={(e) => this.handleSubmit(e, postData, false)}
-                    // action='/user/register'
-                    // method="POST"
+                <form onSubmit={(e) => this.handleSubmit(e, postData, false, this.props.history)}
+
                     className="main-form">
                     <fieldset className="main-form-fieldsed">
                         <legend className="main-form-legent">Регистрация</legend>
@@ -80,8 +114,8 @@ class Register extends Component {
                                 id="username"
                                 value={username}
                                 onChange={this.handleFormElementChange}
-                                required
-                                onBlur={this.checkValidity}
+                                // required
+                                onBlur={this.runValidations}
                             />
                             <span></span>
                         </p>
@@ -94,13 +128,13 @@ class Register extends Component {
                                 id="password"
                                 value={password}
                                 onChange={this.handleFormElementChange}
-                                required
-                                onBlur={this.checkValidity}
+                                // required
+                                onBlur={this.runValidations}
                             />
                             <span></span>
                         </p>
                         <p className="form-field password">
-                            <label htmlFor="password">Повтори Парола</label>
+                            <label htmlFor="repeat-password">Повтори Парола</label>
                             <input
                                 className="form-input"
                                 type="password"
@@ -108,8 +142,8 @@ class Register extends Component {
                                 id="repeat-password"
                                 value={repeatPassword}
                                 onChange={this.handleFormElementChange}
-                                required
-                                onBlur={this.checkValidity}
+                                // required
+                                onBlur={this.runValidations}
                             />
                             <span></span>
                         </p>
@@ -122,8 +156,8 @@ class Register extends Component {
                                 id="email"
                                 value={email}
                                 onChange={this.handleFormElementChange}
-                                required
-                                onBlur={this.checkValidity}
+                                // required
+                                onBlur={this.runValidations}
                             />
                             <span></span>
                         </p>
@@ -139,4 +173,23 @@ class Register extends Component {
 
 }
 
+const schema = yup.object().shape({
+    username: yup
+        .string()
+        .required("Въведете потребителско име!")
+        .min(4, "Името трябва да е поне 4 символа!"),
+
+    password: yup
+        .string()
+        .required("Въведете парола!")
+        .min(4, "Паролата трябва да е поне 4 символа!"),
+
+    repeatePassword: yup
+        .string()
+        .oneOf([yup.ref('password')], "Паролите не съвпадат!")
+        .required("Повторете паролата!")
+        .min(4, "Паролата трябва да е минимум 4 символа!")
+
+});
+// export default withForm(Register,schema);
 export default Register;

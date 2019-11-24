@@ -14,7 +14,10 @@ module.exports = (app) => {
     app.set('view engine', '.hbs');
 
     //TODO: Setup cors
-    app.use(cors());
+    app.use(cors({
+        origin: 'http://localhost:3000',
+        credentials:true
+    }));
 
     //TODO: Setup the body parser
     app.use(bodyParser.urlencoded({ extended: true }));
