@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import userService from '../../services/user-service';
 
@@ -36,10 +36,28 @@ class App extends Component {
         const cookies = parseCookies();
         const isLogged = !!cookies["user_cookie"];
         this.state = {
-            username: null,
-            isAdmin: false,
-            userId: "",
+            // username: null,
+            // isAdmin: false,
+            // userId: "",
             isLogged
+        }
+    }
+
+    componentDidMount() {
+        const isAdmin = localStorage.getItem('isAdmin') === "true";
+
+        if (localStorage.getItem('username')) {
+            this.setState({
+                username: localStorage.getItem('username'),
+                isAdmin,
+                userId: localStorage.getItem('userId')
+            })
+        } else {
+            this.setState({
+                username: null,
+                isAdmin: false,
+                userId: ""
+            });
         }
     }
 
@@ -69,16 +87,25 @@ class App extends Component {
         history.push('/');
     }
 
-    login = (history, data) => {
+    setLogin = (history, data) => {
         userService.login(data).then((res) => {
-            this.setState({ isLogged: true },
-            () => {
-                    localStorage.setItem('username', `${res.username}`);
-                    localStorage.setItem('userId', `${res._id}`);
-                    localStorage.setItem('isAdmin', `${res.roles.includes('Admin')}`);
-                }
-            );
+            console.log(res);
+            debugger;
+            this.setState({
+                username: res.username,
+                isAdmin: res.roles.includes('Admin'),
+                userId: res._id,
+                isLogged: true
+            }, () => {
+                localStorage.setItem('username', `${res.username}`);
+                localStorage.setItem('userId', `${res._id}`);
+                localStorage.setItem('isAdmin', `${res.roles.includes('Admin')}`);
+            });
+            console.log(this.state.isLogged)
+            debugger;
             history.push('/');
+        }).catch(err => {
+            console.log(err);
         });
     }
 
@@ -150,6 +177,7 @@ class App extends Component {
 
     render() {
         // const { history } = this.props;
+        const { isLogged } = this.state;
         return (<div className="main">
             <Header isAdmin={this.state.isAdmin} username={this.state.username} />
             <main className="main-content">
@@ -174,13 +202,17 @@ class App extends Component {
                                 render={({ history }) => (!this.state.isLogged ? <Login
                                     // handleSubmit={this.handleSubmit}
                                     // handleFormElementChange={this.handleFormElementChange}
-                                    login={this.login}
+                                    setLogin={this.setLogin}
                                     history={history}
                                 /> : this.pushToHome(history))}
                             />
                             <Route
                                 path="/user/logout"
                                 render={({ history }) => this.logout(history)}
+                            />
+                              <Route
+                                path="/order/my-orders"
+                                render={() => (!isLogged && <Redirect to="/user/login" /> )}
                             />
 
                             <Route path="/about" component={About} />

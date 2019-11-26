@@ -41,7 +41,7 @@ class Login extends Component {
         const errors = this.props.getFormErrorState();
         if (!!errors) { return; }
         const data = this.props.getFormState();
-        this.props.login(this.props.history, data);
+        this.props.setLogin(this.props.history, data);
     }
 
     getFirstControlError = name => {
