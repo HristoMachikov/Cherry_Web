@@ -1,51 +1,33 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-// import withForm from '../../shared/hocs/withForm';
+import withForm from '../../shared/hocs/withForm';
 
 import * as yup from 'yup'
+
+import userService from '../../services/user-service';
 // import './shared/styles/_forms.scss';
-
-// const camelCased = myString => (
-//     myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
-// );
-
 
 class Register extends Component {
 
-    // userOnChangeHandler = this.props.controlChangeHandlerFactory("username");
-    // passwordOnChangeHandler = this.props.controlChangeHandlerFactory("password");
-    // repeatPasswordOnChangeHandler = this.props.controlChangeHandlerFactory(" repeatPassword");
-    // emailOnChangeHandler = this.props.controlChangeHandlerFactory("email");
+    usernameOnChangeHandler = this.props.controlChangeHandlerFactory("username");
+    passwordOnChangeHandler = this.props.controlChangeHandlerFactory("password");
+    repeatPasswordOnChangeHandler = this.props.controlChangeHandlerFactory("repeatPassword");
+    emailOnChangeHandler = this.props.controlChangeHandlerFactory("email");
 
-    constructor(props) {
-        super(props)
+    // constructor(props) {
+    //     super(props)
 
-        this.state = {
-            username: "",
-            email: "",
-            password: "",
-            repeatPassword: "",
-            errorMessages: null
-        };
+    //     this.state = {
+    //         username: "",
+    //         email: "",
+    //         password: "",
+    //         repeatPassword: "",
+    //         errorMessages: null
+    //     };
 
-        this.handleSubmit = this.props.handleSubmit.bind(this);
-        this.handleFormElementChange = this.props.handleFormElementChange.bind(this);
-
-    }
-
-
-    // handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     console.dir(this.state);
-    // }
-
-    // handleFormElementChange = (event) => {
-    //     const { value, id } = event.target;
-    //     const parsedId = camelCased(id);
-    //     this.setState({
-    //         [parsedId]: value
-    //     })
+    //     this.handleSubmit = this.props.handleSubmit.bind(this);
+    //     this.handleFormElementChange = this.props.handleFormElementChange.bind(this);
     // }
 
     // checkValidity = (event) => {
@@ -62,47 +44,58 @@ class Register extends Component {
     //         }))
     //     }
     // }
-    runValidations = () => {
-        schema.validate(this.state, { abortEarly: false }).then(() => {
-            // this.setState(() => ({
-            //     errorMessages: []
-            // }))
-        }).catch(err => {
-            console.error("Something went wrong...")
-            const errors = err.inner.reduce((acc, { path, message }) => {
-                acc[path] = (acc[path] || []).concat(message);
-                return acc;
-            }, {})
-            console.log(errors)
-            this.setState({
-                errorMessages: errors
-            })
-        })
-    }
+    // runValidations = () => {
+    //     schema.validate(this.state, { abortEarly: false }).then(() => {
+    //         // this.setState(() => ({
+    //         //     errorMessages: []
+    //         // }))
+    //     }).catch(err => {
+    //         console.error("Something went wrong...")
+    //         const errors = err.inner.reduce((acc, { path, message }) => {
+    //             acc[path] = (acc[path] || []).concat(message);
+    //             return acc;
+    //         }, {})
+    //         console.log(errors)
+    //         this.setState({
+    //             errorMessages: errors
+    //         })
+    //     })
+    // }
+
+    submitHandler = (event) => {
+        event.preventDefault();
+        // this.props.runValidations()
+        //   .then(formData => console.log(formData));
+        const errors = this.props.getFormErrorState();
+        console.log(errors)
+        if (!!errors) { return; }
+        const data = this.props.getFormState();
+        userService.register(data).then(() => {
+            this.props.history.push('/user/login');
+        });
+    };
+
+    getFirstControlError = name => {
+        const errorState = this.props.getFormErrorState();
+        return errorState && errorState[name] && errorState[name][0];
+    };
 
     render() {
-        const { username, password, repeatPassword, email, errorMessages } = this.state;
-        const postData = { username, password, repeatPassword, email }
-        const errorMessage = errorMessages
-            && (errorMessages["username"] && errorMessages["username"][0])
-            && (errorMessages["password"] && errorMessages["password"][0])
-            && (errorMessages["repeatPassword"] && errorMessages["repeatPassword"][0])
-            && (errorMessages["email"] && errorMessages["email"][0]);
-            console.log(errorMessage)
-    
+        const usernameError = this.getFirstControlError('username');
+        const passwordError = this.getFirstControlError('password');
+        const repeatPasswordError = this.getFirstControlError('repeatPassword');
+        const emailError = this.getFirstControlError('email');
+
         return (
             <section className="site-section login">
-                {
-                    errorMessage ?
+                {usernameError && <div>{usernameError}</div>}
+                {passwordError && <div>{passwordError}</div>}
+                {repeatPasswordError && <div>{repeatPasswordError}</div>}
+                {emailError && <div>{emailError}</div>}
+                {/* errorMessages.map((message, idx) => <li key={idx}>{message}</li>) */}
+                {/* <form onSubmit={(e) => this.handleSubmit(e, postData, false, this.props.history)} */}
 
-                        // errorMessages.map((message, idx) => <li key={idx}>{message}</li>)
-                        <div>{errorMessage}</div>
-
-                        : null
-                }
-                <form onSubmit={(e) => this.handleSubmit(e, postData, false, this.props.history)}
-
-                    className="main-form">
+                <form onSubmit={this.submitHandler} className="main-form">
                     <fieldset className="main-form-fieldsed">
                         <legend className="main-form-legent">Регистрация</legend>
                         <p className="form-field username">
@@ -112,10 +105,11 @@ class Register extends Component {
                                 type="text"
                                 name="username"
                                 id="username"
-                                value={username}
-                                onChange={this.handleFormElementChange}
-                                // required
-                                onBlur={this.runValidations}
+                                onChange={this.usernameOnChangeHandler}
+                            // value={username}
+                            // onChange={this.handleFormElementChange}
+                            // required
+                            // onBlur={this.runValidations}
                             />
                             <span></span>
                         </p>
@@ -126,10 +120,11 @@ class Register extends Component {
                                 type="password"
                                 name="password"
                                 id="password"
-                                value={password}
-                                onChange={this.handleFormElementChange}
-                                // required
-                                onBlur={this.runValidations}
+                                onChange={this.passwordOnChangeHandler}
+                            // value={password}
+                            // onChange={this.handleFormElementChange}
+                            // required
+                            // onBlur={this.runValidations}
                             />
                             <span></span>
                         </p>
@@ -140,10 +135,11 @@ class Register extends Component {
                                 type="password"
                                 name="repeatPassword"
                                 id="repeat-password"
-                                value={repeatPassword}
-                                onChange={this.handleFormElementChange}
-                                // required
-                                onBlur={this.runValidations}
+                                onChange={this.repeatPasswordOnChangeHandler}
+                            // value={repeatPassword}
+                            // onChange={this.handleFormElementChange}
+                            // required
+                            // onBlur={this.runValidations}
                             />
                             <span></span>
                         </p>
@@ -154,10 +150,11 @@ class Register extends Component {
                                 type="email"
                                 name="email"
                                 id="email"
-                                value={email}
-                                onChange={this.handleFormElementChange}
-                                // required
-                                onBlur={this.runValidations}
+                                onChange={this.emailOnChangeHandler}
+                            // value={email}
+                            // onChange={this.handleFormElementChange}
+                            // required
+                            // onBlur={this.runValidations}
                             />
                             <span></span>
                         </p>
@@ -173,6 +170,12 @@ class Register extends Component {
 
 }
 
+const initialFormState = {
+    username: '',
+    password: '',
+    rePassword: ''
+};
+
 const schema = yup.object().shape({
     username: yup
         .string()
@@ -184,12 +187,18 @@ const schema = yup.object().shape({
         .required("Въведете парола!")
         .min(4, "Паролата трябва да е поне 4 символа!"),
 
-    repeatePassword: yup
+    repeatPassword: yup
         .string()
-        .oneOf([yup.ref('password')], "Паролите не съвпадат!")
+        // .oneOf([yup.ref('password'), null], "Паролите не съвпадат!")
         .required("Повторете паролата!")
-        .min(4, "Паролата трябва да е минимум 4 символа!")
+        .min(4, "Паролата трябва да е поне 4 символа!"),
+    email: yup
+        .string()
+        .required("Въведете email!")
+        // .min(4, "Паролата трябва да е минимум 4 символа!")
+        // .isType()
+
 
 });
-// export default withForm(Register,schema);
-export default Register;
+export default withForm(Register, initialFormState, schema);
+// export default Register;

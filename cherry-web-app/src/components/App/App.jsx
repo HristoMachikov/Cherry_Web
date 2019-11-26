@@ -25,20 +25,21 @@ function parseCookies() {
     }, {})
 }
 
-const camelCased = myString => (
-    myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
-);
+// const camelCased = myString => (
+//     myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
+// );
 
 class App extends Component {
 
     constructor(props) {
         super(props);
         const cookies = parseCookies();
+        const isLogged = !!cookies["user_cookie"];
         this.state = {
             username: null,
             isAdmin: false,
             userId: "",
-            isLogged: !!cookies["user_cookie"]
+            isLogged
         }
     }
 
@@ -57,81 +58,95 @@ class App extends Component {
             }
             history.push('/');
             console.log(res)
+            return null;
         }).catch(err => {
             console.log(err);
         })
-        return null;
+
     }
 
     pushToHome = (history) => {
         history.push('/');
     }
 
-    componentDidMount() {
-        const isAdmin = localStorage.getItem('isAdmin') === "true";
-
-        if (localStorage.getItem('username')) {
-            this.setState({
-                username: localStorage.getItem('username'),
-                isAdmin,
-                userId: localStorage.getItem('userId')
-
-            })
-        }
-    }
-
-    handleSubmit = (event, data, isLoginPage, history) => {
-        event.preventDefault();
-
-        userService.post(data, isLoginPage).then(res => {
-            // const cookies = parseCookies();
-            if (isLoginPage && res.username) {
-                this.setState({
-                    username: res.username,
-                    isAdmin: res.roles.includes('Admin'),
-                    userId: res._id,
-                    isLogged: true
-
-                }, () => {
+    login = (history, data) => {
+        userService.login(data).then((res) => {
+            this.setState({ isLogged: true },
+            () => {
                     localStorage.setItem('username', `${res.username}`);
                     localStorage.setItem('userId', `${res._id}`);
                     localStorage.setItem('isAdmin', `${res.roles.includes('Admin')}`);
-                })
-                history.push('/')
-            } else {
-                history.push('/user/login')
-            }
-            console.log(res);
-
-        }).catch(err => {
-            console.log("Errorrrrrrrrrrrrrrrrrrrr");
-            console.log(err);
-        })
+                }
+            );
+            history.push('/');
+        });
     }
 
-    handleFormElementChange(event) {
+    // componentDidMount() {
+    //     const isAdmin = localStorage.getItem('isAdmin') === "true";
 
-        // let debounce;
-        // const { value, id } = event.target;
-        // const parsedId = camelCased(id);
-        // if (debounce) {
-        //     clearTimeout(debounce);
-        //     debounce = null;
-        // }
-        // debounce = setTimeout(() => {
-        //     this.setState({
-        //         [parsedId]: value
-        //     })
-        //     debounce = null;
-        // }, 200);
+    //     if (localStorage.getItem('username')) {
+    //         this.setState({
+    //             username: localStorage.getItem('username'),
+    //             isAdmin,
+    //             userId: localStorage.getItem('userId')
+
+    //         })
+    //     }
+    // }
+
+    // handleSubmit = (event, data, isLoginPage, history) => {
+    //     event.preventDefault();
+
+    //     userService.post(data, isLoginPage).then(res => {
+    //         // const cookies = parseCookies();
+    //         if (isLoginPage && res.username) {
+    //             this.setState({
+    //                 username: res.username,
+    //                 isAdmin: res.roles.includes('Admin'),
+    //                 userId: res._id,
+    //                 isLogged: true
+
+    //             }, () => {
+    //                 localStorage.setItem('username', `${res.username}`);
+    //                 localStorage.setItem('userId', `${res._id}`);
+    //                 localStorage.setItem('isAdmin', `${res.roles.includes('Admin')}`);
+    //             })
+    //             history.push('/')
+    //         } else {
+    //             history.push('/user/login')
+    //         }
+    //         console.log(res);
+
+    //     }).catch(err => {
+    //         console.log("Errorrrrrrrrrrrrrrrrrrrr");
+    //         console.log(err);
+    //     })
+    // }
+
+    // handleFormElementChange(event) {
+
+    //     // let debounce;
+    //     // const { value, id } = event.target;
+    //     // const parsedId = camelCased(id);
+    //     // if (debounce) {
+    //     //     clearTimeout(debounce);
+    //     //     debounce = null;
+    //     // }
+    //     // debounce = setTimeout(() => {
+    //     //     this.setState({
+    //     //         [parsedId]: value
+    //     //     })
+    //     //     debounce = null;
+    //     // }, 200);
 
 
-        const { value, id } = event.target;
-        const parsedId = camelCased(id);
-        this.setState({
-            [parsedId]: value
-        })
-    }
+    //     const { value, id } = event.target;
+    //     const parsedId = camelCased(id);
+    //     this.setState({
+    //         [parsedId]: value
+    //     })
+    // }
 
     render() {
         // const { history } = this.props;
@@ -149,16 +164,17 @@ class App extends Component {
                             <Route
                                 path="/user/register"
                                 render={({ history }) => (!this.state.isLogged ? <Register
-                                    handleSubmit={this.handleSubmit}
-                                    handleFormElementChange={this.handleFormElementChange}
+                                    // handleSubmit={this.handleSubmit}
+                                    // handleFormElementChange={this.handleFormElementChange}
                                     history={history}
                                 /> : this.pushToHome(history))}
                             />
                             <Route
                                 path="/user/login"
                                 render={({ history }) => (!this.state.isLogged ? <Login
-                                    handleSubmit={this.handleSubmit}
-                                    handleFormElementChange={this.handleFormElementChange}
+                                    // handleSubmit={this.handleSubmit}
+                                    // handleFormElementChange={this.handleFormElementChange}
+                                    login={this.login}
                                     history={history}
                                 /> : this.pushToHome(history))}
                             />

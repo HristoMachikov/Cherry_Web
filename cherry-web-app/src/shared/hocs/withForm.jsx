@@ -70,7 +70,7 @@ export default function withForm(Cmp, initialState, schema) {
        
         render() {
             return <Cmp
-                {...props}
+                {...this.props}
                 controlChangeHandlerFactory={this.controlChangeHandlerFactory}
                 getFormState={this.getFormState}     
                 runValidations={this.runValidations}

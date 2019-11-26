@@ -1,85 +1,70 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import withForm from '../../shared/hocs/withForm';
 
 import * as yup from 'yup'
 // import './shared/styles/_forms.scss';
 
-// const camelCased = myString => (
-//     myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
-// );
-
-const schema = yup.object().shape({
-    username: yup
-    .string()
-    .required()
-    .min(4,"Името трябва да е минимум 4 символа!"),
-
-    password: yup
-    .string()
-    .required()
-    .min(4,"Паролата трябва да е минимум 4 символа!")
-
-  });
-
 class Login extends Component {
-    constructor(props) {
-        super(props)
+    // constructor(props) {
+    //     super(props)
 
-        this.state = {
-            username: "",
-            password: "",
-            errorMessages: []
-        };
+    //     this.state = {
+    //         username: "",
+    //         password: "",
+    //         errorMessages: []
+    //     };
 
-        this.handleSubmit = this.props.handleSubmit.bind(this);
-        this.handleFormElementChange = this.props.handleFormElementChange.bind(this);
-    }
-
-
-    // handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     console.dir(this.state);
+    //     this.handleSubmit = this.props.handleSubmit.bind(this);
+    //     this.handleFormElementChange = this.props.handleFormElementChange.bind(this);
     // }
 
-    // handleFormElementChange = (event) => {
-    //     const { value, id } = event.target;
-    //     const parsedId = camelCased(id);
-    //     this.setState({
-    //         [parsedId]: value
-    //     })
+    // checkValidity = (event) => {
+    //     const { target } = event;
+    //     if (!target.checkValidity()) {
+    //         console.error("Something went wrong...")
+    //         console.error(target.validationMessage)
+    //         this.setState(({ errorMessages }) => ({
+    //             errorMessages: [target.validationMessage]
+    //         }))
+    //     } else {
+    //         this.setState(() => ({
+    //             errorMessages: []
+    //         }))
+    //     }
     // }
 
-    checkValidity = (event) => {
-        const { target } = event;
-        if (!target.checkValidity()) {
-            console.error("Something went wrong...")
-            console.error(target.validationMessage)
-            this.setState(({ errorMessages }) => ({
-                errorMessages: [target.validationMessage]
-            }))
-        } else {
-            this.setState(() => ({
-                errorMessages: []
-            }))
-        }
+    usernameOnChangeHandler = this.props.controlChangeHandlerFactory("username");
+    passwordOnChangeHandler = this.props.controlChangeHandlerFactory("password");
+
+    submitHandler = () => {
+        const errors = this.props.getFormErrorState();
+        if (!!errors) { return; }
+        const data = this.props.getFormState();
+        this.props.login(this.props.history, data);
     }
+
+    getFirstControlError = name => {
+        const errorState = this.props.getFormErrorState();
+        return errorState && errorState[name] && errorState[name][0];
+    };
+
 
     render() {
-        const { username, password, errorMessages } = this.state;
-        const postData = { username, password }
+        const usernameError = this.getFirstControlError('username');
+        const passwordError = this.getFirstControlError('password');
+        // const { username, password, errorMessages } = this.state;
+        // const postData = { username, password }
         return (
             <section className="site-section login">
-                {
-                    errorMessages.length ? <ul>
-                        {
-                            errorMessages.map((message, idx) => <li key={idx}>{message}</li>)
-                        }
-                    </ul> : null
-                }
-                <form onSubmit={(e) => this.handleSubmit(e, postData, true, this.props.history)}
-                    // action='/user/login'
-                    // method="POST"
-                    className="main-form">
+                {usernameError && <div>{usernameError}</div>}
+                {passwordError && <div>{passwordError}</div>}
+
+                {/* {errorMessages.length ? <ul>
+                    {errorMessages.map((message, idx) => <li key={idx}>{message}</li>)}
+                </ul> : null} */}
+                {/* <form onSubmit={(e) => this.handleSubmit(e, postData, true, this.props.history)} className="main-form"> */}
+                <form onSubmit={this.submitHandler} className="main-form">
                     <fieldset className="main-form-fieldsed">
                         <legend className="main-form-legent">Вход</legend>
                         <p className="form-field username">
@@ -89,11 +74,12 @@ class Login extends Component {
                                 type="text"
                                 name="username"
                                 id="username"
-                                value={username}
-                                onChange={this.handleFormElementChange}
-                                required
-                                onBlur={this.checkValidity}
-                                minLength={4}
+                                onChange={this.usernameOnChangeHandler}
+                            // value={username}
+                            // onChange={this.handleFormElementChange}
+                            // required
+                            // onBlur={this.checkValidity}
+                            // minLength={4}
                             />
                             <span></span>
                         </p>
@@ -104,10 +90,11 @@ class Login extends Component {
                                 type="password"
                                 name="password"
                                 id="password"
-                                value={password}
-                                onChange={this.handleFormElementChange}
-                                required
-                                onBlur={this.checkValidity}
+                                onChange={this.passwordOnChangeHandler}
+                            // value={password}
+                            // onChange={this.handleFormElementChange}
+                            // required
+                            // onBlur={this.checkValidity}
                             />
                             <span></span>
                         </p>
@@ -120,7 +107,19 @@ class Login extends Component {
             </section>
         );
     }
-
 }
 
-export default Login;
+const schema = yup.object().shape({
+    username: yup
+        .string()
+        .required()
+        .min(4, "Името трябва да е поне 4 символа!"),
+
+    password: yup
+        .string()
+        .required()
+        .min(4, "Паролата трябва да е поне 4 символа!")
+
+});
+export default withForm(Login, { username: '', password: '' }, schema);
+// export default Login;
