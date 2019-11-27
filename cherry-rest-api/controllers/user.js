@@ -40,6 +40,7 @@ function loginPost(req, res, next) {
         .then(([user, match]) => {
             if (!match) {
                 const error = "Wrong password or username!";
+
                 res.status(401).send(JSON.stringify(error));
                 // handleError(error, res);
                 // res.render('user/login', userBody);
@@ -54,7 +55,9 @@ function loginPost(req, res, next) {
             // resUser.isAdmin = user.roles.includes('Admin');
             // res.send(JSON.stringify(resUser));
             // // res.redirect('/');
-        }).catch(next);
+        }).catch(err => {
+            res.send(err);
+        });
     // .catch((err) => {
     //     handleErrors(err, res);
     //     res.render('user/login', userBody);
@@ -64,6 +67,7 @@ function registerGet(req, res) {
     res.render('user/register');
 }
 function registerPost(req, res, next) {
+    console.log(req.body)
     const { username, password, repeatPassword, email } = req.body;
     // let userBody = { username, password, repeatPassword, email };
 
@@ -74,15 +78,16 @@ function registerPost(req, res, next) {
     //     return;
     // }
     return User.create({ username, password, email, roles: ['User'] }).then((newUser) => {
+        console.log(newUser + 'then')
         res.send(newUser);
         // res.redirect('/user/login');
     }).catch(err => {
+        console.log(err);
         if (err.name === 'MongoError' && err.code === 11000) {
+
             const error = "User with this email exist!"
-            res
-                // .status(11000)
-                .status(401)
-                .send(JSON.stringify(error));
+            console.log(error + 'then')
+            res.status(401).send(JSON.stringify(error));
             // handleError(error, res);
             // res.render('user/register', userBody);
             return;
@@ -97,7 +102,7 @@ function logoutGet(req, res, next) {
     const token = req.cookies[userCookieName];
     TokenBlacklist.create({ token }).then(() => {
         res.clearCookie(userCookieName)
-        res.send(JSON.stringify('Logout successfully!'));
+        res.send(JSON.stringify('Успешно излизане!'));
         // res.redirect('/');
     }).catch(next);
 }

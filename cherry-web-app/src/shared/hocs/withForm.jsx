@@ -21,16 +21,34 @@ export default function withForm(Cmp, initialState, schema) {
                         return { form: { ...form, [name]: newValue } }
                     });
 
-                    this.runControlValidation(name)
-                        .then(() => {
-                            this.setState(({ errors: { [name]: current, ...others } = {} }) =>
-                                ({ errors: Object.keys(others).length === 0 ? undefined : others })
-                            );
-                        })
-                        .catch(err => {
-                            this.setState(({ errors }) => ({ errors: { ...errors, [name]: err.errors } }));
-                        });
+                    // this.runControlValidation(name)
+                    //     .then(() => {
+                    //         this.setState(({ errors: { [name]: current, ...others } = {} }) =>
+                    //             ({ errors: Object.keys(others).length === 0 ? undefined : others })
+                    //         );
+                    //     })
+                    //     .catch(err => {
+                    //         this.setState(({ errors }) => ({ errors: { ...errors, [name]: err.errors } }));
+                    //     });
 
+                    debounce = null;
+                }, 200);
+            };
+        };
+
+        controlOnChangeHandlerFactory = () => {
+
+            let debounce;
+            return event => {
+                const { name, value } = event.target;
+                if (debounce) {
+                    clearTimeout(debounce);
+                    debounce = null;
+                }
+                debounce = setTimeout(() => {
+                    this.setState(({ form }) => {
+                        return { form: { ...form, [name]: value, 'currentName': name } }
+                    });
                     debounce = null;
                 }, 200);
             };
@@ -54,25 +72,26 @@ export default function withForm(Cmp, initialState, schema) {
         runValidations = () => {
             return schema && schema.validate(this.state.form, { abortEarly: false }).then(() => {
                 this.setState({ errors: undefined });
-                    return this.state.form;
+                return this.state.form;
             }).catch(err => {
-               
+
                 const errors = err.inner.reduce((acc, { path, message }) => {
                     acc[path] = (acc[path] || []).concat(message);
                     return acc;
                 }, {})
                 console.log(errors)
                 this.setState({
-                     errors
+                    errors
                 })
-            })|| Promise.resolve();
+            }) || Promise.resolve();
         }
-       
+
         render() {
             return <Cmp
                 {...this.props}
+                controlOnChangeHandlerFactory={this.controlOnChangeHandlerFactory}
                 controlChangeHandlerFactory={this.controlChangeHandlerFactory}
-                getFormState={this.getFormState}     
+                getFormState={this.getFormState}
                 runValidations={this.runValidations}
                 getFormErrorState={this.getFormErrorState}>
             </Cmp>

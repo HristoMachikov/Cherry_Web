@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import withForm from '../../shared/hocs/withForm';
 
@@ -8,7 +10,25 @@ import * as yup from 'yup'
 import userService from '../../services/user-service';
 // import './shared/styles/_forms.scss';
 
+const minLength = 4;
+
+const utilizeFocus = () => {
+    const ref = React.createRef()
+    const setFocus = () => { ref.current && ref.current.focus() }
+
+    return { setFocus, ref }
+}
+
 class Register extends Component {
+
+    constructor(props) {
+        super(props)
+        this.inputFocus1 = utilizeFocus()
+        this.inputFocus2 = utilizeFocus()
+    }
+
+    onChangeHandler = this.props.controlOnChangeHandlerFactory();
+
 
     usernameOnChangeHandler = this.props.controlChangeHandlerFactory("username");
     passwordOnChangeHandler = this.props.controlChangeHandlerFactory("password");
@@ -64,15 +84,42 @@ class Register extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        // this.props.runValidations()
-        //   .then(formData => console.log(formData));
-        const errors = this.props.getFormErrorState();
-        console.log(errors)
-        if (!!errors) { return; }
-        const data = this.props.getFormState();
-        userService.register(data).then(() => {
-            this.props.history.push('/user/login');
-        });
+
+        this.props.runValidations()
+            .then(formData => {
+                console.log(formData)
+
+                const errors = this.props.getFormErrorState();
+
+                const firstError = this.getFirstControlError('username')
+                    || this.getFirstControlError('password')
+                    || this.getFirstControlError('repeatPassword')
+                    || this.getFirstControlError('email');
+
+                firstError && toast.warn(firstError, {
+                    closeButton: false
+                })
+
+                // console.log(errors)
+                if (!!errors) { return; }
+                const data = this.props.getFormState();
+                console.log(data)
+                return userService.register(data).then((res) => {
+                    if (res.username) {
+                        toast.success(`Успешна регистрация!`, {
+                            closeButton: false
+                        })
+                        this.props.history.push('/user/login');
+                    } else {
+                        toast.error(res, {
+                            closeButton: false
+                        })
+                    }
+                })
+            }).catch(err => {
+                debugger;
+                console.log(err)
+            });;
     };
 
     getFirstControlError = name => {
@@ -81,17 +128,22 @@ class Register extends Component {
     };
 
     render() {
-        const usernameError = this.getFirstControlError('username');
-        const passwordError = this.getFirstControlError('password');
-        const repeatPasswordError = this.getFirstControlError('repeatPassword');
-        const emailError = this.getFirstControlError('email');
+
+
+        const currentInputName = this.props.getFormState().currentName;
+        const currentInputChecked = this.props.getFormState()[currentInputName];
+
+        // const classError = (currentInputChecked && currentInputChecked.length < minLength) ? " error" : "";
+
+        const classErrorUsername = (currentInputName === 'username' && currentInputChecked && currentInputChecked.length < minLength) ? " error" : "";
+        const classErrorPassword = (currentInputName === 'password' && currentInputChecked && currentInputChecked.length < minLength) ? " error" : "";
+        const classErrorRepeatPassword = (currentInputName === 'repeatPassword' && currentInputChecked && currentInputChecked.length < minLength) ? " error" : "";
+        const classErrorEmail = (currentInputName === 'email' && currentInputChecked && currentInputChecked.length < minLength) ? " error" : "";
 
         return (
             <section className="site-section login">
-                {usernameError && <div>{usernameError}</div>}
-                {passwordError && <div>{passwordError}</div>}
-                {repeatPasswordError && <div>{repeatPasswordError}</div>}
-                {emailError && <div>{emailError}</div>}
+                <ToastContainer autoClose={4000} />
+
                 {/* errorMessages.map((message, idx) => <li key={idx}>{message}</li>) */}
                 {/* <form onSubmit={(e) => this.handleSubmit(e, postData, false, this.props.history)} */}
 
@@ -101,11 +153,13 @@ class Register extends Component {
                         <p className="form-field username">
                             <label htmlFor="username">Име</label>
                             <input
-                                className="form-input"
+                                className={`form-input${classErrorUsername}`}
                                 type="text"
                                 name="username"
                                 id="username"
-                                onChange={this.usernameOnChangeHandler}
+                                onChange={(e) => this.onChangeHandler(e)}
+                            // onChange={this.usernameOnChangeHandler}
+                            // ref={this.inputFocus1.ref}
                             // value={username}
                             // onChange={this.handleFormElementChange}
                             // required
@@ -116,11 +170,13 @@ class Register extends Component {
                         <p className="form-field password">
                             <label htmlFor="password">Парола</label>
                             <input
-                                className="form-input"
+                                className={`form-input${classErrorPassword}`}
                                 type="password"
                                 name="password"
                                 id="password"
-                                onChange={this.passwordOnChangeHandler}
+                                onChange={this.onChangeHandler}
+                            // onChange={this.passwordOnChangeHandler}
+                            // ref={this.inputFocus2.ref}
                             // value={password}
                             // onChange={this.handleFormElementChange}
                             // required
@@ -131,11 +187,13 @@ class Register extends Component {
                         <p className="form-field password">
                             <label htmlFor="repeat-password">Повтори Парола</label>
                             <input
-                                className="form-input"
+                                className={`form-input${classErrorRepeatPassword}`}
                                 type="password"
                                 name="repeatPassword"
                                 id="repeat-password"
-                                onChange={this.repeatPasswordOnChangeHandler}
+                                onChange={this.onChangeHandler}
+                            // onChange={this.repeatPasswordOnChangeHandler}
+
                             // value={repeatPassword}
                             // onChange={this.handleFormElementChange}
                             // required
@@ -146,11 +204,13 @@ class Register extends Component {
                         <p className="form-field email last">
                             <label htmlFor="email">E-mail</label>
                             <input
-                                className="form-input"
+                                className={`form-input${classErrorEmail}`}
                                 type="email"
                                 name="email"
                                 id="email"
-                                onChange={this.emailOnChangeHandler}
+                                onChange={this.onChangeHandler}
+                            // onChange={this.emailOnChangeHandler}
+
                             // value={email}
                             // onChange={this.handleFormElementChange}
                             // required
@@ -173,30 +233,31 @@ class Register extends Component {
 const initialFormState = {
     username: '',
     password: '',
-    rePassword: ''
+    repeatPassword: '',
+    email: ""
 };
 
 const schema = yup.object().shape({
     username: yup
         .string()
         .required("Въведете потребителско име!")
-        .min(4, "Името трябва да е поне 4 символа!"),
+        .min(minLength, `Името трябва да е поне ${minLength} символа!`),
 
     password: yup
         .string()
         .required("Въведете парола!")
-        .min(4, "Паролата трябва да е поне 4 символа!"),
+        .min(minLength, `Паролата трябва да е поне ${minLength} символа!`),
 
     repeatPassword: yup
         .string()
         // .oneOf([yup.ref('password'), null], "Паролите не съвпадат!")
         .required("Повторете паролата!")
-        .min(4, "Паролата трябва да е поне 4 символа!"),
+        .min(minLength, `Паролите трябва да съвпадат!`),
     email: yup
         .string()
         .required("Въведете email!")
-        // .min(4, "Паролата трябва да е минимум 4 символа!")
-        // .isType()
+    // .min(4, "Паролата трябва да е минимум 4 символа!")
+    // .isType()
 
 
 });

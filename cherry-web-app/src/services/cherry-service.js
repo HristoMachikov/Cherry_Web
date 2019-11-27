@@ -8,7 +8,9 @@ const cherryService = {
         }).catch((myErr) => console.error(myErr));
     },
     getEdit: function (id) {
-        return fetch(`http://localhost:4000/cherry/edit/${id}`
+        return fetch(`http://localhost:4000/cherry/edit/${id}`, {
+            credentials: 'include',
+        }
         ).then((res) => {
             return res.json()
         }).catch((myErr) => console.error(myErr));
@@ -22,6 +24,7 @@ const cherryService = {
                     'Accept': 'application/json, text/plain',
                     'Content-Type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify(body)
             }).then((res) => {
                 return res.json()

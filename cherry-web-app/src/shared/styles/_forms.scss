@@ -84,6 +84,10 @@
         box-shadow: none;
         appearance: none;
         -webkit-appearance: none;
+
+        // & .error{
+        //     border: 1px solid var(--color-border-error);
+        // }
     }
     .form-btn{
         padding-bottom: 0;
@@ -148,8 +152,19 @@
                 color: var(--color-primary-site);
                 border-right: none;
                 outline: none;
+            }
+
+            &.error{
+                &:focus {
+                    border-color: var(--color-border-error);
+                    
+                }
+    
+                &:focus + span:before {
+                    border-color: var(--color-border-error);
+                    color: var(--color-border-error);
+                }
             }                      
         }
-
     }
 }

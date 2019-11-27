@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+
 // import './shared/styles/_forms.scss';
 
 const camelCased = myString => (

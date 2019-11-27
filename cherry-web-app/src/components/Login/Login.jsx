@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import withForm from '../../shared/hocs/withForm';
+import { ToastContainer, toast } from 'react-toastify';
 
 import * as yup from 'yup'
 // import './shared/styles/_forms.scss';
@@ -37,11 +38,12 @@ class Login extends Component {
     usernameOnChangeHandler = this.props.controlChangeHandlerFactory("username");
     passwordOnChangeHandler = this.props.controlChangeHandlerFactory("password");
 
-    submitHandler = () => {
+    submitHandler = (event) => {
+        event.preventDefault();
         const errors = this.props.getFormErrorState();
         if (!!errors) { return; }
         const data = this.props.getFormState();
-        this.props.setLogin(this.props.history, data);
+        this.props.setLogin(this.props.history, data)
     }
 
     getFirstControlError = name => {
@@ -57,8 +59,10 @@ class Login extends Component {
         // const postData = { username, password }
         return (
             <section className="site-section login">
+                <ToastContainer />
                 {usernameError && <div>{usernameError}</div>}
                 {passwordError && <div>{passwordError}</div>}
+                {/* {usernameError && toastr.warning(usernameError)} */}
 
                 {/* {errorMessages.length ? <ul>
                     {errorMessages.map((message, idx) => <li key={idx}>{message}</li>)}
@@ -112,12 +116,12 @@ class Login extends Component {
 const schema = yup.object().shape({
     username: yup
         .string()
-        .required()
+        .required("Въведете потребителско име!")
         .min(4, "Името трябва да е поне 4 символа!"),
 
     password: yup
         .string()
-        .required()
+        .required("Въведете парола!")
         .min(4, "Паролата трябва да е поне 4 символа!")
 
 });

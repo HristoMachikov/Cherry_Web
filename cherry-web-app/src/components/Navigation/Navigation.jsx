@@ -3,22 +3,29 @@ import { Link, NavLink } from 'react-router-dom';
 
 import UserNav from './UserNav/UserNav';
 
-function Navigation({ username, isAdmin }) {
-    return (<nav className="site-navigation">
-        <ul>
-            <li>
-                <NavLink to="/about" activeClassName="selected">
-                    Начало
+class Navigation extends React.Component {
+
+    componentDidUpdate() {
+        this.nameLink.focus();
+    }
+    render() {
+        const { username, isAdmin } = this.props;
+        return (<nav className="site-navigation">
+            <ul>
+                <li>
+                    <NavLink to="/about" activeClassName="selected">
+                        Начало
                 </NavLink >
 
-                {/* <Link to="/about">Начало</Link> */}
-            </li>
-            <li>
-                <NavLink to="/" exact activeClassName="selected">Меню</NavLink>
-            </li>
-            <UserNav username={username} isAdmin={isAdmin} />
-        </ul>
-    </nav>);
+                    {/* <Link to="/about">Начало</Link> */}
+                </li>
+                <li>
+                    <NavLink to="/" ref={(link) => { this.nameLink = link; }} exact activeClassName="selected">Меню</NavLink>
+                </li>
+                <UserNav username={username} isAdmin={isAdmin} />
+            </ul>
+        </nav>);
+    }
 }
 
 export default Navigation;

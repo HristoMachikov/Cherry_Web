@@ -1,5 +1,7 @@
 import React, { Component, Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import userService from '../../services/user-service';
 
@@ -64,7 +66,7 @@ class App extends Component {
 
     logout(history) {
         userService.getLogout().then(res => {
-            if (res === "Logout successfully!") {
+            if (res) {
                 this.setState({
                     username: null,
                     isAdmin: false,
@@ -73,10 +75,11 @@ class App extends Component {
                 }, () => {
                     localStorage.clear();
                 })
+                toast.success(res, {
+                    closeButton: false
+                })
             }
             history.push('/');
-            console.log(res)
-            return null;
         }).catch(err => {
             console.log(err);
         })
@@ -89,21 +92,26 @@ class App extends Component {
 
     setLogin = (history, data) => {
         userService.login(data).then((res) => {
-            console.log(res);
-            debugger;
-            this.setState({
-                username: res.username,
-                isAdmin: res.roles.includes('Admin'),
-                userId: res._id,
-                isLogged: true
-            }, () => {
-                localStorage.setItem('username', `${res.username}`);
-                localStorage.setItem('userId', `${res._id}`);
-                localStorage.setItem('isAdmin', `${res.roles.includes('Admin')}`);
-            });
-            console.log(this.state.isLogged)
-            debugger;
-            history.push('/');
+            if (res.username) {
+                this.setState({
+                    username: res.username,
+                    isAdmin: res.roles.includes('Admin'),
+                    userId: res._id,
+                    isLogged: true
+                }, () => {
+                    localStorage.setItem('username', `${res.username}`);
+                    localStorage.setItem('userId', `${res._id}`);
+                    localStorage.setItem('isAdmin', `${res.roles.includes('Admin')}`);
+                });
+                toast.success(`Wellcome ${res.username}!`, {
+                    closeButton: false
+                })
+                history.push('/');
+            } else {
+                toast.error(res, {
+                    closeButton: false
+                })
+            }
         }).catch(err => {
             console.log(err);
         });
@@ -182,6 +190,7 @@ class App extends Component {
             <Header isAdmin={this.state.isAdmin} username={this.state.username} />
             <main className="main-content">
                 <div className="wrapper">
+                    <ToastContainer autoClose={4000} />
                     <Suspense fallback={<div>Loading...</div>}>
                         <Switch>
                             <Route
@@ -210,9 +219,9 @@ class App extends Component {
                                 path="/user/logout"
                                 render={({ history }) => this.logout(history)}
                             />
-                              <Route
+                            <Route
                                 path="/order/my-orders"
-                                render={() => (!isLogged && <Redirect to="/user/login" /> )}
+                                render={() => (!isLogged && <Redirect to="/user/login" />)}
                             />
 
                             <Route path="/about" component={About} />

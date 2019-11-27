@@ -1,22 +1,20 @@
 const userService = {
     register: function (body) {
-        return fetch(`http://localhost:4000/user/register}`, {
+        return fetch(`http://localhost:4000/user/register`, {
             method: "post",
             headers: {
-                'Accept': 'application/json, text/plain',
+                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify(body)
         }).then((res) => {
-            console.log(document.cookie);
-            console.log(res);
-    
             return res.json()
-        }).catch((myErr) => console.error("catchServ"+myErr));
+        }).catch((err) => console.error(err));
     },
     login: function (body, isLoginPage) {
         return fetch(`http://localhost:4000/user/login`, {
-            method: "post",
+            method: "POST",
             headers: {
                 'Accept': 'application/json, text/plain',
                 'Content-Type': 'application/json'
@@ -24,37 +22,16 @@ const userService = {
             credentials: 'include',
             body: JSON.stringify(body)
         }).then((res) => {
-            console.log(document.cookie);
-            console.log(res);
-
             return res.json()
-        }).catch((myErr) => console.error("catchServ"+myErr));
+        }).catch((err) => console.error(err));
     },
     getLogout: function () {
-        return fetch('http://localhost:4000/user/logout',{
+        return fetch('http://localhost:4000/user/logout', {
             credentials: 'include'
         }).then((res) => {
-            console.log(document.cookie);
             return res.json()
-        }).catch((myErr) => console.error("catchServ"+myErr));
+        }).catch((err) => console.error(err));
     }
 };
 
 export default userService;
-
-// post: function (body, isLoginPage) {
-//     return fetch(`http://localhost:4000/user/${isLoginPage ? "login" : "register"}`, {
-//         method: "post",
-//         headers: {
-//             'Accept': 'application/json, text/plain',
-//             'Content-Type': 'application/json'
-//         },
-//         credentials: 'include',
-//         body: JSON.stringify(body)
-//     }).then((res) => {
-//         console.log(document.cookie);
-//         console.log(res);
-
-//         return res.json()
-//     }).catch((myErr) => console.error("catchServ"+myErr));
-// },
