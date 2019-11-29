@@ -10,22 +10,11 @@ import * as yup from 'yup'
 import userService from '../../services/user-service';
 // import './shared/styles/_forms.scss';
 
-const minLength = 4;
+import { minLength, minLengthPhone } from '../../config/app-config';
+// import minLengthPhone from '../../config/app-config';
 
-const utilizeFocus = () => {
-    const ref = React.createRef()
-    const setFocus = () => { ref.current && ref.current.focus() }
-
-    return { setFocus, ref }
-}
 
 class Register extends Component {
-
-    constructor(props) {
-        super(props)
-        this.inputFocus1 = utilizeFocus()
-        this.inputFocus2 = utilizeFocus()
-    }
 
     onChangeHandler = this.props.controlOnChangeHandlerFactory();
 
@@ -94,13 +83,13 @@ class Register extends Component {
                 const firstError = this.getFirstControlError('username')
                     || this.getFirstControlError('password')
                     || this.getFirstControlError('repeatPassword')
-                    || this.getFirstControlError('email');
+                    || this.getFirstControlError('email')
+                    || this.getFirstControlError('phone');
 
                 firstError && toast.warn(firstError, {
                     closeButton: false
                 })
 
-                // console.log(errors)
                 if (!!errors) { return; }
                 const data = this.props.getFormState();
                 console.log(data)
@@ -117,9 +106,9 @@ class Register extends Component {
                     }
                 })
             }).catch(err => {
-                debugger;
+
                 console.log(err)
-            });;
+            });
     };
 
     getFirstControlError = name => {
@@ -139,6 +128,7 @@ class Register extends Component {
         const classErrorPassword = (currentInputName === 'password' && currentInputChecked && currentInputChecked.length < minLength) ? " error" : "";
         const classErrorRepeatPassword = (currentInputName === 'repeatPassword' && currentInputChecked && currentInputChecked.length < minLength) ? " error" : "";
         const classErrorEmail = (currentInputName === 'email' && currentInputChecked && currentInputChecked.length < minLength) ? " error" : "";
+        const classErrorPhone = (currentInputName === 'phone' && currentInputChecked && currentInputChecked.length < minLengthPhone) ? " error" : "";
 
         return (
             <section className="site-section login">
@@ -150,7 +140,7 @@ class Register extends Component {
                 <form onSubmit={this.submitHandler} className="main-form">
                     <fieldset className="main-form-fieldsed">
                         <legend className="main-form-legent">Регистрация</legend>
-                        <p className="form-field username">
+                        <p className="form-field username first">
                             <label htmlFor="username">Име</label>
                             <input
                                 className={`form-input${classErrorUsername}`}
@@ -201,13 +191,30 @@ class Register extends Component {
                             />
                             <span></span>
                         </p>
-                        <p className="form-field email last">
+                        <p className="form-field email">
                             <label htmlFor="email">E-mail</label>
                             <input
                                 className={`form-input${classErrorEmail}`}
                                 type="email"
                                 name="email"
                                 id="email"
+                                onChange={this.onChangeHandler}
+                            // onChange={this.emailOnChangeHandler}
+
+                            // value={email}
+                            // onChange={this.handleFormElementChange}
+                            // required
+                            // onBlur={this.runValidations}
+                            />
+                            <span></span>
+                        </p>
+                        <p className="form-field phone last">
+                            <label htmlFor="phone">Телефон</label>
+                            <input
+                                className={`form-input${classErrorPhone}`}
+                                type="phone"
+                                name="phone"
+                                id="phone"
                                 onChange={this.onChangeHandler}
                             // onChange={this.emailOnChangeHandler}
 
@@ -227,14 +234,14 @@ class Register extends Component {
             </section>
         );
     }
-
 }
 
 const initialFormState = {
     username: '',
     password: '',
     repeatPassword: '',
-    email: ""
+    email: "",
+    phone: ""
 };
 
 const schema = yup.object().shape({
@@ -246,20 +253,22 @@ const schema = yup.object().shape({
     password: yup
         .string()
         .required("Въведете парола!")
+        .matches(/^[а-яА-Яa-zA-Z0-9]*[а-яА-Яa-zA-Z0-9]$/, "Паролата трябва да е само с букви и цифри!")
         .min(minLength, `Паролата трябва да е поне ${minLength} символа!`),
 
     repeatPassword: yup
-        .string()
-        // .oneOf([yup.ref('password'), null], "Паролите не съвпадат!")
+        .mixed()
         .required("Повторете паролата!")
-        .min(minLength, `Паролите трябва да съвпадат!`),
+        .oneOf([yup.ref('password'), null], "Паролите не съвпадат!")
+        .notOneOf(['    ', null], "Въведете нова парола!"),
     email: yup
         .string()
-        .required("Въведете email!")
-    // .min(4, "Паролата трябва да е минимум 4 символа!")
-    // .isType()
-
-
+        .required("Въведете E-mail!")
+        .email("Въведете валиден E-mail!"),
+    phone: yup
+        .string()
+        .required("Въведете телефон за връзка!")
+        .min(9, "Телефона трябва да е минимум 9 цифрен!")
 });
 export default withForm(Register, initialFormState, schema);
 // export default Register;

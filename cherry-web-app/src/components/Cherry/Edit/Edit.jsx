@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Route, Link, Redirect } from 'react-router-dom';
 // import './shared/styles/_forms.scss';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import cherryService from '../../../services/cherry-service';
 
@@ -16,7 +17,7 @@ class Edit extends Component {
         description: "",
         isPublic: false,
         checkBox: false,
-        errorMessages: []
+        errorMessages: {}
     };
 
     componentDidMount = () => {
@@ -32,11 +33,21 @@ class Edit extends Component {
         event.preventDefault();
         const { id } = this.props.match.params;
         const { url } = this.props.match;
-        // console.log(this.props)
+        
         const { sort, description, imagePath, isPublic, price, _id } = this.state;
-        // console.log(JSON.stringify({ sort, description, imagePath, isPublic, price, _id }))
         cherryService.postEdit(id, { sort, description, imagePath, isPublic, price, _id }).then(res => {
-            console.log(res);
+            if (res === "Успешна промяна!") {
+                toast.info(`${res}`, {
+                    closeButton: false
+                })
+                this.props.history.push('/');
+            } else {
+                toast.error(`${res}`, {
+                    closeButton: false
+                })
+                return null;
+            }
+
         }).catch(err => {
             console.log(err);
         })
@@ -50,7 +61,7 @@ class Edit extends Component {
             this.setState({
                 [parsedId]: checked,
                 isPublic: checked
-                // isPublic: !this.state.checkBox
+               
             })
             return;
         }
@@ -62,41 +73,35 @@ class Edit extends Component {
     checkValidity = (event) => {
         const { target } = event;
         if (!target.checkValidity()) {
-            console.error("Something went wrong...")
-            console.dir(target)
-            console.error(target.validationMessage)
+          
             this.setState(({ errorMessages }) => ({
-                errorMessages: [target.validationMessage]
+               errorMessages: { ...errorMessages, [target.name]: "Моля, попълнете това поле!" }
             }))
         } else {
-            this.setState(() => ({
-                errorMessages: []
+            this.setState(({ errorMessages }) => ({
+                errorMessages: { ...errorMessages, [target.name]: null }
             }))
         }
     }
 
     render() {
         const { sort, price, imagePath, description, checkBox, errorMessages, isPublic } = this.state;
+
+        const sortError = errorMessages && errorMessages["sort"];
+        const priceError = errorMessages && errorMessages["price"];
+        const imagePathError = errorMessages && errorMessages["imagePath"];
+        const descriptionError = errorMessages && errorMessages["description"];
+
         return (
             <section className="contacts">
+                <ToastContainer autoClose={4000} />
                 <div className="contact-header">
                     <h1>Промени избраният сорт</h1>
                 </div>
-                {
-                    errorMessages.length ? <ul>
-                        {
-                            errorMessages.map((message, idx) => <li key={idx}>{message}</li>)
-                        }
-                    </ul> : null
-                }
                 <div className="contact-form">
-                    <form onSubmit={this.handleSubmit}
-                        // action='/cherry/create'
-                        method="POST"
-                    >
-
+                    <form onSubmit={this.handleSubmit}>
                         <p className="sort">
-                            <label htmlFor="sort">Име:<span>*</span></label>
+                            <label htmlFor="sort">Име:<span>*{sortError}</span></label>
                             <input
                                 type="text"
                                 name="sort"
@@ -109,7 +114,7 @@ class Edit extends Component {
                             />
                         </p>
                         <p className="price">
-                            <label htmlFor="price">Цена:<span>*</span></label>
+                            <label htmlFor="price">Цена:<span>*{priceError}</span></label>
                             <input
                                 type="text"
                                 name="price"
@@ -122,7 +127,7 @@ class Edit extends Component {
                             />
                         </p>
                         <p className="imagePath">
-                            <label htmlFor="image-path">Снимка:<span>*</span></label>
+                            <label htmlFor="image-path">Снимка:<span>*{imagePathError}</span></label>
                             <input
                                 type="text"
                                 name="imagePath"
@@ -135,7 +140,7 @@ class Edit extends Component {
                             />
                         </p>
                         <p className="description">
-                            <label htmlFor="description">Съобщение:<span>*</span></label>
+                            <label htmlFor="description">Съобщение:<span>*{descriptionError}</span></label>
                             <textarea
                                 name="description"
                                 id="description"
@@ -168,7 +173,6 @@ class Edit extends Component {
             </section >
         );
     }
-
 }
 
 export default Edit;

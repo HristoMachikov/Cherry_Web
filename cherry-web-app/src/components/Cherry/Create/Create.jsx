@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import cherryService from '../../../services/cherry-service';
 // import './shared/styles/_forms.scss';
 
 const camelCased = myString => (
@@ -14,12 +18,30 @@ class Create extends Component {
         description: "",
         checkBox: false,
         isPublic: this.checkBox,
-        errorMessages: []
+        errorMessages: {}
     };
 
-    handleCreate = (event) => {
+    handleSubmit = (event) => {
         event.preventDefault();
-        console.dir(this.state);
+
+        const { sort, description, imagePath, isPublic, price } = this.state;
+    
+        cherryService.postCreate({ sort, description, imagePath, isPublic, price }).then(res => {
+            if (res.sort) {
+                toast.info(`Успешно създадохте сорт ${res.sort}!`, {
+                    closeButton: false
+                })
+                this.props.history.push('/');
+            } else {
+                toast.error(`${res}`, {
+                    closeButton: false
+                })
+                return null;
+            }
+
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     handleFormElementChange = (event) => {
@@ -41,41 +63,35 @@ class Create extends Component {
     checkValidity = (event) => {
         const { target } = event;
         if (!target.checkValidity()) {
-            console.error("Something went wrong...")
-            console.dir(target)
-            console.error(target.validationMessage)
-            this.setState(({ errorMessages }) => ({
-                errorMessages: [target.validationMessage]
+            this.setState(({ errorMessages }) => ({  
+                errorMessages: { ...errorMessages, [target.name]: "Моля, попълнете това поле!" }
             }))
         } else {
-            this.setState(() => ({
-                errorMessages: []
+            this.setState(({ errorMessages }) => ({  
+                errorMessages: { ...errorMessages, [target.name]: null }
             }))
         }
     }
 
     render() {
         const { sort, price, imagePath, description, checkBox, errorMessages, isPublic } = this.state;
+
+        const sortError = errorMessages && errorMessages["sort"];
+        const priceError = errorMessages && errorMessages["price"];
+        const imagePathError = errorMessages && errorMessages["imagePath"];
+        const descriptionError = errorMessages && errorMessages["description"];
+
         return (
             <section className="contacts">
+                <ToastContainer autoClose={4000} />
                 <div className="contact-header">
                     <h1>Създай нов сорт</h1>
                 </div>
-                {
-                    errorMessages.length ? <ul>
-                        {
-                            errorMessages.map((message, idx) => <li key={idx}>{message}</li>)
-                        }
-                    </ul> : null
-                }
-                <div className="contact-form">
-                    <form onSubmit={this.handleCreate}
-                    // action='/cherry/create'
-                    // method="POST"
-                    >
 
+                <div className="contact-form">
+                    <form onSubmit={this.handleSubmit}>
                         <p className="sort">
-                            <label htmlFor="sort">Име:<span>*</span></label>
+                            <label htmlFor="sort">Име:<span>*{sortError}</span></label>
                             <input
                                 type="text"
                                 name="sort"
@@ -88,7 +104,7 @@ class Create extends Component {
                             />
                         </p>
                         <p className="price">
-                            <label htmlFor="price">Цена:<span>*</span></label>
+                            <label htmlFor="price">Цена:<span>*{priceError}</span></label>
                             <input
                                 type="text"
                                 name="price"
@@ -101,7 +117,7 @@ class Create extends Component {
                             />
                         </p>
                         <p className="imagePath">
-                            <label htmlFor="image-path">Снимка:<span>*</span></label>
+                            <label htmlFor="image-path">Снимка:<span>*{imagePathError}</span></label>
                             <input
                                 type="text"
                                 name="imagePath"
@@ -114,7 +130,7 @@ class Create extends Component {
                             />
                         </p>
                         <p className="description">
-                            <label htmlFor="description">Съобщение:<span>*</span></label>
+                            <label htmlFor="description">Съобщение:<span>*{descriptionError}</span></label>
                             <textarea
                                 name="description"
                                 id="description"
@@ -124,7 +140,6 @@ class Create extends Component {
                                 onChange={this.handleFormElementChange}
                                 required
                                 onBlur={this.checkValidity}
-
                             />
                         </p>
                         <div className="check-box">
@@ -135,8 +150,6 @@ class Create extends Component {
                                 name="checkBox"
                                 value={checkBox}
                                 onChange={this.handleFormElementChange}
-
-                            // {isPublic ? "checked" : ""} 
                             />
                         </div>
                         <div className="form-btn">
@@ -149,7 +162,6 @@ class Create extends Component {
             </section >
         );
     }
-
 }
 
 export default Create;

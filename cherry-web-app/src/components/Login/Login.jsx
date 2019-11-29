@@ -5,6 +5,8 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import * as yup from 'yup'
 // import './shared/styles/_forms.scss';
+import { minLength, minLengthPhone } from '../../config/app-config';
+// import minLengthPhone from '../../config/app-config';
 
 class Login extends Component {
     // constructor(props) {
@@ -35,15 +37,33 @@ class Login extends Component {
     //     }
     // }
 
-    usernameOnChangeHandler = this.props.controlChangeHandlerFactory("username");
+    onChangeHandler = this.props.controlOnChangeHandlerFactory();
+
+    emailOnChangeHandler = this.props.controlChangeHandlerFactory("email");
     passwordOnChangeHandler = this.props.controlChangeHandlerFactory("password");
 
     submitHandler = (event) => {
         event.preventDefault();
-        const errors = this.props.getFormErrorState();
-        if (!!errors) { return; }
-        const data = this.props.getFormState();
-        this.props.setLogin(this.props.history, data)
+
+        this.props.runValidations()
+        .then(formData => {
+            console.log(formData)
+
+            const errors = this.props.getFormErrorState();
+
+            const firstError = this.getFirstControlError('email')
+                || this.getFirstControlError('password')
+
+            firstError && toast.warn(firstError, {
+                closeButton: false
+            })
+
+            if (!!errors) { return; }
+            const data = this.props.getFormState();
+            this.props.setLogin(this.props.history, data);
+        }).catch(err => {
+            console.log(err)
+        });
     }
 
     getFirstControlError = name => {
@@ -53,32 +73,28 @@ class Login extends Component {
 
 
     render() {
-        const usernameError = this.getFirstControlError('username');
-        const passwordError = this.getFirstControlError('password');
-        // const { username, password, errorMessages } = this.state;
-        // const postData = { username, password }
+
+        const currentInputName = this.props.getFormState().currentName;
+        const currentInputChecked = this.props.getFormState()[currentInputName];
+
+        const classErrorEmail = (currentInputName === 'email' && currentInputChecked && currentInputChecked.length < minLength) ? " error" : "";
+        const classErrorPassword = (currentInputName === 'password' && currentInputChecked && currentInputChecked.length < minLength) ? " error" : "";
+
         return (
             <section className="site-section login">
-                <ToastContainer />
-                {usernameError && <div>{usernameError}</div>}
-                {passwordError && <div>{passwordError}</div>}
-                {/* {usernameError && toastr.warning(usernameError)} */}
+                <ToastContainer autoClose={4000}/>
 
-                {/* {errorMessages.length ? <ul>
-                    {errorMessages.map((message, idx) => <li key={idx}>{message}</li>)}
-                </ul> : null} */}
-                {/* <form onSubmit={(e) => this.handleSubmit(e, postData, true, this.props.history)} className="main-form"> */}
                 <form onSubmit={this.submitHandler} className="main-form">
                     <fieldset className="main-form-fieldsed">
                         <legend className="main-form-legent">Вход</legend>
-                        <p className="form-field username">
-                            <label htmlFor="username">Име</label>
+                        <p className="form-field email first">
+                            <label htmlFor="email">E-mail</label>
                             <input
-                                className="form-input"
+                                className={`form-input${classErrorEmail}`}
                                 type="text"
-                                name="username"
-                                id="username"
-                                onChange={this.usernameOnChangeHandler}
+                                name="email"
+                                id="email"
+                                onChange={this.onChangeHandler}
                             // value={username}
                             // onChange={this.handleFormElementChange}
                             // required
@@ -90,11 +106,11 @@ class Login extends Component {
                         <p className="form-field password last">
                             <label htmlFor="password">Парола</label>
                             <input
-                                className="form-input"
+                                className={`form-input${classErrorPassword}`}
                                 type="password"
                                 name="password"
                                 id="password"
-                                onChange={this.passwordOnChangeHandler}
+                                onChange={this.onChangeHandler}
                             // value={password}
                             // onChange={this.handleFormElementChange}
                             // required
@@ -114,16 +130,16 @@ class Login extends Component {
 }
 
 const schema = yup.object().shape({
-    username: yup
-        .string()
-        .required("Въведете потребителско име!")
-        .min(4, "Името трябва да е поне 4 символа!"),
-
     password: yup
         .string()
         .required("Въведете парола!")
-        .min(4, "Паролата трябва да е поне 4 символа!")
+        .matches(/^[а-яА-Яa-zA-Z0-9]*[а-яА-Яa-zA-Z0-9]$/, "Паролата трябва да е само с букви и цифри!")
+        .min(minLength, `Паролата трябва да е поне ${minLength} символа!`),
+    email: yup
+        .string()
+        .required("Въведете E-mail!")
+        .email("Въведете валиден E-mail!")
 
 });
-export default withForm(Login, { username: '', password: '' }, schema);
+export default withForm(Login, { email: '', password: '' }, schema);
 // export default Login;

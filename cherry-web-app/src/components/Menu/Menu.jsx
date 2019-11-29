@@ -36,15 +36,19 @@ class Menu extends Component {
                         </header>
                         <ul>
                             {cherrys.map((cherry) => {
-                                return <Cart
-                                    key={cherry._id}
-                                    id={cherry._id}
-                                    sort={cherry.sort}
-                                    imagePath={`/static${cherry.imagePath}`}
-                                    price={cherry.price}
-                                    description={cherry.description}
-                                    isAdmin={isAdmin}>
-                                </Cart>;
+                                if (!cherry.isPublic && !isAdmin) {
+                                    return null;
+                                } else {
+                                    return <Cart
+                                        key={cherry._id}
+                                        id={cherry._id}
+                                        sort={cherry.sort}
+                                        imagePath={`/static${cherry.imagePath}`}
+                                        price={cherry.price}
+                                        description={cherry.description}
+                                        isAdmin={isAdmin}>
+                                    </Cart>;
+                                }
                             })}
                         </ul>
                     </Fragment>

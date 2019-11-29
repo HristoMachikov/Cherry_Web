@@ -14,6 +14,7 @@ import Login from '../Login/Login';
 import Register from '../Register/Register';
 import Create from '../Cherry/Create/Create';
 import Edit from '../Cherry/Edit/Edit';
+import Remove from '../Cherry/Remove/Remove';
 // const Login = React.lazy(() => import('../Login/Login'));
 // const Register = React.lazy(() => import('../Register/Register'));
 // const Create = React.lazy(() => import('../Create'));
@@ -103,7 +104,7 @@ class App extends Component {
                     localStorage.setItem('userId', `${res._id}`);
                     localStorage.setItem('isAdmin', `${res.roles.includes('Admin')}`);
                 });
-                toast.success(`Wellcome ${res.username}!`, {
+                toast.success(`Здравей, ${res.username}!`, {
                     closeButton: false
                 })
                 history.push('/');
@@ -193,21 +194,23 @@ class App extends Component {
                     <ToastContainer autoClose={4000} />
                     <Suspense fallback={<div>Loading...</div>}>
                         <Switch>
-                            <Route
-                                path="/cherry/edit/:id"
-                                render={({ match }) => <Edit match={match} />}
+                            <Route path="/cherry/remove/:id"
+                                render={({ history, match }) => <Remove history={history} match={match} />}
                             />
-                            <Route path="/cherry/create" component={Create} />
-                            <Route
-                                path="/user/register"
+                            <Route path="/cherry/edit/:id"
+                                render={({ history, match }) => <Edit history={history} match={match} />}
+                            />
+                            <Route path="/cherry/create"
+                                render={({ history, match }) => <Create history={history} match={match} />}
+                            />
+                            <Route path="/user/register"
                                 render={({ history }) => (!this.state.isLogged ? <Register
                                     // handleSubmit={this.handleSubmit}
                                     // handleFormElementChange={this.handleFormElementChange}
                                     history={history}
                                 /> : this.pushToHome(history))}
                             />
-                            <Route
-                                path="/user/login"
+                            <Route path="/user/login"
                                 render={({ history }) => (!this.state.isLogged ? <Login
                                     // handleSubmit={this.handleSubmit}
                                     // handleFormElementChange={this.handleFormElementChange}
@@ -215,20 +218,15 @@ class App extends Component {
                                     history={history}
                                 /> : this.pushToHome(history))}
                             />
-                            <Route
-                                path="/user/logout"
-                                render={({ history }) => this.logout(history)}
+                            <Route path="/user/logout"
+                                render={({ history }) => (this.state.isLogged ? this.logout(history) : null)}
                             />
-                            <Route
-                                path="/order/my-orders"
+                            <Route path="/order/my-orders"
                                 render={() => (!isLogged && <Redirect to="/user/login" />)}
                             />
-
                             <Route path="/about" component={About} />
                             <Route path="/" exact
-                                render={() => <Menu
-                                    isAdmin={this.state.isAdmin}
-                                />}
+                                render={() => <Menu isAdmin={this.state.isAdmin} />}
                             />
                         </Switch>
                     </Suspense>

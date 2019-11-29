@@ -9,20 +9,31 @@ function createGet(req, res) {
     res.render('cherry/create', { cherry, user });
 }
 
-function createPost(req, res) {
-    let { sort = null, description = null, imagePath = null, checkBox = null, price = null } = req.body;
+function createPost(req, res, next) {
+    let { sort = null, description = null, imagePath = null, isPublic = null, price = null } = req.body;
     const { user } = req;
-    const cherry = { sort, description, imagePath };
+    const cherry = { sort, description, imagePath, isPublic };
     price ? cherry.price = Number(price) : null;
-    cherry.isPublic = checkBox === "on";
+    // cherry.isPublic = checkBox === "on";
 
     Cherry.create(cherry).then(result => {
         console.log('Successfully added!');
-        res.redirect('/');
+        res.send(result);
     }).catch(err => {
-        handleErrors(err, res);
-        res.render('cherry/create', { cherry, user });
-        return;
+        if (err.name === 'MongoError' && err.code === 11000) {
+            const error = "Cherry with this name exist!"
+            console.log(error + 'then')
+            //status(401) ????
+            res.status(401).send(JSON.stringify(error));
+            return;
+        }
+        if (err.name === 'ValidationError') {
+            const error = err.errors.description.message
+            //status(401) ????
+            res.status(401).send(JSON.stringify(error));
+            return;
+        }
+        next(err);
     })
 }
 
@@ -38,19 +49,36 @@ function editGet(req, res, next) {
 function editPost(req, res, next) {
     let { sort, description, imagePath, isPublic, price, _id } = req.body;
     const { user } = req;
-    const cherry = { sort, description, imagePath, isPublic}
+    const cherry = { sort, description, imagePath, isPublic }
     cherry.price = Number(price);
     // cherry.isPublic = checkBox === "on";
     cherry._id = req.params.id;
     Cherry.updateOne({ _id: req.params.id }, { $set: cherry }, { runValidators: true }).then((result) => {
-        res.send(JSON.stringify("Successfully edited!"));
-    }).catch(next)
+        res.send(JSON.stringify("Успешна промяна!"));
+    }).catch(err => {
+        if (err.name === 'MongoError' && err.code === 11000) {
+            const error = "Cherry with this name exist!"
+            console.log(error + 'then')
+            //status(401) ????
+            res.status(401).send(JSON.stringify(error));
+            // handleError(error, res);
+            // res.render('user/register', userBody);
+            return;
+        }
+        if (err.name === 'ValidationError') {
+            const error = err.errors.description.message
+            res.status(401).send(JSON.stringify(error));
+            return;
+        }
+        next(err);
+    })
     //     console.log('Successfully edited!')
     //     res.redirect('/');
     // }).catch((err) => {
     //     handleErrors(err, res);
     //     res.render('cherry/edit', { cherry, user });
     // })
+
 }
 
 function detailsGet(req, res, next) {
@@ -73,10 +101,12 @@ function removeGet(req, res, next) {
     const cherryId = req.params.id;
     const { user } = req;
     Cherry.deleteOne({ _id: cherryId }).then((result) => {
-        res.redirect('/');
+        res.send(result);
+        // res.redirect('/');
     }).catch(err => {
-        handleError(err, res);
-        res.render('500', { errorMessage: err.message });
+        next(err);
+        // handleError(err, res);
+        // res.render('500', { errorMessage: err.message });
     });
 }
 

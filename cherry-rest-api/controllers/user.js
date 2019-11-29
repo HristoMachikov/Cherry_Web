@@ -13,7 +13,7 @@ function loginGet(req, res) {
     res.render('user/login');
 }
 function loginPost(req, res, next) {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     // let userBody = { username, password };
     // // const regex = /^[a-zA-Z0-9]*[a-zA-Z0-9]$/;
     // if (!username || !password) {
@@ -34,12 +34,12 @@ function loginPost(req, res, next) {
     // //     res.render('user/login', userBody);
     // //     return;
     // // }
-    User.findOne({ username })
+    User.findOne({ email })
         // .then((user) => Promise.all([user, user ? user.matchPassword(password) : false]))
         .then((user) => Promise.all([user, user ? user.matchPassword(password) : false]))
         .then(([user, match]) => {
             if (!match) {
-                const error = "Wrong password or username!";
+                const error = "Грешен e-mail или парола!";
 
                 res.status(401).send(JSON.stringify(error));
                 // handleError(error, res);
@@ -68,7 +68,7 @@ function registerGet(req, res) {
 }
 function registerPost(req, res, next) {
     console.log(req.body)
-    const { username, password, repeatPassword, email } = req.body;
+    const { username, password, repeatPassword, email, phone } = req.body;
     // let userBody = { username, password, repeatPassword, email };
 
     // if (password !== repeatPassword) {
@@ -77,15 +77,15 @@ function registerPost(req, res, next) {
     //     res.render('user/register', userBody);
     //     return;
     // }
-    return User.create({ username, password, email, roles: ['User'] }).then((newUser) => {
-        console.log(newUser + 'then')
+    return User.create({ username, password, email, phone, roles: ['User'] }).then((newUser) => {
+
         res.send(newUser);
         // res.redirect('/user/login');
     }).catch(err => {
         console.log(err);
         if (err.name === 'MongoError' && err.code === 11000) {
 
-            const error = "User with this email exist!"
+            const error = "Потребител с този Е-mail съществува!"
             console.log(error + 'then')
             res.status(401).send(JSON.stringify(error));
             // handleError(error, res);

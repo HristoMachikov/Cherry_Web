@@ -14,6 +14,10 @@ const userSchema = new Schema({
         required: [true, 'Email is required'],
         unique: true,
     },
+    phone: {
+        type: Schema.Types.String,
+        required: [true, 'Phone is required'],
+    },
     orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
     cherries: [{ type: Schema.Types.ObjectId, ref: "Cherry" }],
     states: [{ type: Schema.Types.ObjectId, ref: "State" }],
@@ -63,6 +67,7 @@ User.seedAdmin = async () => {
             username: 'Admin',
             password: hashedPass,
             email: 'admin@admin.com',
+            phone: '0123456789',
             salt,
             roles: ['Admin']
         });

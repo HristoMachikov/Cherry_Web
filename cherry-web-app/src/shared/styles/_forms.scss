@@ -45,11 +45,13 @@
             @include fap;
             color: black;
         }
+
+        &.first{
+            margin-top: 3rem;
+        }
     }
 
     .username {
-        margin-top: 3rem;
-
         span:before {
             content: '\f007';
         }
@@ -67,10 +69,15 @@
         }
     }
 
+    .phone {
+        span:before {
+            content: '\f095';
+        }
+    }
+
     .last {
         padding-bottom: 0;
     }
-
    
     .form-input {
         padding: 0.5em;
@@ -84,10 +91,6 @@
         box-shadow: none;
         appearance: none;
         -webkit-appearance: none;
-
-        // & .error{
-        //     border: 1px solid var(--color-border-error);
-        // }
     }
     .form-btn{
         padding-bottom: 0;
