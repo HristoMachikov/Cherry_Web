@@ -58,25 +58,7 @@ class Menu extends Component {
                 }
             </article>
         </section> : <div>Loading...</div>
-
-        // return cherrys ? <div className="Posts">
-        //     {cherrys.map((cherry) => {
-
-
-        //         return <Cart
-        //             key={cherry._id}
-        //             id={cherry._id}
-        //             sort={cherry.sort}
-        //             price={cherry.price}
-        //             description={cherry.description}>
-        //         </Cart>;
-        //     })}
-        // </div> : <div>Loading...</div>
     }
 }
-
-// Menu.PropTypes = {
-//     limit: PropTypes.number
-// }
 
 export default Menu;

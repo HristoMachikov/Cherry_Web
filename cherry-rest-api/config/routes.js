@@ -12,6 +12,7 @@ module.exports = (app) => {
     app.get('/admin/pending-orders', auth(), orderController.pendingOrdersGet);
     app.get('/order/create', auth(), orderController.createOrderPost);
     app.get('/order/my-orders', auth(), orderController.myOrdersGet);
+    app.get('/order/new-product/:id', auth(), orderController.newProductGet);
 
     app.get('/cherry/details/:id', auth(), cherryController.detailsGet);
     // app.post('/cherry/details/:id', auth(), cherryController.detailsPost);
@@ -22,7 +23,7 @@ module.exports = (app) => {
     app.post('/cherry/create', auth(true, true), cherryController.createPost);
 
     app.get('/user/remove/:id', auth(), userController.removeProdGet);
-    app.get('/user/new-order/:id', auth(), userController.newOrderGet);
+    
     app.post('/user/new-order/:id', auth(), userController.newOrderPost);
     app.get('/user/current-state', auth(), userController.currentStateGet);
 

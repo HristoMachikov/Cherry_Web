@@ -12,7 +12,7 @@ function Cart({ id, imagePath, sort, price, description, isAdmin }) {
         <p className="header"></p>
         <h3>{sort}</h3>
         {/* <p> */}
-        <h4>{price} лв/кг</h4>
+        <h4>{Number(price).toFixed(2)} лв/кг</h4>
         {/* </p> */}
         <p className="description">
             {description}

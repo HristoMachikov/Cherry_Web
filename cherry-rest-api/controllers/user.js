@@ -120,40 +120,43 @@ function calcTotalAndSubTotal(user, states) {
     return { user, arrCherry };
 }
 
-function newOrderGet(req, res) {
-    let { user } = req;
+function newProductGet(req, res,next ) {
+    // let { user } = req;
     const cherryId = req.params.id;
+    // const { userId } = req
 
-    const alreadyAdded = user.cherries.includes(cherryId);
-    if (alreadyAdded) {
-        State.find({ _id: { $in: user.states } }).then(states => {
-            res.render('user/new-order', calcTotalAndSubTotal(user, states));
-        }).catch(err => {
-            handleError(err, res);
-            res.render('500', { errorMessage: err.message });
-        });
-    } else {
-        Cherry.findById(cherryId).then(currProd => {
-            const { sort, description, imagePath, price } = currProd;
-            user.cherries.push(cherryId);
-            return Promise.all([
-                currProd,
-                State.create({ sort, description, imagePath, price, creatorId: user.id, cherryId: currProd._id }),
-                User.updateOne({ _id: user.id }, { $set: { cherries: user.cherries } })
-            ]);
-        }).then(([currProd, newStateProd, updatedUser]) => {
-            user.states.push(newStateProd._id);
-            return Promise.all([
-                State.find({ creatorId: user.id }),
-                User.updateOne({ _id: user.id }, { $set: { states: user.states } })
-            ]);
-        }).then(([states, updatedUser]) => {
-            res.render('user/new-order', calcTotalAndSubTotal(user, states));
-        }).catch(err => {
-            handleError(err, res);
-            res.render('500', { errorMessage: err.message });
-        });
-    }
+    // const alreadyAdded = user.cherries.includes(cherryId);
+    // if (alreadyAdded) {
+    //     State.find({ _id: { $in: user.states } }).then(states => {
+    //         res.render('user/new-order', calcTotalAndSubTotal(user, states));
+    //     }).catch(err => {
+    //         handleError(err, res);
+    //         res.render('500', { errorMessage: err.message });
+    //     });
+    // } else {
+    Cherry.findById(cherryId).then(currProd => {
+        // const { sort, description, imagePath, price } = currProd;
+        // user.cherries.push(cherryId);
+    //     return Promise.all([
+    //         currProd,
+    //         State.create({ sort, description, imagePath, price, creatorId: user.id, cherryId: currProd._id }),
+    //         User.updateOne({ _id: user.id }, { $set: { cherries: user.cherries } })
+    //     ]);
+    // }).then(([currProd, newStateProd, updatedUser]) => {
+    //     user.states.push(newStateProd._id);
+    //     return Promise.all([
+    //         State.find({ creatorId: user.id }),
+    //         User.updateOne({ _id: user.id }, { $set: { states: user.states } })
+    //     ]);
+    // }).then(([states, updatedUser]) => {
+    //     res.render('user/new-order', calcTotalAndSubTotal(user, states));
+    res.send(currProd);
+    }).catch(err => {
+        next(err);
+        // handleError(err, res);
+        // res.render('500', { errorMessage: err.message });
+    });
+    // }
 }
 
 function newOrderPost(req, res) {
@@ -207,7 +210,7 @@ module.exports = {
     registerGet,
     registerPost,
     logoutGet,
-    newOrderGet,
+    newProductGet,
     newOrderPost,
     removeProdGet,
     currentStateGet

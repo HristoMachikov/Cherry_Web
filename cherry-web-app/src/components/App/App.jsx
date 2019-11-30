@@ -15,6 +15,7 @@ import Register from '../Register/Register';
 import Create from '../Cherry/Create/Create';
 import Edit from '../Cherry/Edit/Edit';
 import Remove from '../Cherry/Remove/Remove';
+import Basket from '../Basket/Basket';
 // const Login = React.lazy(() => import('../Login/Login'));
 // const Register = React.lazy(() => import('../Register/Register'));
 // const Create = React.lazy(() => import('../Create'));
@@ -220,6 +221,12 @@ class App extends Component {
                             />
                             <Route path="/user/logout"
                                 render={({ history }) => (this.state.isLogged ? this.logout(history) : null)}
+                            />
+                            <Route path="/order/products/:id"
+                                render={({ history, match, location }) => <Basket history={history} match={match} basket={location.state} userId={this.state.userId} />}
+                            />
+                            <Route path="/order/products"
+                                render={({ history, location }) => <Basket history={history} basket={location.state} userId={this.state.userId} />}
                             />
                             <Route path="/order/my-orders"
                                 render={() => (!isLogged && <Redirect to="/user/login" />)}

@@ -22,6 +22,15 @@ function addDateToString(orders) {
     return ordersArr;
 }
 
+function newProductGet(req, res, next) {
+    const cherryId = req.params.id;
+    Cherry.findById(cherryId).then(currProd => {
+        res.send(currProd);
+    }).catch(err => {
+        next(err);
+    });
+}
+
 function createOrderPost(req, res) {
     let { total = null } = req.body;
     let { user } = req;
@@ -107,6 +116,7 @@ function removeOrderGet(req, res) {
 }
 
 module.exports = {
+    newProductGet,
     pendingOrdersGet,
     approveOrderGet,
     createOrderPost,
