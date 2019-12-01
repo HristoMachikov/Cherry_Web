@@ -186,10 +186,11 @@ class App extends Component {
     // }
 
     render() {
+        console.log(this.props);
         // const { history } = this.props;
         const { isLogged } = this.state;
         return (<div className="main">
-            <Header isAdmin={this.state.isAdmin} username={this.state.username} />
+            <Header isAdmin={this.state.isAdmin} username={this.state.username} history={this.props.history}/>
             <main className="main-content">
                 <div className="wrapper">
                     <ToastContainer autoClose={4000} />
@@ -223,10 +224,10 @@ class App extends Component {
                                 render={({ history }) => (this.state.isLogged ? this.logout(history) : null)}
                             />
                             <Route path="/order/products/:id"
-                                render={({ history, match, location }) => <Basket history={history} match={match} basket={location.state} userId={this.state.userId} />}
+                                render={({ history, match, location }) => <Basket history={history} location={location} match={match} basket={history.location.state} userId={this.state.userId} />}
                             />
                             <Route path="/order/products"
-                                render={({ history, location }) => <Basket history={history} basket={location.state} userId={this.state.userId} />}
+                                render={({ history, location }) => <Basket history={history} location={location} basket={history.location.state} userId={this.state.userId} />}
                             />
                             <Route path="/order/my-orders"
                                 render={() => (!isLogged && <Redirect to="/user/login" />)}

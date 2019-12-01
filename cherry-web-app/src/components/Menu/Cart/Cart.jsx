@@ -25,7 +25,7 @@ function Cart({ id, imagePath, sort, price, description, isAdmin }) {
                 </Fragment>
                 : <Fragment>
                     <Link className="primary-btn" to={`/cherry/details/${id}`}>Детайли</Link>
-                    <Link className="primary-btn" to={`/user/new-order/${id}`}>Поръчай</Link>
+                    <Link className="primary-btn" to={`/order/products/${id}`}>Поръчай</Link>
                 </Fragment>
             }
         </p>

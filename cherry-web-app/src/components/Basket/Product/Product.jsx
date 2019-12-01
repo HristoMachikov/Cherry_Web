@@ -6,63 +6,53 @@ import PropTypes from 'prop-types';
 class Product extends Component {
     constructor(props) {
         super(props)
-
         this.state = {
-
-        };
-        this.handleClickDelete = this.props.handleClickDelete.bind(this);
-        this.handleFormElementChange = this.props.handleFormElementChange.bind(this);
+            quantity: this.props.quantity,
+            weigth: this.props.weigth
+        }
+        // this.handleClickDelete = this.props.handleClickDelete.bind(this);
+        // this.handleFormElementChange = this.props.handleFormElementChange.bind(this);
     }
 
-    onChangeHendler = (e) => {
-        console.log(e.target.value)
-    }
-
-    submitHandler = (e) => {
-        e.preventDefault();
-
-    }
     render() {
-        const { id, imagePath, sort, price, description, isAdmin } = this.props;
-        const { quantity, weigth, subTotal } = this.props.state;
+        const { id, imagePath, sort, price, quantity, weigth, subTotal } = this.props;
+        // const { quantity, weigth, subTotal } = this.props.state;
         return (
-            <form id="refresh-form" onSubmit={this.submitHandler}
-                action="/user/new-order/{{_id}}"
-                method="post">
-                <tr>
-                    <td><img src={imagePath} alt={imagePath} width="100px" /></td>
-                    <td>{{ sort }}</td>
-                    <td>{{ price }} лв</td>
-                    <td>
-                        <input
-                            type="number"
-                            min="1" max="999"
-                            name="quantity"
-                            dataId={id}
-                            value={quantity}
-                            onBlur={this.onChangeHandler}
-                        />
-                        <span> x </span>
-                        <span>
-                            <select name="weigth" id="weigth" dataId={id} value={weigth} onBlur={this.onChangeHandler}>
-                                <option value="0">0 kg</option>
-                                <option value="6">6 kg</option>
-                                <option value="8">8 kg</option>
-                                <option value="10">10 kg</option>
-                                <option value="12">10 kg</option>
-                            </select>
-                        </span>
-                    </td>
-                    <td>
-                        <input type="number" min="1" max="9999" disabled name="subTotal" value={subTotal} />
-                        <span> лв</span>
-                    </td>
-                    <td>
-                        <Link class="primary-btn" to={`/orders/products`} onClick={this.handleClickDelete}>Изтрий</Link>
-                        {/* <input class="primary-btn" type="submit" value="Сумирай" /> */}
-                    </td>
-                </tr>
-            </form>
+            // <form id="refresh-form">
+            <tr>
+                <td><img src={imagePath} alt={imagePath} width="100px" /></td>
+                <td>{sort}</td>
+                <td>{price} лв</td>
+                <td>
+                    <input
+                        type="number"
+                        min="1" max="999"
+                        name="quantity"
+                        dataid={id}
+                        value={quantity}
+                        onChange={this.handleFormElementChange}
+                    />
+                    <span> x </span>
+                    <span>
+                        <select name="weigth" id="weigth" dataid={id} value={weigth} onChange={this.handleFormElementChange}>
+                            <option value="0">0 kg</option>
+                            <option value="6">6 kg</option>
+                            <option value="8">8 kg</option>
+                            <option value="10">10 kg</option>
+                            <option value="12">10 kg</option>
+                        </select>
+                    </span>
+                </td>
+                <td>
+                    <input type="number" min="1" max="9999" disabled name="subTotal" value={subTotal} />
+                    <span> лв</span>
+                </td>
+                <td>
+                    <Link className="primary-btn" to={`/order/products`} dataid={id} onClick={this.handleClickDelete}>Изтрий</Link>
+                    {/* <input class="primary-btn" type="submit" value="Сумирай" /> */}
+                </td>
+            </tr>
+            // </form>
 
             // <li className="site-section-inner">
             //     <p className="imges">
@@ -95,11 +85,11 @@ class Product extends Component {
 
 }
 
-Product.propTypes = {
-    id: PropTypes.string,
-    imagePath: PropTypes.string,
-    sort: PropTypes.string,
-    price: PropTypes.number,
-}
+// Product.propTypes = {
+//     id: PropTypes.string,
+//     imagePath: PropTypes.string,
+//     sort: PropTypes.string,
+//     price: PropTypes.number,
+// }
 
 export default Product;

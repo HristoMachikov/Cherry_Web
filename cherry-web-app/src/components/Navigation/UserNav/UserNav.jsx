@@ -3,9 +3,9 @@ import { NavLink } from 'react-router-dom';
 
 import AdminNav from './AdminNav/AdminNav';
 
-function UserNav({ username, isAdmin }) {
+function UserNav({ username, isAdmin ,history}) {
     return username ? <Fragment>
-        <AdminNav isAdmin={isAdmin} />
+        <AdminNav isAdmin={isAdmin} history={history}/>
         <li>
             <NavLink to="/user/logout" activeClassName="selected">Изход</NavLink>
             {/* <form id="logout-form" action="/user/logout" method="post"></form>

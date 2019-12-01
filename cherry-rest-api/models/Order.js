@@ -15,7 +15,7 @@ const orderSchema = new Schema({
         required: [true, 'Status is required'],
         default: "Pendding"
     },
-    cherryArray: [{ type: Schema.Types.String }],
+    productsJson: { type: Schema.Types.String },
     creatorId: { type: Schema.Types.ObjectId }
 });
 

@@ -10,7 +10,7 @@ module.exports = (app) => {
     app.get('/order/remove/:id', auth(), orderController.removeOrderGet);
     app.get('/admin/pending-orders/:id', auth(), orderController.approveOrderGet);
     app.get('/admin/pending-orders', auth(), orderController.pendingOrdersGet);
-    app.get('/order/create', auth(), orderController.createOrderPost);
+    app.post('/order/create', auth(), orderController.createOrderPost);
     app.get('/order/my-orders', auth(), orderController.myOrdersGet);
     app.get('/order/new-product/:id', auth(), orderController.newProductGet);
 

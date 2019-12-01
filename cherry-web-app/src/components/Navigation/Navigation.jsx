@@ -9,7 +9,7 @@ class Navigation extends React.Component {
         this.nameLink.focus();
     }
     render() {
-        const { username, isAdmin } = this.props;
+        const { username, isAdmin, history } = this.props;
         return (<nav className="site-navigation">
             <ul>
                 <li>
@@ -22,7 +22,7 @@ class Navigation extends React.Component {
                 <li>
                     <NavLink to="/" ref={(link) => { this.nameLink = link; }} exact activeClassName="selected">Меню</NavLink>
                 </li>
-                <UserNav username={username} isAdmin={isAdmin} />
+                <UserNav username={username} isAdmin={isAdmin} history={history}/>
             </ul>
         </nav>);
     }
