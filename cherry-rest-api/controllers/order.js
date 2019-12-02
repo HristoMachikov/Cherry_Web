@@ -1,26 +1,6 @@
 const Order = require('../models/Order');
-const { handleError, handleErrors, options, dateToString } = require('./index');
 const Cherry = require('../models/Cherry');
-const State = require('../models/State');
 const User = require('../models/User');
-
-
-function calcSubTotal(states) {
-    let arrCherry = states.map(function (state) {
-        state.options = options(state);
-        state.subTotal = (Number(state.price) * Number(state.weigth) * Number(state.quantity)).toFixed(2);
-        return state;
-    })
-    return arrCherry;
-}
-
-function addDateToString(orders) {
-    let ordersArr = orders.map(order => {
-        order.dateToStr = dateToString(order.date)
-        return order;
-    });
-    return ordersArr;
-}
 
 function newProductGet(req, res, next) {
     const cherryId = req.params.id;
@@ -66,53 +46,34 @@ function createOrderPost(req, res, next) {
 }
 
 function myOrdersGet(req, res, next) {
-    // console.log(req.params);
     let userId = req.params.id;
     User.findById({ _id: userId }).then((user) => {
         return Order.find({ _id: { $in: user.orders } }).sort({ date: -1 })
     }).then(orders => {
-        // let orders = addDateToString(ordersResult);
-        // console.log(orders)
         res.send(orders);
-        // res.render('user/my-orders', { orders, user });
-
     }).catch(err => {
         next(err);
-        // handleError(err, res);
-        // res.render('500', { errorMessage: err.message });
     })
 }
 
 function pendingOrdersGet(req, res, next) {
-    // let { user } = req;
     Order.find({ status: "Pending" }).then(pendingOrdersResult => {
         res.send(pendingOrdersResult);
-        // let pendingOrders = addDateToString(pendingOrdersResult);
-        // res.render('admin/pending-orders', { pendingOrders, user });
     }).catch(err => {
         next(err);
-        // handleError(err, res);
-        // res.render('500', { errorMessage: err.message });
     })
 }
 
 function approveOrderGet(req, res, next) {
-    // let { user } = req;
-
     const orderId = req.params.id;
-    console.log(orderId)
     Order.updateOne({ _id: orderId }, { $set: { status: "Approve" } }).then(updatedOrder => {
         res.send(updatedOrder);
-        // pendingOrdersGet(req, res);
     }).catch(err => {
         next(err);
-        // handleError(err, res);
-        // res.render('500', { errorMessage: err.message });
     })
 }
 
-function removeOrderGet(req, res) {
-    let { user } = req;
+function removeOrderGet(req, res, next) {
     const orderId = req.params.id;
     Order.findById({ _id: orderId }).select('creatorId').then(order => {
         return User.findById({ _id: order.creatorId }).select('orders').then(result => {
@@ -121,12 +82,10 @@ function removeOrderGet(req, res) {
                 Order.deleteOne({ _id: orderId }),
                 User.updateOne({ _id: order.creatorId }, { $set: { orders } })
             ])
-
         }).then(([deletedOrder, updatedOrder]) => {
-            pendingOrdersGet(req, res);
+            res.send([deletedOrder, updatedOrder]);
         }).catch(err => {
-            handleError(err, res);
-            res.render('500', { errorMessage: err.message });
+            next(err);
         })
     })
 }

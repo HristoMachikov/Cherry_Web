@@ -11,7 +11,7 @@ function ApproveOrder(props) {
     orderService.getApproveOrder(id).then(res => {
         
         if (res.ok) {
-            toast.info("Успешно изтриване!", {
+            toast.info("Успешно одобрена заявка!", {
                 closeButton: false
             })
             props.history.push('/admin/pending-orders');

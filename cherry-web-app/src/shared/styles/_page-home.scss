@@ -292,19 +292,22 @@
                     display: block;
                 }
                 &:nth-child(1){
-                    flex:0 0 10%;
+                    flex:0 0 5%;
                 }
                 &:nth-child(2){
                     flex:0 0 30%;
                 }
                 &:nth-child(3){
-                    flex:0 0 10%;
+                    flex:0 0 13%;
                 }
                 &:nth-child(4){
-                    flex:0 0 35%;
+                    flex:0 0 10%;
                 }
                 &:nth-child(5){
-                    flex:0 0 15%;
+                    flex:0 0 10%;
+                }
+                &:nth-child(6){
+                    flex:0 0 32%;
                 }
             }
             td {
@@ -332,25 +335,82 @@
                 }
 
                 &:nth-of-type(1):before {  @include mq(phone-small) { content: "Номер"; } }
-                &:nth-of-type(2):before {  @include mq(phone-small) { content: "Име"; } }
-                &:nth-of-type(3):before {  @include mq(phone-small) { content: "Kg"; } }
-                &:nth-of-type(4):before {  @include mq(phone-small) { content: "Забележки"; } }
-                &:nth-of-type(5):before {  @include mq(phone-small) { content: "Доставка"; } }
+                &:nth-of-type(2):before {  @include mq(phone-small) { content: "Дата"; } }
+                &:nth-of-type(3):before {  @include mq(phone-small) { content: "Общо"; } }
+                &:nth-of-type(4):before {  @include mq(phone-small) { content: "Статус"; } }
+                &:nth-of-type(5):before {  @include mq(phone-small) { content: "Детайли"; } }
+                &:nth-of-type(6):before {  @include mq(phone-small) { content: "Action"; } }
 
                 &:nth-child(1){
-                    flex:0 0 10%;
+                    flex:0 0 5%;
                 }
                 &:nth-child(2){
                     flex:0 0 30%;
                 }
                 &:nth-child(3){
-                    flex:0 0 10%;
+                    flex:0 0 13%;
                 }
                 &:nth-child(4){
-                    flex:0 0 35%;
+                    flex:0 0 10%;
                 }
                 &:nth-child(5){
-                    flex:0 0 15%;
+                    flex:0 0 10%;
+                }
+                &:nth-child(6){
+                    flex:0 0 32%;
+                }
+            }
+            &.new-order{
+                th {
+                    border-bottom: 1px solid var(--color-primary-site);
+                    @include mq(phone-small) {
+                        display: block;
+                    }
+                    &:nth-child(1){
+                        flex:0 0 22%;
+                    }
+                    &:nth-child(2){
+                        flex:0 0 10%;
+                    }
+                    &:nth-child(3){
+                        flex:0 0 13%;
+                    }
+                    &:nth-child(4){
+                        flex:0 0 20%;
+                    }
+                    &:nth-child(5){
+                        flex:0 0 10%;
+                    }
+                    &:nth-child(6){
+                        flex:0 0 25%;
+                    }
+                }
+                td {
+                    &:nth-of-type(1):before {  @include mq(phone-small) { content: "Снимка"; } }
+                    &:nth-of-type(2):before {  @include mq(phone-small) { content: "Сорт"; } }
+                    &:nth-of-type(3):before {  @include mq(phone-small) { content: "Цена"; } }
+                    &:nth-of-type(4):before {  @include mq(phone-small) { content: "Количество"; } }
+                    &:nth-of-type(5):before {  @include mq(phone-small) { content: "Сума"; } }
+                    &:nth-of-type(6):before {  @include mq(phone-small) { content: "Детайли"; } }
+    
+                    &:nth-child(1){
+                        flex:0 0 22%;
+                    }
+                    &:nth-child(2){
+                        flex:0 0 10%;
+                    }
+                    &:nth-child(3){
+                        flex:0 0 13%;
+                    }
+                    &:nth-child(4){
+                        flex:0 0 20%;
+                    }
+                    &:nth-child(5){
+                        flex:0 0 10%;
+                    }
+                    &:nth-child(6){
+                        flex:0 0 25%;
+                    }
                 }
             }
         } 
