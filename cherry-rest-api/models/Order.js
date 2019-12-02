@@ -13,7 +13,7 @@ const orderSchema = new Schema({
     status: {
         type: Schema.Types.String,
         required: [true, 'Status is required'],
-        default: "Pendding"
+        default: "Pending"
     },
     productsJson: { type: Schema.Types.String },
     creatorId: { type: Schema.Types.ObjectId }

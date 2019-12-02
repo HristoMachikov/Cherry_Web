@@ -8,7 +8,6 @@ const orderService = {
         }).catch((err) => console.error(err));
     },
     postOrder: function (body) {
-
         return fetch(`http://localhost:4000/order/create`, {
             method: "POST",
             headers: {
@@ -20,6 +19,34 @@ const orderService = {
         }).then((res) => {
             return res.json()
         }).catch((notConectionErr) => console.error(notConectionErr));
+    },
+    getUserOrders: function (id) {
+        return fetch(`http://localhost:4000/user/my-orders/${id}`, {
+            credentials: 'include'
+        }).then((res) => {
+            return res.json()
+        }).catch((err) => console.error(err));
+    },
+    getPendingOrders: function () {
+        return fetch(`http://localhost:4000/admin/pending-orders`, {
+            credentials: 'include'
+        }).then((res) => {
+            return res.json()
+        }).catch((err) => console.error(err));
+    },
+    getApproveOrder: function (id) {
+        return fetch(`http://localhost:4000/admin/approve-order/${id}`, {
+            credentials: 'include'
+        }).then((res) => {
+            return res.json()
+        }).catch((err) => console.error(err));
+    },
+    getRemoveOrder: function (id) {
+        return fetch(`http://localhost:4000/admin/remove-order/${id}`, {
+            credentials: 'include'
+        }).then((res) => {
+            return res.json()
+        }).catch((err) => console.error(err));
     }
 };
 export default orderService;

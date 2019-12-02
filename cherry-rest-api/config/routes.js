@@ -7,11 +7,11 @@ const { auth } = require('../utils');
 
 module.exports = (app) => {
 
-    app.get('/order/remove/:id', auth(), orderController.removeOrderGet);
-    app.get('/admin/pending-orders/:id', auth(), orderController.approveOrderGet);
+    app.get('/admin/remove-order/:id', auth(), orderController.removeOrderGet);
+    app.get('/admin/approve-order/:id', auth(), orderController.approveOrderGet);
     app.get('/admin/pending-orders', auth(), orderController.pendingOrdersGet);
     app.post('/order/create', auth(), orderController.createOrderPost);
-    app.get('/order/my-orders', auth(), orderController.myOrdersGet);
+    app.get('/user/my-orders/:id', auth(), orderController.myOrdersGet);
     app.get('/order/new-product/:id', auth(), orderController.newProductGet);
 
     app.get('/cherry/details/:id', auth(), cherryController.detailsGet);

@@ -16,6 +16,10 @@ import Create from '../Cherry/Create/Create';
 import Edit from '../Cherry/Edit/Edit';
 import Remove from '../Cherry/Remove/Remove';
 import Basket from '../Basket/Basket';
+import UserOrders from '../UserOrders/UserOrders';
+import AdminOrders from '../AdminOrders/AdminOrders';
+import ApproveOrder from '../AdminOrders/Actions/ApproveOrder';
+import RemoveOrder from '../AdminOrders/Actions/RemoveOrder';
 // const Login = React.lazy(() => import('../Login/Login'));
 // const Register = React.lazy(() => import('../Register/Register'));
 // const Create = React.lazy(() => import('../Create'));
@@ -190,7 +194,7 @@ class App extends Component {
         // const { history } = this.props;
         const { isLogged } = this.state;
         return (<div className="main">
-            <Header isAdmin={this.state.isAdmin} username={this.state.username} history={this.props.history}/>
+            <Header isAdmin={this.state.isAdmin} username={this.state.username} history={this.props.history} />
             <main className="main-content">
                 <div className="wrapper">
                     <ToastContainer autoClose={4000} />
@@ -229,9 +233,22 @@ class App extends Component {
                             <Route path="/order/products"
                                 render={({ history, location }) => <Basket history={history} location={location} basket={history.location.state} userId={this.state.userId} />}
                             />
-                            <Route path="/order/my-orders"
-                                render={() => (!isLogged && <Redirect to="/user/login" />)}
+                            {isLogged && <Route path="/order/my-orders"
+                                render={() => <UserOrders userId={this.state.userId} />}
+                            />}
+                            {/* isAdmin */}
+                            {isLogged && <Route path="/admin/pending-orders"
+                                render={() => <AdminOrders />}
+                            />}
+                             <Route path="/admin/approve-order/:id" exact
+                                render={({ history, match }) => <ApproveOrder history={history} match={match} />}
                             />
+                            {isLogged && <Route path="/admin/remove-order/:id"
+                                render={({ history, match }) => <RemoveOrder history={history} match={match} />}
+                            />}
+                            {/* <Route path="/orders/user-orders"
+                                render={() => (!isLogged && <Redirect to="/user/login" />)}
+                            /> */}
                             <Route path="/about" component={About} />
                             <Route path="/" exact
                                 render={() => <Menu isAdmin={this.state.isAdmin} />}

@@ -65,36 +65,49 @@ function createOrderPost(req, res, next) {
     });
 }
 
-function myOrdersGet(req, res) {
-    let { user } = req;
-    Order.find({ _id: { $in: user.orders } }).sort({ date: -1 }).then(ordersResult => {
-        let orders = addDateToString(ordersResult);
-        res.render('user/my-orders', { orders, user });
+function myOrdersGet(req, res, next) {
+    // console.log(req.params);
+    let userId = req.params.id;
+    User.findById({ _id: userId }).then((user) => {
+        return Order.find({ _id: { $in: user.orders } }).sort({ date: -1 })
+    }).then(orders => {
+        // let orders = addDateToString(ordersResult);
+        // console.log(orders)
+        res.send(orders);
+        // res.render('user/my-orders', { orders, user });
+
     }).catch(err => {
-        handleError(err, res);
-        res.render('500', { errorMessage: err.message });
+        next(err);
+        // handleError(err, res);
+        // res.render('500', { errorMessage: err.message });
     })
 }
 
-function pendingOrdersGet(req, res) {
-    let { user } = req;
-    Order.find({ status: "Pendding" }).then(pendingOrdersResult => {
-        let pendingOrders = addDateToString(pendingOrdersResult);
-        res.render('admin/pending-orders', { pendingOrders, user });
+function pendingOrdersGet(req, res, next) {
+    // let { user } = req;
+    Order.find({ status: "Pending" }).then(pendingOrdersResult => {
+        res.send(pendingOrdersResult);
+        // let pendingOrders = addDateToString(pendingOrdersResult);
+        // res.render('admin/pending-orders', { pendingOrders, user });
     }).catch(err => {
-        handleError(err, res);
-        res.render('500', { errorMessage: err.message });
+        next(err);
+        // handleError(err, res);
+        // res.render('500', { errorMessage: err.message });
     })
 }
 
-function approveOrderGet(req, res) {
-    let { user } = req;
+function approveOrderGet(req, res, next) {
+    // let { user } = req;
+
     const orderId = req.params.id;
+    console.log(orderId)
     Order.updateOne({ _id: orderId }, { $set: { status: "Approve" } }).then(updatedOrder => {
-        pendingOrdersGet(req, res);
+        res.send(updatedOrder);
+        // pendingOrdersGet(req, res);
     }).catch(err => {
-        handleError(err, res);
-        res.render('500', { errorMessage: err.message });
+        next(err);
+        // handleError(err, res);
+        // res.render('500', { errorMessage: err.message });
     })
 }
 
