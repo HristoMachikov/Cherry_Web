@@ -194,7 +194,7 @@ class App extends Component {
         // const { history } = this.props;
         const { isLogged } = this.state;
         return (<div className="main">
-            <Header isAdmin={this.state.isAdmin} username={this.state.username} history={this.props.history} />
+            <Header isAdmin={this.state.isAdmin} username={this.state.username} history={this.props.history} location={this.props.location} />
             <main className="main-content">
                 <div className="wrapper">
                     <ToastContainer autoClose={4000} />

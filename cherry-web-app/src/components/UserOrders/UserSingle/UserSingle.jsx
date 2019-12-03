@@ -10,7 +10,7 @@ const UserSingle = ({ index, date, total, status, id }) => {
         <tr>
             <td>{index}</td>
             <td>{date}</td>
-            <td>{total} лв</td>
+            <td>{total.toFixed(2)} лв</td>
             <td>{status}</td>
             <td><Link to={`/order/details/${id}`}>Виж</Link></td>
             <td>-</td>

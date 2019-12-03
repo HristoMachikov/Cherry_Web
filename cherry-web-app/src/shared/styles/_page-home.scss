@@ -241,6 +241,9 @@
                 content: "\f0ce";
             }
         }
+        .basket-totla{
+            text-align:center
+        }
         .main-table{
             @include mq(phone-small) {
                 display: block;
