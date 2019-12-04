@@ -23,7 +23,7 @@ import RemoveOrder from '../AdminOrders/Actions/RemoveOrder';
 // const Login = React.lazy(() => import('../Login/Login'));
 // const Register = React.lazy(() => import('../Register/Register'));
 // const Create = React.lazy(() => import('../Create'));
-// const NotFound = React.lazy(() => import('../NotFound'));
+const NotFound = React.lazy(() => import('../NotFound/NotFound'));
 
 function parseCookies() {
     return document.cookie.split('; ').reduce((acc, cookie) => {
@@ -192,31 +192,38 @@ class App extends Component {
     render() {
         console.log(this.props);
         // const { history } = this.props;
-        const { isLogged } = this.state;
+        const { isLogged, isAdmin } = this.state;
         return (<div className="main">
             <Header isAdmin={this.state.isAdmin} username={this.state.username} history={this.props.history} location={this.props.location} />
             <main className="main-content">
                 <div className="wrapper">
-                    <ToastContainer autoClose={4000} />
-                    <Suspense fallback={<div>Loading...</div>}>
+                    <ToastContainer autoClose={3500} />
+                    <Suspense fallback={<div className="loading">
+                        <header>
+                            <h2>Loading...</h2><span></span>
+                        </header>
+                    </div>}>
                         <Switch>
-                            <Route path="/cherry/remove/:id"
+                            {isAdmin && <Route path="/cherry/remove/:id"
                                 render={({ history, match }) => <Remove history={history} match={match} />}
-                            />
-                            <Route path="/cherry/edit/:id"
+                            />}
+                            {isAdmin && <Route path="/cherry/edit/:id"
                                 render={({ history, match }) => <Edit history={history} match={match} />}
-                            />
-                            <Route path="/cherry/create"
+                            />}
+                            {isAdmin && <Route path="/cherry/create"
                                 render={({ history, match }) => <Create history={history} match={match} />}
-                            />
-                            <Route path="/user/register"
+                            />}
+                            <Route path="/user/register" exact
                                 render={({ history }) => (!this.state.isLogged ? <Register
                                     // handleSubmit={this.handleSubmit}
                                     // handleFormElementChange={this.handleFormElementChange}
                                     history={history}
-                                /> : this.pushToHome(history))}
+                                /> : 
+                                <Redirect to="/" />
+                                // this.pushToHome(history)
+                                )}
                             />
-                            <Route path="/user/login"
+                            <Route path="/user/login" exact
                                 render={({ history }) => (!this.state.isLogged ? <Login
                                     // handleSubmit={this.handleSubmit}
                                     // handleFormElementChange={this.handleFormElementChange}
@@ -227,32 +234,33 @@ class App extends Component {
                             <Route path="/user/logout"
                                 render={({ history }) => (this.state.isLogged ? this.logout(history) : null)}
                             />
-                            <Route path="/order/products/:id"
+                            {isLogged && <Route path="/order/products/:id"
                                 render={({ history, match, location }) => <Basket history={history} location={location} match={match} basket={history.location.state} userId={this.state.userId} />}
-                            />
-                            <Route path="/order/products"
+                            />}
+                            {isLogged && <Route path="/order/products"
                                 render={({ history, location }) => <Basket history={history} location={location} basket={history.location.state} userId={this.state.userId} />}
-                            />
+                            />}
                             {isLogged && <Route path="/order/my-orders"
                                 render={() => <UserOrders userId={this.state.userId} />}
                             />}
                             {/* isAdmin */}
-                            {isLogged && <Route path="/admin/pending-orders"
+                            {isAdmin && <Route path="/admin/pending-orders"
                                 render={() => <AdminOrders />}
                             />}
-                             <Route path="/admin/approve-order/:id" exact
+                            {isAdmin && <Route path="/admin/approve-order/:id" exact
                                 render={({ history, match }) => <ApproveOrder history={history} match={match} />}
-                            />
-                            {isLogged && <Route path="/admin/remove-order/:id"
+                            />}
+                            {isAdmin && <Route path="/admin/remove-order/:id"
                                 render={({ history, match }) => <RemoveOrder history={history} match={match} />}
                             />}
                             {/* <Route path="/orders/user-orders"
                                 render={() => (!isLogged && <Redirect to="/user/login" />)}
                             /> */}
-                            <Route path="/about" component={About} />
+                            <Route path="/about" exact component={About} />
                             <Route path="/" exact
                                 render={() => <Menu isAdmin={this.state.isAdmin} />}
                             />
+                            <Route component={NotFound} />
                         </Switch>
                     </Suspense>
                 </div>

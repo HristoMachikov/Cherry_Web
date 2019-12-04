@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, createContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Product from './Product/Product';
 import orderService from '../../services/order-service';
+const BasketContext = createContext({});
 
 class Basket extends Component {
     constructor(props) {
@@ -154,7 +155,7 @@ class Basket extends Component {
         debugger;
         return (
             <section className="site-section home" >
-                <ToastContainer autoClose={4000} />
+                <ToastContainer autoClose={3500} />
                 <article className="schedule" id="schedule">
                     {isLoading ?
                         <header>

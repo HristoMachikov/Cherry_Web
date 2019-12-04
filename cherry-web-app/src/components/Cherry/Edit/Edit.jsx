@@ -32,7 +32,6 @@ class Edit extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         const { id } = this.props.match.params;
-        const { url } = this.props.match;
         
         const { sort, description, imagePath, isPublic, price, _id } = this.state;
         cherryService.postEdit(id, { sort, description, imagePath, isPublic, price, _id }).then(res => {
@@ -85,7 +84,7 @@ class Edit extends Component {
     }
 
     render() {
-        const { sort, price, imagePath, description, checkBox, errorMessages, isPublic } = this.state;
+        const { sort, price, imagePath, description, checkBox, errorMessages } = this.state;
 
         const sortError = errorMessages && errorMessages["sort"];
         const priceError = errorMessages && errorMessages["price"];
@@ -94,7 +93,7 @@ class Edit extends Component {
 
         return (
             <section className="contacts">
-                <ToastContainer autoClose={4000} />
+                <ToastContainer autoClose={3500} />
                 <div className="contact-header">
                     <h1>Промени избраният сорт</h1>
                 </div>

@@ -418,4 +418,35 @@
             }
         } 
     }
+    .not-found {
+
+        header{
+            span:after {
+                content: "\f12a";
+            }
+        }
+        
+        .imаges {
+            display: block;
+            overflow: hidden;
+            position: relative;
+            margin: 0 10em;
+
+            img {  
+                display: block;
+                width: 100%;
+                height: auto;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .imаges:before {
+            display: block;
+            content: '';
+            padding-top: 100%;
+        }
+    }
 }

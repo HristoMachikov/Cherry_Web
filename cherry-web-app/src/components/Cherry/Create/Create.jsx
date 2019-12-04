@@ -74,7 +74,7 @@ class Create extends Component {
     }
 
     render() {
-        const { sort, price, imagePath, description, checkBox, errorMessages, isPublic } = this.state;
+        const { sort, price, imagePath, description, checkBox, errorMessages } = this.state;
 
         const sortError = errorMessages && errorMessages["sort"];
         const priceError = errorMessages && errorMessages["price"];
@@ -83,7 +83,7 @@ class Create extends Component {
 
         return (
             <section className="contacts">
-                <ToastContainer autoClose={4000} />
+                <ToastContainer autoClose={3500} />
                 <div className="contact-header">
                     <h1>Създай нов сорт</h1>
                 </div>

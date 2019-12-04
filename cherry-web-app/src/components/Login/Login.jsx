@@ -5,8 +5,8 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import * as yup from 'yup'
 // import './shared/styles/_forms.scss';
-import { minLength, minLengthPhone } from '../../config/app-config';
-// import minLengthPhone from '../../config/app-config';
+
+import { minLength } from '../../config/app-config';
 
 class Login extends Component {
     // constructor(props) {
@@ -82,7 +82,7 @@ class Login extends Component {
 
         return (
             <section className="site-section login">
-                <ToastContainer autoClose={4000}/>
+                <ToastContainer autoClose={3500}/>
 
                 <form onSubmit={this.submitHandler} className="main-form">
                     <fieldset className="main-form-fieldsed">

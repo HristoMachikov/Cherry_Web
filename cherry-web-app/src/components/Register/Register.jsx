@@ -132,7 +132,7 @@ class Register extends Component {
 
         return (
             <section className="site-section login">
-                <ToastContainer autoClose={4000} />
+                <ToastContainer autoClose={3500} />
 
                 {/* errorMessages.map((message, idx) => <li key={idx}>{message}</li>) */}
                 {/* <form onSubmit={(e) => this.handleSubmit(e, postData, false, this.props.history)} */}
