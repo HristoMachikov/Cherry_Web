@@ -69,7 +69,6 @@ class App extends Component {
         }
     }
 
-
     logout(history) {
         userService.getLogout().then(res => {
             if (res) {
@@ -89,7 +88,6 @@ class App extends Component {
         }).catch(err => {
             console.log(err);
         })
-
     }
 
     pushToHome = (history) => {

@@ -22,7 +22,7 @@ class Product extends Component {
                         value={quantity}
                         onChange={this.handleFormElementChange}
                     />
-                    <span> x </span>
+                    <span className="multiply">x</span>
                     <span>
                         <select name="weigth" id={id} value={weigth} onChange={this.handleFormElementChange}>
                             <option value="0">0 кг</option>
@@ -34,11 +34,10 @@ class Product extends Component {
                     </span>
                 </td>
                 <td>
-                    <span className="sub-total">{subTotal.toFixed(2)}</span>
-                    <span> лв</span>
+                    <span className="sub-total">{subTotal.toFixed(2)} лв</span>
                 </td>
                 <td>
-                    <button className="primary-btn" href="/order/products" id={id} onClick={this.handleClickDelete}>Изтрий</button>
+                    <button className="primary-btn remove" id={id} onClick={this.handleClickDelete}></button>
                 </td>
             </tr>
         )

@@ -25,9 +25,9 @@ function RemoveOrder(props) {
     }).catch(err => {
         console.log(err);
     })
-
-    return (
-        <ToastContainer autoClose={4000} />
-    );
+return null;
+    // return (
+    //     <ToastContainer autoClose={3500} />
+    // );
 }
 export default RemoveOrder;

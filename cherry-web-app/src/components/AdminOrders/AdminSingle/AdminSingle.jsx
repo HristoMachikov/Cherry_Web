@@ -14,8 +14,8 @@ const AdminSingle = ({ index, date, total, status, id }) => {
             <td>{status}</td>
             <td><Link to={`/order/details/${id}`}>Виж</Link></td>
             <td>
-                <Link className="primary-btn" to={`/admin/remove-order/${id}`}>Изтрии</Link>
-                <Link className="primary-btn" to={`/admin/approve-order/${id}`}>Одобри</Link>
+                <Link className="primary-btn approve" to={`/admin/approve-order/${id}`}></Link>
+                <Link className="primary-btn remove" to={`/admin/remove-order/${id}`}></Link>
             </td>
         </tr>
     );

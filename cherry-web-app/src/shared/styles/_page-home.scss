@@ -153,6 +153,15 @@
                 content: '';
                 padding-top: 73%;
             }
+
+            .actions{
+                display: flex;
+                a{
+                    flex-basis: 30%;
+                    margin: 0 auto;
+                    margin-bottom: 0.5em;
+                }
+            }
         }
     }
 
@@ -241,8 +250,16 @@
                 content: "\f0ce";
             }
         }
-        .basket-totla{
-            text-align:center
+        .basket-totla {
+            margin-top: 1em;
+            display: flex;
+           align-items: center;
+
+            span {
+                flex-grow: 1;
+                text-align:right;
+                padding-right: 1em;
+            }
         }
         .main-table{
             @include mq(phone-small) {
@@ -274,6 +291,7 @@
             }
             tbody {
                 flex-basis: 100%;
+               
                 @include mq(phone-small) {
                     display: block;
                 }
@@ -284,6 +302,7 @@
             tr { 
                 text-align: center;
                 display: flex;
+               
                 @include mq(phone-small) {
                     display: block;
                     border: 1px solid var(--color-border-ligth);
@@ -298,23 +317,33 @@
                     flex:0 0 5%;
                 }
                 &:nth-child(2){
-                    flex:0 0 30%;
+                    flex:0 0 35%;
                 }
                 &:nth-child(3){
-                    flex:0 0 13%;
+                    flex:0 0 15%;
                 }
                 &:nth-child(4){
-                    flex:0 0 10%;
+                    flex:0 0 12.5%;
                 }
                 &:nth-child(5){
-                    flex:0 0 10%;
+                    flex:0 0 12.5%;
                 }
                 &:nth-child(6){
-                    flex:0 0 32%;
+                    flex:0 0 20%;
                 }
             }
             td {
                 border-bottom: 1px solid var(--color-primary-site);
+                display: flex;
+                flex-grow: 1;
+                align-items:center;
+                justify-content:center;
+                flex-wrap: wrap;
+                flex-basis: 100%;
+
+                a {
+                    margin: 0.1em auto;
+                }
                 @include mq(phone-small) {
                     text-align: left;
                     display: block;
@@ -322,6 +351,12 @@
                     border-bottom: 1px solid var(--color-border-ligth);
                     position: relative;
                     padding-left: 34%;
+
+                    a {
+                        text-align: center;
+                        margin-right: auto;
+                        flex-basis: 30%;
+                    }
                 }
                 &:before {
                     @include mq(phone-small) {
@@ -344,23 +379,25 @@
                 &:nth-of-type(5):before {  @include mq(phone-small) { content: "Детайли"; } }
                 &:nth-of-type(6):before {  @include mq(phone-small) { content: "Action"; } }
 
+                &:nth-of-type(6) {  @include mq(phone-small) { display: flex; } }
+
                 &:nth-child(1){
                     flex:0 0 5%;
                 }
                 &:nth-child(2){
-                    flex:0 0 30%;
+                    flex:0 0 35%;
                 }
                 &:nth-child(3){
-                    flex:0 0 13%;
+                    flex:0 0 15%;
                 }
                 &:nth-child(4){
-                    flex:0 0 10%;
+                    flex:0 0 12.5%;
                 }
                 &:nth-child(5){
-                    flex:0 0 10%;
+                    flex:0 0 12.5%;
                 }
                 &:nth-child(6){
-                    flex:0 0 32%;
+                    flex:0 0 20%;
                 }
             }
             &.new-order{
@@ -370,49 +407,63 @@
                         display: block;
                     }
                     &:nth-child(1){
-                        flex:0 0 22%;
+                        flex:0 0 22.5%;
                     }
                     &:nth-child(2){
-                        flex:0 0 10%;
+                        flex:0 0 15%;
                     }
                     &:nth-child(3){
-                        flex:0 0 13%;
+                        flex:0 0 10%;
                     }
                     &:nth-child(4){
                         flex:0 0 20%;
                     }
                     &:nth-child(5){
-                        flex:0 0 10%;
+                        flex:0 0 15%;
                     }
                     &:nth-child(6){
-                        flex:0 0 25%;
+                        flex:0 0 17.5%;
                     }
                 }
                 td {
+                    display: flex;
+                    flex-grow: 1;
+                    align-items:center;
+                    justify-content:center;
+                    flex-wrap: wrap;
+
+                    @include mq(phone-small) {
+                        justify-content:left;
+                    }
+
+                    span.multiply{
+                        padding: 0 0.1em;;
+                    }
+                  
                     &:nth-of-type(1):before {  @include mq(phone-small) { content: "Снимка"; } }
                     &:nth-of-type(2):before {  @include mq(phone-small) { content: "Сорт"; } }
                     &:nth-of-type(3):before {  @include mq(phone-small) { content: "Цена"; } }
                     &:nth-of-type(4):before {  @include mq(phone-small) { content: "Количество"; } }
                     &:nth-of-type(5):before {  @include mq(phone-small) { content: "Сума"; } }
-                    &:nth-of-type(6):before {  @include mq(phone-small) { content: "Детайли"; } }
-    
+                    &:nth-of-type(6):before {  @include mq(phone-small) { content: "Изтрий"; } }
+
                     &:nth-child(1){
-                        flex:0 0 22%;
+                        flex:0 0 22.5%;
                     }
                     &:nth-child(2){
-                        flex:0 0 10%;
+                        flex:0 0 15%;
                     }
                     &:nth-child(3){
-                        flex:0 0 13%;
+                        flex:0 0 10%;
                     }
                     &:nth-child(4){
                         flex:0 0 20%;
                     }
                     &:nth-child(5){
-                        flex:0 0 10%;
+                        flex:0 0 15%;
                     }
                     &:nth-child(6){
-                        flex:0 0 25%;
+                        flex:0 0 17.5%;
                     }
                 }
             }

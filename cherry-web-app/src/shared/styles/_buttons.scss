@@ -6,6 +6,24 @@
     border-radius: 0.5em;
     outline: none;
 
+    &.remove:before {
+        @include fap;
+        display: inline-block;
+        content: "\f2ed";
+    }
+
+    &.approve:before {
+        @include fap;
+        display: inline-block;
+        content: "\f46c";
+    }
+
+    &.edit:before {
+        @include fap;
+        display: inline-block;
+        content: "\f044";
+    }
+
     &:hover, &:focus {
         background: var( --color-primary-core-site);
         color: var(--color-primary-site);

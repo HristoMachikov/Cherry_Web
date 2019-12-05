@@ -1,5 +1,4 @@
 import React, { Component, Fragment, createContext } from 'react';
-import { Link } from 'react-router-dom';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,11 +28,11 @@ class Basket extends Component {
             const total = Object.keys(products).reduce((acc, product) => {
                 return acc + products[product].subTotal;
             }, 0);
-            debugger;
+
             if (currentId && !alredyAdded) {
                 orderService.getNewProduct(currentId).then(product => {
                     if (product.sort) {
-                        debugger;
+                        
                         products[currentId] = { ...product, weigth: 0, subTotal: 0, quantity: 1 }
 
                         this.setState({ products, total, isLoading })
@@ -43,7 +42,6 @@ class Basket extends Component {
                 this.setState({ total, isLoading })
             }
         } else {
-            debugger;
             if (currentId) {
                 orderService.getNewProduct(currentId).then(product => {
                     if (product.sort) {
@@ -57,23 +55,11 @@ class Basket extends Component {
         }
     }
 
-    handleClickTakeMore = () => {
-        debugger;
+    handleClickTakeMore = (event) => {
+        event.preventDefault();
         localStorage.setItem('state', `${JSON.stringify(this.state.products)}`)
-        this.props.history.push({ pathname: '/order/products', state: this.state.products });
+        this.props.history.push({ pathname: '/', state: this.state.products });
     }
-    // addNewProduct = (productId, allProducts) => {
-    //     return orderService.getNewProduct(productId).then(product => {
-    //         if (product.sort) {
-    //             console.log(product);
-    //             debugger;
-    //             allProducts[productId] = { ...product, weigth: 0, subTotal: 0, quantity: 0 }
-    //             // const {products} = this.state;
-    //             // this.setState({ [products]: allProducts })
-    //             this.setState({ allProducts })
-    //         }
-    //     }).catch(err => console.log(err));
-    // }
 
     handleFormElementChange = (event) => {
         const { name, value, id } = event.target;
@@ -103,18 +89,16 @@ class Basket extends Component {
         const { id } = event.target;
         const { products } = this.state;
         const subTotalDelete = products[id].weigth * products[id].quantity * products[id].price;
+
         const prevTotal = Object.keys(products)
             .reduce((acc, key) => {
                 return acc + products[key].subTotal;
             }, 0);
+
         const total = prevTotal - subTotalDelete;
-        debugger;
         delete products[id];
-        debugger;
         this.setState({ products, total }, () => {
-            ////? може да се махне от тук
             localStorage.setItem('state', `${JSON.stringify(this.state.products)}`)
-            debugger;
             this.props.history.push({
                 pathname: '/order/products',
                 state: this.state.products
@@ -175,11 +159,10 @@ class Basket extends Component {
                                                 <th>Цена</th>
                                                 <th>Количество</th>
                                                 <th>Сума</th>
-                                                <th>Детайли</th>
+                                                <th>Изтрий</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-
                                             {Object.keys(products).map((product) => {
                                                 // const { _id, sort, imagePath, price, weigth, subTotal, quantity } = products[product];
                                                 // const state = this.props.basket && this.props.basket[product] || {}
@@ -200,18 +183,13 @@ class Basket extends Component {
                                                 // isAdmin={isAdmin}
                                                 >
                                                 </Product>;
-
                                             })}
-
-
                                         </tbody>
                                     </table>
-                                    <div className="basket-totla"
-                                    // style="text-align:center"
-                                    >
-                                        <Link className="primary-btn" onClick={this.handleClickTakeMore} to="/" >Вземи още</Link>
+                                    <div className="basket-totla">
+                                        <button className="primary-btn" onClick={this.handleClickTakeMore} >Вземи още</button>
                                         <span className="total-price">Общо: {this.state.total.toFixed(2)} лв</span>
-                                        <Link className="primary-btn" to="/order/my-orders" onClick={this.handleSubmit}>Поръчай!</Link>
+                                        <button className="primary-btn" onClick={this.handleSubmit}>Поръчай!</button>
                                     </div>
 
                                 </Fragment>

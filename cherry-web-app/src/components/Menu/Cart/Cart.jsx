@@ -17,19 +17,18 @@ function Cart({ id, imagePath, sort, price, description, isAdmin }) {
         <p className="description">
             {description}
         </p>
-        <p>
+        <p className="actions">
             {isAdmin
                 ? <Fragment>
-                    <Link className="primary-btn" to={`/cherry/edit/${id}`}>Промени</Link>
-                    <Link className="primary-btn" to={`/cherry/remove/${id}`}>Изтрии</Link>
+                    <Link className="primary-btn edit" to={`/cherry/edit/${id}`}></Link>
+                    <Link className="primary-btn remove" to={`/cherry/remove/${id}`}></Link>
                 </Fragment>
                 : <Fragment>
                     <Link className="primary-btn" to={`/cherry/details/${id}`}>Детайли</Link>
-                    <Link className="primary-btn" to={`/order/products/${id}`}>Поръчай</Link>
+                    <Link className="primary-btn" to={`/order/products/${id}`}>Вземи</Link>
                 </Fragment>
             }
         </p>
-        <br />
     </li>)
 }
 
