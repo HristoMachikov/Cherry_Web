@@ -11,12 +11,15 @@ class Basket extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            // products:this.context,
             products: JSON.parse(localStorage.getItem('state')) || {},
             // products: props.location.state|| {},
             total: 0,
             isLoading: true
         }
     }
+
+    static contextType = BasketContext;
 
     componentDidMount() {
         const currentId = this.props.match && this.props.match.params.id;
@@ -32,7 +35,7 @@ class Basket extends Component {
             if (currentId && !alredyAdded) {
                 orderService.getNewProduct(currentId).then(product => {
                     if (product.sort) {
-                        
+
                         products[currentId] = { ...product, weigth: 0, subTotal: 0, quantity: 1 }
 
                         this.setState({ products, total, isLoading })
@@ -55,19 +58,20 @@ class Basket extends Component {
         }
     }
 
-    handleClickTakeMore = (event) => {
-        event.preventDefault();
+    handleClickTakeMore = () => {
         localStorage.setItem('state', `${JSON.stringify(this.state.products)}`)
-        this.props.history.push({ pathname: '/', state: this.state.products });
+        this.props.history.push({ pathname: '/menu', state: this.state.products });
     }
 
     handleFormElementChange = (event) => {
+        console.log(event.target.name)
         const { name, value, id } = event.target;
         const { products } = this.state;
         let subTotal = 0;
+        const { price } = products[id];
 
-        if (name === "weigth") subTotal = products[id].quantity * value;
-        if (name === "quantity") subTotal = products[id].weigth * value;
+        if (name === "weigth") { subTotal = products[id].quantity * value * price };
+        if (name === "quantity") { subTotal = products[id].weigth * value * price };
         if (Number(subTotal) < 0) subTotal = 0;
 
         const prevTotal = Object.keys(products)
@@ -76,10 +80,10 @@ class Basket extends Component {
                 return acc + products[key].subTotal;
             }, 0);
 
-        const { price } = products[id];
-        const total = (prevTotal + subTotal) * price;
+        const total = prevTotal + subTotal;
+
         products[id][name] = value;
-        products[id].subTotal = subTotal * price;
+        products[id].subTotal = subTotal;
         this.setState({ total, products }, () => {
             localStorage.setItem('state', `${JSON.stringify(this.state.products)}`)
         });
@@ -134,9 +138,10 @@ class Basket extends Component {
     }
 
     render() {
-        console.log(this.props)
+        console.log("Basket")
+        console.log(this.props.location.state)
         const { products, isLoading } = this.state;
-        debugger;
+
         return (
             <section className="site-section home" >
                 <ToastContainer autoClose={3500} />
@@ -174,8 +179,8 @@ class Basket extends Component {
                                                     sort={products[product].sort}
                                                     imagePath={`/static${products[product].imagePath}`}
                                                     price={products[product].price}
-                                                    weigth={products[product].weigth}
-                                                    quantity={products[product].quantity}
+                                                    weigth={+products[product].weigth}
+                                                    quantity={+products[product].quantity}
                                                     subTotal={products[product].subTotal}
                                                     handleFormElementChange={this.handleFormElementChange}
                                                     handleClickDelete={this.handleClickDelete}

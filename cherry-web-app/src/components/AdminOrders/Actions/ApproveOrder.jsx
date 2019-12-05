@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import orderService from '../../../services/order-service';
@@ -9,7 +7,7 @@ function ApproveOrder(props) {
     const { id } = props.match.params;
 
     orderService.getApproveOrder(id).then(res => {
-        
+
         if (res.ok) {
             toast.info("Успешно одобрена заявка!", {
                 closeButton: false
@@ -25,9 +23,6 @@ function ApproveOrder(props) {
     }).catch(err => {
         console.log(err);
     })
-return null;
-    // return (
-    //     <ToastContainer autoClose={3500} />
-    // );
+    return null;
 }
 export default ApproveOrder;

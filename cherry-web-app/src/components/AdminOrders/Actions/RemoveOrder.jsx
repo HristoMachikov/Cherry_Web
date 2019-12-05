@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import orderService from '../../../services/order-service';
@@ -9,7 +7,7 @@ function RemoveOrder(props) {
     const { id } = props.match.params;
 
     orderService.getRemoveOrder(id).then(res => {
-        
+
         if (res[0].ok) {
             toast.info("Успешно изтрита заявка!", {
                 closeButton: false
@@ -25,9 +23,7 @@ function RemoveOrder(props) {
     }).catch(err => {
         console.log(err);
     })
-return null;
-    // return (
-    //     <ToastContainer autoClose={3500} />
-    // );
+    return null;
+
 }
 export default RemoveOrder;

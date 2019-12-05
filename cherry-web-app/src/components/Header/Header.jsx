@@ -9,6 +9,7 @@ class Header extends Component {
     }
     render() {
         const { isAdmin, username } = this.props;
+  
         return (<header className="main-header" >
             <div className="wrapper">
                 <input type="checkbox" name="toggle" id="toggle" className="toggle-nav" />

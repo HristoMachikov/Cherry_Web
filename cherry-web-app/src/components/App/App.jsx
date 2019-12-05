@@ -8,8 +8,9 @@ import userService from '../../services/user-service';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
-import About from '../About/About';
 import Menu from '../Menu/Menu';
+import About from '../About/About';
+import Home from '../Home/Home';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import Create from '../Cherry/Create/Create';
@@ -52,6 +53,8 @@ class App extends Component {
     }
 
     componentDidMount() {
+        console.log("App1")
+        console.log(this.props)
         const isAdmin = localStorage.getItem('isAdmin') === "true";
 
         if (localStorage.getItem('username')) {
@@ -188,7 +191,9 @@ class App extends Component {
     // }
 
     render() {
+        console.log("App");
         console.log(this.props);
+ 
         // const { history } = this.props;
         const { isLogged, isAdmin } = this.state;
         return (<div className="main">
@@ -216,9 +221,9 @@ class App extends Component {
                                     // handleSubmit={this.handleSubmit}
                                     // handleFormElementChange={this.handleFormElementChange}
                                     history={history}
-                                /> : 
-                                <Redirect to="/" />
-                                // this.pushToHome(history)
+                                /> :
+                                    <Redirect to="/" />
+                                    // this.pushToHome(history)
                                 )}
                             />
                             <Route path="/user/login" exact
@@ -255,8 +260,11 @@ class App extends Component {
                                 render={() => (!isLogged && <Redirect to="/user/login" />)}
                             /> */}
                             <Route path="/about" exact component={About} />
-                            <Route path="/" exact
+                            <Route path="/menu" exact
                                 render={() => <Menu isAdmin={this.state.isAdmin} />}
+                            />
+                             <Route path="/" exact
+                                render={() => <Home isAdmin={this.state.isAdmin} />}
                             />
                             <Route component={NotFound} />
                         </Switch>

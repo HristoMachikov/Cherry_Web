@@ -2,8 +2,7 @@ import React, { Fragment } from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-
-function AdminNav({ isAdmin, history }) {
+function AdminNav({ isAdmin }) {
 
     return isAdmin ? <Fragment>
         <li>
@@ -24,6 +23,6 @@ function AdminNav({ isAdmin, history }) {
 
 AdminNav.propTypes = {
     isAdmin: PropTypes.bool
-
 }
+
 export default AdminNav;
