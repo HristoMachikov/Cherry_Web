@@ -50,7 +50,15 @@ const cherryService = {
         }).then((res) => {
             return res.json()
         }).catch((notConectionErr) => console.error(notConectionErr));
-    }
+    },
+    getGallery: function (id) {
+        return fetch(`http://localhost:4000/cherry/gallery/${id}`, {
+            credentials: 'include',
+        }
+        ).then((res) => {
+            return res.json()
+        }).catch((notConectionErr) => console.error(notConectionErr));
+    },
 };
 
 export default cherryService;

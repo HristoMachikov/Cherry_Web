@@ -2,17 +2,17 @@ const Cherry = require('../models/Cherry');
 const { handleErrors, handleError } = require('./index');
 const User = require('../models/User');
 
-function createGet(req, res) {
-    let cherry = {};
-    const { user } = req;
-    cherry.isPublic = false;
-    res.render('cherry/create', { cherry, user });
-}
+// function createGet(req, res) {
+//     let cherry = {};
+//     const { user } = req;
+//     cherry.isPublic = false;
+//     res.render('cherry/create', { cherry, user });
+// }
 
 function createPost(req, res, next) {
-    let { sort = null, description = null, imagePath = null, isPublic = null, price = null } = req.body;
+    let { sort = null, description = null, imagePath = null, isPublic = null, price = null, gallery = null } = req.body;
     const { user } = req;
-    const cherry = { sort, description, imagePath, isPublic };
+    const cherry = { sort, description, imagePath, isPublic, gallery };
     price ? cherry.price = Number(price) : null;
     // cherry.isPublic = checkBox === "on";
 
@@ -81,20 +81,13 @@ function editPost(req, res, next) {
 
 }
 
-function detailsGet(req, res, next) {
-    let courseId = req.params.id;
-    const { user } = req;
-    Cherry.findById(Object(courseId)).populate('lectures').then(course => {
-        course.usersEnrolled.forEach(element => {
-            if (element.toString() === user.id) {
-                course.isEnrolled = true;
-                return;
-            }
-        });
-        res.render('course/details', { course, user });
+function galleryGet(req, res, next) {
+    const cherryId = req.params.id;
+    Cherry.findById(cherryId).then(currProd => {
+        res.send(currProd);
     }).catch(err => {
-        handleErrors(err, res);
-    })
+        next(err);
+    });
 }
 
 function removeGet(req, res, next) {
@@ -111,10 +104,10 @@ function removeGet(req, res, next) {
 }
 
 module.exports = {
-    createGet,
+    // createGet,
     createPost,
     editGet,
     editPost,
-    detailsGet,
+    galleryGet,
     removeGet
 }

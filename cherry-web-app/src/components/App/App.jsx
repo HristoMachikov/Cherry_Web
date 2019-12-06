@@ -16,6 +16,7 @@ import Register from '../Register/Register';
 import Create from '../Cherry/Create/Create';
 import Edit from '../Cherry/Edit/Edit';
 import Remove from '../Cherry/Remove/Remove';
+import Gallery from '../Cherry/Gallery/Gallery';
 import Basket from '../Basket/Basket';
 import UserOrders from '../UserOrders/UserOrders';
 import AdminOrders from '../AdminOrders/AdminOrders';
@@ -193,7 +194,7 @@ class App extends Component {
     render() {
         console.log("App");
         console.log(this.props);
- 
+
         // const { history } = this.props;
         const { isLogged, isAdmin } = this.state;
         return (<div className="main">
@@ -207,6 +208,9 @@ class App extends Component {
                         </header>
                     </div>}>
                         <Switch>
+                            {isLogged && <Route path="/cherry/gallery/:id"
+                                render={({ history, match }) => <Gallery history={history} match={match} />}
+                            />}
                             {isAdmin && <Route path="/cherry/remove/:id"
                                 render={({ history, match }) => <Remove history={history} match={match} />}
                             />}
@@ -263,7 +267,7 @@ class App extends Component {
                             <Route path="/menu" exact
                                 render={() => <Menu isAdmin={this.state.isAdmin} />}
                             />
-                             <Route path="/" exact
+                            <Route path="/" exact
                                 render={() => <Home isAdmin={this.state.isAdmin} />}
                             />
                             <Route component={NotFound} />

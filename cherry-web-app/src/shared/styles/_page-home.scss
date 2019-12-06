@@ -80,10 +80,11 @@
                 content: "\f128";
             }
             &:nth-child(4) a:before {
-                content: "\f07a";
+                content: "\f2bb";
+                // content: "\f07a" - basket;
             }
             &:nth-child(5) a:before {
-                content: "\f0ce";
+                content: "\f3c5";
             }
         }
     }
@@ -469,38 +470,38 @@
             }
         } 
     }
-    .not-found {
+    // .not-found {
 
-        header{
-            span:after {
-                content: "\f12a";
-            }
-        }
+    //     header{
+    //         span:after {
+    //             content: "\f12a";
+    //         }
+    //     }
         
-        .imаges {
-            display: block;
-            overflow: hidden;
-            position: relative;
-            width: 50%;
-            text-align: center;
-            padding: 0;
-            margin: 0 auto;
+    //     .imаges {
+    //         display: block;
+    //         overflow: hidden;
+    //         position: relative;
+    //         width: 50%;
+    //         text-align: center;
+    //         padding: 0;
+    //         margin: 0 auto;
 
-            img {  
-                display: block;
-                width: 100%;
-                height: auto;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-        }
+    //         img {  
+    //             display: block;
+    //             width: 100%;
+    //             height: auto;
+    //             position: absolute;
+    //             top: 50%;
+    //             left: 50%;
+    //             transform: translate(-50%, -50%);
+    //         }
+    //     }
 
-        .imаges:before {
-            display: block;
-            content: '';
-            padding-top: 100%;
-        }
-    }
+    //     .imаges:before {
+    //         display: block;
+    //         content: '';
+    //         padding-top: 100%;
+    //     }
+    // }
 }

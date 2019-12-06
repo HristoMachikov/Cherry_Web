@@ -1,0 +1,34 @@
+.not-found {
+
+    header{
+        span:after {
+            content: "\f12a";
+        }
+    }
+    
+    .imаges {
+        display: block;
+        overflow: hidden;
+        position: relative;
+        width: 50%;
+        text-align: center;
+        padding: 0;
+        margin: 0 auto;
+
+        img {  
+            display: block;
+            width: 100%;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    .imаges:before {
+        display: block;
+        content: '';
+        padding-top: 100%;
+    }
+}

@@ -18,8 +18,8 @@ const cherrySchema = new Schema({
         type: Schema.Types.Number,
         required: [true, 'Price is required']
     },
-    isPublic: { type: Schema.Types.Boolean, default: false }
-    // lectures: [{ type: Schema.Types.ObjectId, ref: 'Lecture' }],
+    isPublic: { type: Schema.Types.Boolean, default: false },
+    gallery: [{ type: Schema.Types.String, }]
     // usersEnrolled: [{ type: Schema.Types.ObjectId, ref: 'User' }]
     // creatorId: { type: Schema.Types.String }
 });

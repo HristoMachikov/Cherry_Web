@@ -9,6 +9,10 @@
 
     .contact-header{
         flex: 1 0 100%;
+
+        span:after {
+            content: "\f2bb";
+        }
     }
 
     .contact-card {
@@ -88,54 +92,24 @@
         }
     }
 
-    .location {
-        flex-grow: 1;
-        @include  base-dim;
-
-        .location-text {
-            text-align: center;
-            padding-bottom: 0.5em;;
-        }
-
-        .iframe {
-            display: block;
-            overflow: hidden;
-            position: relative;
-            border-radius: 0.5em;
-        
-            &:before {
-                display: block;
-                content: "";
-                padding-top:75%;     
-            }
-
-            iframe {
-                width: 100%;
-                height: 100%;
-                position: absolute;
-                top: 50%;left: 50%;
-                transform: translate(-50%, -50%);
-            }
-        }
-    }
-
+    
     .contact-form {
         flex-grow: 1;
         @include  base-dim;
         @include mq(tablet) {
               flex-basis: 50%;  
-        }
+            }
 
         form {
             width: 100%;
             height: auto;
-
+            
             .title {
                 text-align: center;
                 border-bottom: 1px solid var(--color-border-defaut);
                 margin-bottom: 1em;
             }
-
+            
             p {
                 padding: 0;
                 padding-bottom: 1em;
@@ -149,7 +123,7 @@
                     -webkit-appearance: none;
                     // box-shadow: none;
                     // appearance: none;
-                   
+                    
                     &:hover {
                         background: var(--color-primary-core-site);
                     }
@@ -196,7 +170,7 @@
             .name {
                 display: flex;
                 justify-content: space-between;
-
+                
                 .lastname label {
                     opacity: 0;
                 }
@@ -217,13 +191,57 @@
 
             .form-btn{
                 text-align: center;
-
+                
                 .btn {
                     width: auto;
                     display: inline-block;
                     margin: 0 ;
                     padding: 1em;
                 }
+            }
+        }
+    }
+}
+
+.location {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .location-header{
+        flex: 1 0 100%;
+        span:after {
+            content: "\f3c5";
+        }
+    }
+
+    .location-wrapper {
+        flex-grow: 1;
+        @include  base-dim;
+
+        .location-text {
+            text-align: center;
+            padding-bottom: 0.5em;;
+        }
+
+        .iframe {
+            display: block;
+            overflow: hidden;
+            position: relative;
+            border-radius: 0.5em;
+        
+            &:before {
+                display: block;
+                content: "";
+                padding-top:75%;     
+            }
+
+            iframe {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 50%;left: 50%;
+                transform: translate(-50%, -50%);
             }
         }
     }

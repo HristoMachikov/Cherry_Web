@@ -1,6 +1,11 @@
 import React, { Component, Fragment } from 'react';
 
 import CartHome from './CartHome/CartHome';
+import SideNav from './SideNav/SideNav';
+import Info from './Info/Info';
+import Why from './Why/Why';
+import Contacts from './Contacts/Contacts';
+import Location from './Location/Location';
 
 import cherryService from '../../services/cherry-service'
 
@@ -24,6 +29,7 @@ class Home extends Component {
         const { cherrys } = this.state;
         const { isAdmin } = this.props;
         return <section className="site-section home">
+            <SideNav />
             {cherrys ? <article className="sorts" id="sorts">
                 {cherrys.length
                     ? <Fragment>
@@ -53,6 +59,10 @@ class Home extends Component {
                     <header><h2>Loading...</h2></header>
                 </article>
             }
+            <Info />
+            <Why />
+            <Contacts />
+            <Location />
         </section>
     }
 }

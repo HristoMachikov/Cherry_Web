@@ -14,12 +14,11 @@ module.exports = (app) => {
     app.get('/user/my-orders/:id', auth(), orderController.myOrdersGet);
     app.get('/order/new-product/:id', auth(), orderController.newProductGet);
 
-    app.get('/cherry/details/:id', auth(), cherryController.detailsGet);
-    // app.post('/cherry/details/:id', auth(), cherryController.detailsPost);
+    app.get('/cherry/gallery/:id', auth(), cherryController.galleryGet);
     app.get('/cherry/remove/:id', auth(true, true), cherryController.removeGet);
     app.get('/cherry/edit/:id', auth(true, true), cherryController.editGet);
     app.post('/cherry/edit/:id', auth(true, true), cherryController.editPost);
-    app.get('/cherry/create', auth(true, true), cherryController.createGet);
+    // app.get('/cherry/create', auth(true, true), cherryController.createGet);
     app.post('/cherry/create', auth(true, true), cherryController.createPost);
 
     app.get('/user/remove/:id', auth(), userController.removeProdGet);

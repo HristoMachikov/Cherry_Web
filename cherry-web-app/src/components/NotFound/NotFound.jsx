@@ -1,5 +1,7 @@
 import React from 'react';
 
+import '../NotFound/page-not-found.scss'
+
 const NotFound = () => {
     return (<section className="site-section home" >
         <article className="not-found" id="not-found">
