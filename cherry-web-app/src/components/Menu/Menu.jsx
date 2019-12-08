@@ -3,42 +3,51 @@ import React, { Component, Fragment } from 'react';
 
 import Cart from './Cart/Cart';
 
-// import posts from '../../data/posts.json';
-
 import cherryService from '../../services/cherry-service'
 
 class Menu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cherrys: null
+            isLoading: true,
+            cherrys: []
         };
     }
     componentDidMount() {
-        cherryService.load().then(cherrys => {
-            console.log(cherrys);
-            this.setState({ cherrys });
-        }).catch(err => {
-            console.log(err);
-        })
+        const { isAdmin } = this.props;
+    
+        (isAdmin ?
+            cherryService.getProductsAdmin().then(cherrys => {
+                const isLoading = false;
+                this.setState({ cherrys, isLoading });
+            }).catch(err => {
+                console.log(err);
+            }) :
+            cherryService.getProducts().then(cherrys => {
+                const isLoading = false;
+                this.setState({ cherrys, isLoading });
+            }).catch(err => {
+                console.log(err);
+            })
+        )
     }
 
     render() {
-        const { cherrys } = this.state;
+        const { cherrys, isLoading } = this.state;
         const { isAdmin } = this.props;
-        console.log(this.props.location);
         return <section className="site-section home">
-            {cherrys ? <article className="sorts" id="sorts">
-                {cherrys.length
-                    ? <Fragment>
+            <article className="sorts" id="sorts">
+                {isLoading ?
+                    <header>
+                        <h2>Loading...</h2>
+                    </header>
+                    : <Fragment>
                         <header>
                             <h2>Предлагани сортове</h2><span></span>
                         </header>
-                        <ul>
-                            {cherrys.map((cherry) => {
-                                if (!cherry.isPublic && !isAdmin) {
-                                    return null;
-                                } else {
+                        {cherrys.length ?
+                            <ul>
+                                {cherrys.map((cherry) => {
                                     return <Cart
                                         key={cherry._id}
                                         id={cherry._id}
@@ -48,19 +57,15 @@ class Menu extends Component {
                                         description={cherry.description}
                                         isAdmin={isAdmin}>
                                     </Cart>;
-                                }
-                            })}
-                        </ul>
+                                })}
+                            </ul>
+                            : <header>
+                                <h4>Няма предлагани сортове!</h4>
+                            </header>
+                        }
                     </Fragment>
-                    : <header>
-                        <h4>Няма предлагани сортове!</h4>
-                    </header>
                 }
             </article>
-                : <article className="sorts" id="sorts" >
-                    <header><h2>Loading...</h2></header>
-                </article>
-            }
         </section>
     }
 }

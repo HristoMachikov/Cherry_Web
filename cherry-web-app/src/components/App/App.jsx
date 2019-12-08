@@ -1,7 +1,7 @@
 import React, { Component, Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import 'react-toastify/dist/ReactToastify.css';
 
 import userService from '../../services/user-service';
 
@@ -46,9 +46,6 @@ class App extends Component {
         const cookies = parseCookies();
         const isLogged = !!cookies["user_cookie"];
         this.state = {
-            // username: null,
-            // isAdmin: false,
-            // userId: "",
             isLogged
         }
     }
@@ -94,9 +91,9 @@ class App extends Component {
         })
     }
 
-    pushToHome = (history) => {
-        history.push('/');
-    }
+    // pushToHome = (history) => {
+    //     history.push('/');
+    // }
 
     setLogin = (history, data) => {
         userService.login(data).then((res) => {
@@ -208,9 +205,9 @@ class App extends Component {
                         </header>
                     </div>}>
                         <Switch>
-                            {isLogged && <Route path="/cherry/gallery/:id"
-                                render={({ history, match }) => <Gallery history={history} match={match} />}
-                            />}
+                            <Route path="/cherry/gallery/:id"
+                                render={({ history, match }) => (!isLogged ? <Redirect to="/user/login" /> : <Gallery history={history} match={match} />)}
+                            />
                             {isAdmin && <Route path="/cherry/remove/:id"
                                 render={({ history, match }) => <Remove history={history} match={match} />}
                             />}
@@ -236,14 +233,16 @@ class App extends Component {
                                     // handleFormElementChange={this.handleFormElementChange}
                                     setLogin={this.setLogin}
                                     history={history}
-                                /> : this.pushToHome(history))}
+                                /> :<Redirect to="/" />
+                                //  this.pushToHome(history)
+                                 )}
                             />
                             <Route path="/user/logout"
                                 render={({ history }) => (this.state.isLogged ? this.logout(history) : null)}
                             />
-                            {isLogged && <Route path="/order/products/:id"
-                                render={({ history, match, location }) => <Basket history={history} location={location} match={match} basket={history.location.state} userId={this.state.userId} />}
-                            />}
+                            <Route path="/order/products/:id"
+                                render={({ history, match, location }) => (!isLogged ? <Redirect to="/user/login" /> : <Basket history={history} location={location} match={match} basket={history.location.state} userId={this.state.userId} />)}
+                            />
                             {isLogged && <Route path="/order/products"
                                 render={({ history, location }) => <Basket history={history} location={location} basket={history.location.state} userId={this.state.userId} />}
                             />}

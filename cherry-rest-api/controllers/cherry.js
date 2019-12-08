@@ -22,15 +22,14 @@ function createPost(req, res, next) {
     }).catch(err => {
         if (err.name === 'MongoError' && err.code === 11000) {
             const error = "Cherry with this name exist!"
-            console.log(error + 'then')
-            //status(401) ????
-            res.status(401).send(JSON.stringify(error));
+    
+            res.status(403).send(JSON.stringify(error));
             return;
         }
+        
         if (err.name === 'ValidationError') {
             const error = err.errors.description.message
-            //status(401) ????
-            res.status(401).send(JSON.stringify(error));
+            res.status(403).send(JSON.stringify(error));
             return;
         }
         next(err);
@@ -90,6 +89,16 @@ function galleryGet(req, res, next) {
     });
 }
 
+function homeGetAdmin(req, res, next) {
+    Cherry.find().then(cherries => {
+        res.send(cherries);
+    }).catch(err => {
+        next(err);
+    });
+}
+
+
+
 function removeGet(req, res, next) {
     const cherryId = req.params.id;
     const { user } = req;
@@ -109,5 +118,6 @@ module.exports = {
     editGet,
     editPost,
     galleryGet,
-    removeGet
+    removeGet,
+    homeGetAdmin
 }

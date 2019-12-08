@@ -20,20 +20,23 @@ module.exports = (app) => {
     app.post('/cherry/edit/:id', auth(true, true), cherryController.editPost);
     // app.get('/cherry/create', auth(true, true), cherryController.createGet);
     app.post('/cherry/create', auth(true, true), cherryController.createPost);
+    app.get('/cherry/all', auth(true, true), cherryController.homeGetAdmin);
 
-    app.get('/user/remove/:id', auth(), userController.removeProdGet);
+    // app.get('/user/remove/:id', auth(), userController.removeProdGet);
     
-    app.post('/user/new-order/:id', auth(), userController.newOrderPost);
-    app.get('/user/current-state', auth(), userController.currentStateGet);
+    // app.post('/user/new-order/:id', auth(), userController.newOrderPost);
+    // app.get('/user/current-state', auth(), userController.currentStateGet);
 
-    app.get('/user/login', userController.loginGet);
+    // app.get('/user/login', userController.loginGet);
     app.post('/user/login', userController.loginPost);
-    app.get('/user/register', userController.registerGet);
+    // app.get('/user/register', userController.registerGet);
     app.post('/user/register', userController.registerPost);
     app.get('/user/logout', userController.logoutGet);
+    app.get('/auth', userController.authGet);
 
     // app.get('/search', auth(), homeController.search);
-    app.get('/about', auth(false), homeController.about);
+    // app.get('/about', auth(false), homeController.about);
+    // app.all('*', auth(false), homeController.notFound);
+    
     app.get('/', auth(false), homeController.homeGet);
-    app.all('*', auth(false), homeController.notFound);
 };

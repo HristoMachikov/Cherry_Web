@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+// /* eslint-disable no-undef */
 import React, { Component } from 'react';
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -11,17 +11,17 @@ const camelCased = myString => (
     myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
 );
 
-let galleryArr = [];
-const myWidget = cloudinary.createUploadWidget({
-    cloudName: 'deslhiz2y',
-    apiKey: '843597855354654',
-    uploadPreset: 'cherry-web'
-}, (error, result) => {
-    if (!error && result && result.event === "success") {
-        // console.log('Done! Here is the image info: ', result.info);
-        galleryArr.push(result.info.url)
-    }
-})
+// let galleryArr = [];
+// const myWidget = cloudinary.createUploadWidget({
+//     cloudName: 'deslhiz2y',
+//     apiKey: '843597855354654',
+//     uploadPreset: 'cherry-web'
+// }, (error, result) => {
+//     if (!error && result && result.event === "success") {
+//         // console.log('Done! Here is the image info: ', result.info);
+//         galleryArr.push(result.info.url)
+//     }
+// })
 
 class Create extends Component {
     state = {
@@ -30,13 +30,13 @@ class Create extends Component {
         imagePath: "",
         description: "",
         checkBox: false,
-        isPublic: false,
+        isPublic: this.checkBox,
         errorMessages: {}
     };
 
     handleSubmit = (event) => {
         event.preventDefault();
-        const gallery = galleryArr;
+        const gallery = [];
         const { sort, description, imagePath, isPublic, price } = this.state;
         
         cherryService.postCreate({ sort, description, imagePath, isPublic, price, gallery }).then(res => {
@@ -165,11 +165,14 @@ class Create extends Component {
                                 onChange={this.handleFormElementChange}
                             />
                         </div>
-                        <div className="form-btn">
+                        {/* <div className="form-btn">
                             <p className="btn">
-                                <button type="button" id="upload_widget" onClick={() => myWidget.open()} className="cloudinary-button">Upload files</button>
+                                <button type="button" 
+                                // id="upload_widget" 
+                                // onClick={() => myWidget.open()} 
+                                className="cloudinary-button">Upload files</button>
                             </p>
-                        </div>
+                        </div> */}
                         <div className="form-btn">
                             <p className="btn">
                                 <button type="submit" className="primary-btn">Създай</button>

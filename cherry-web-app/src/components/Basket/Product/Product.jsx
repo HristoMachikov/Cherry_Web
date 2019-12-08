@@ -12,7 +12,7 @@ class Product extends Component {
             <tr>
                 <td><img src={imagePath} alt={imagePath} width="100px" /></td>
                 <td>{sort}</td>
-                <td>{price.toFixed(2)} лв</td>
+                <td>{price.toFixed(2)} лв/кг</td>
                 <td>
                     <input
                         type="number"

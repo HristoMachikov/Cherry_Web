@@ -6,6 +6,7 @@ function SideNav() {
             <li><a href="/#sorts"></a></li>
             <li><a href="/#info"></a></li>
             <li><a href="/#why"></a></li>
+            <li><a href="/#order"></a></li>
             <li><a href="/#contacts"></a></li>
             <li><a href="/#location"></a></li>
         </ul>

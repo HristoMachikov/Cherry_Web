@@ -80,10 +80,12 @@
                 content: "\f128";
             }
             &:nth-child(4) a:before {
-                content: "\f2bb";
-                // content: "\f07a" - basket;
+                content: "\f07a";
             }
             &:nth-child(5) a:before {
+                content: "\f2bb";
+            }
+            &:nth-child(6) a:before {
                 content: "\f3c5";
             }
         }
@@ -222,6 +224,11 @@
                 content: "\f07a";
             }
         }
+
+        .order-text{
+            text-align: center;
+        }
+
         .btn {
             text-align: center;
             padding: 1em 0;
