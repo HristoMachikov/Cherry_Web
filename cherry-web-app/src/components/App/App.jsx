@@ -23,6 +23,7 @@ import AdminOrders from '../AdminOrders/AdminOrders';
 import ApproveOrder from '../AdminOrders/Actions/ApproveOrder';
 import RemoveOrder from '../AdminOrders/Actions/RemoveOrder';
 
+const LoginHook = React.lazy(() => import('../Login/LoginHook'));
 const Login = React.lazy(() => import('../Login/Login'));
 const Register = React.lazy(() => import('../Register/Register'));
 const Create = React.lazy(() => import('../Cherry/Create/Create'));
@@ -88,7 +89,7 @@ class App extends Component {
     }
 
     setLogin = (history, data) => {
-        userService.login(data).then((res) => {
+       return userService.login(data).then((res) => {
             if (res.username) {
                 this.setState({
                     username: res.username,
@@ -109,9 +110,10 @@ class App extends Component {
                     closeButton: false
                 })
             }
-        }).catch(err => {
-            console.log(err);
-        });
+        })
+        // .catch(err => {
+        //     console.log(err);
+        // });
     }
 
     render() {

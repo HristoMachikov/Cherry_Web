@@ -16,42 +16,37 @@ export const getValidationsRunnerForSchema = schema => form => {
         });
 }
 
-const getControlChangeHandler = (
-    // validations, setErrors, 
-    setValue, setCurrentName) => {
+const getControlChangeHandler = (validations, setErrors, setValue) => {
     let debounce;
     return e => {
-        const { value, name } = e.target;
+        const newValue = e.target.value;
         if (debounce) { clearTimeout(debounce); debounce = null; }
         debounce = setTimeout(() => {
-            setValue(value);
-            setCurrentName(name);
-            // runControlValidation(value, validations)
-            //     .then(() => {
-            //         setErrors(undefined);
-            //     })
-            //     .catch(err => {
-            //         setErrors(err.errors);
-            //     });
+            setValue(newValue);
+
+            runControlValidation(newValue, validations)
+                .then(() => {
+                    setErrors(undefined);
+                })
+                .catch(err => {
+                    setErrors(err.errors);
+                });
             debounce = null;
         }, 200);
     };
 };
 
-export const useFormControl = (defaultValue
-    , validations
-) => {
+export const useFormControl = (defaultValue, validations) => {
     const [value, setValue] = React.useState(defaultValue);
     const [errors, setErrors] = React.useState(undefined);
-    const [currentName, setCurrentName] = React.useState('');
 
     const changeHandler = React.useCallback(
         getControlChangeHandler(
             validations,
-            setValue, setErrors, setCurrentName),
+            setValue, setErrors),
         [
             validations,
-            setValue, setErrors, setCurrentName]
+            setValue, setErrors]
     );
 
     return React.useMemo(() => ({
@@ -59,10 +54,8 @@ export const useFormControl = (defaultValue
         setValue,
         errors,
         setErrors,
-        changeHandler,
-        currentName,
-        setCurrentName
-    }), [value, setValue, errors, setErrors, changeHandler, currentName, setCurrentName]);
+        changeHandler
+    }), [value, setValue, errors, setErrors, changeHandler]);
 };
 //
 
