@@ -1,8 +1,4 @@
 import React,{ Component, Fragment } from 'react';
-// import { Link } from 'react-router-dom';
-
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
 
 import AdminSingle from './AdminSingle/AdminSingle';
 
@@ -30,12 +26,10 @@ class AdminOrders extends Component {
     componentDidMount() {
         // const userId = this.props.userId || localStorage.getItem('userId');
         orderService.getPendingOrders().then(pendingOrders => {
-            console.log(pendingOrders)
             if (pendingOrders) {
-                // console.log(pendingOrders)
+               
                 const isLoading = false;
                 let orders = addDateToString(pendingOrders);
-                console.log(orders)
                 this.setState({ orders, isLoading })
             }
         }).catch(err => console.log(err))
@@ -90,7 +84,6 @@ class AdminOrders extends Component {
             </section>
         );
     }
-
 }
 
 export default AdminOrders;

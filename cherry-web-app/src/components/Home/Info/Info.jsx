@@ -1,7 +1,7 @@
 import React from 'react';
 
 function Info() {
-    return (<article class="info" id="info">
+    return (<article className="info" id="info">
     <header> 
         <h2>Важна информация</h2><span></span>
     </header>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 function Why() {
-    return (<article class="why" id="why">
+    return (<article className="why" id="why">
     <header>
         <h2>Защо тези череши</h2><span></span>
     </header>

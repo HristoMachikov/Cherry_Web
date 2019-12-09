@@ -1,11 +1,11 @@
-import React, { Component, Fragment, createContext } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Product from './Product/Product';
 import orderService from '../../services/order-service';
-const BasketContext = createContext({});
+// const BasketContext = createContext({});
 
 class Basket extends Component {
     constructor(props) {
@@ -18,8 +18,7 @@ class Basket extends Component {
             isLoading: true
         }
     }
-
-    static contextType = BasketContext;
+    // static contextType = BasketContext;
 
     componentDidMount() {
         const currentId = this.props.match && this.props.match.params.id;
@@ -64,7 +63,6 @@ class Basket extends Component {
     }
 
     handleFormElementChange = (event) => {
-        console.log(event.target.name)
         const { name, value, id } = event.target;
         const { products } = this.state;
         let subTotal = 0;
@@ -110,7 +108,6 @@ class Basket extends Component {
         })
     }
 
-
     handleSubmit = () => {
         const { userId } = this.props;
         const { total, products } = this.state;
@@ -138,8 +135,6 @@ class Basket extends Component {
     }
 
     render() {
-        console.log("Basket")
-        console.log(this.props.location.state)
         const { products, isLoading } = this.state;
 
         return (
@@ -169,10 +164,8 @@ class Basket extends Component {
                                         </thead>
                                         <tbody>
                                             {Object.keys(products).map((product) => {
-                                                // const { _id, sort, imagePath, price, weigth, subTotal, quantity } = products[product];
-                                                // const state = this.props.basket && this.props.basket[product] || {}
+
                                                 return <Product
-                                                    // state={state}
                                                     history={this.props.history}
                                                     key={products[product]._id}
                                                     id={products[product]._id}
@@ -184,8 +177,6 @@ class Basket extends Component {
                                                     subTotal={products[product].subTotal}
                                                     handleFormElementChange={this.handleFormElementChange}
                                                     handleClickDelete={this.handleClickDelete}
-                                                // description={cherry.description}
-                                                // isAdmin={isAdmin}
                                                 >
                                                 </Product>;
                                             })}

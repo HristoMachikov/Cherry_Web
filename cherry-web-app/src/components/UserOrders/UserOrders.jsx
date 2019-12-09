@@ -1,22 +1,10 @@
 import React, { Component, Fragment } from 'react';
-// import { Link } from 'react-router-dom';
-
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
 
 import UserSingle from './UserSingle/UserSingle';
 
 import orderService from '../../services/order-service';
 
 import dateToString from '../../shared/methods/date-to-string';
-
-// const dateToString = (dateStr) => {
-//     const date = new Date(dateStr);
-//     let day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate()
-//     let currMonth = date.getMonth() + 1;
-//     let month = currMonth < 10 ? "0" + currMonth : currMonth
-//     return day + "." + month + "." + date.getFullYear() + ' - ' + date.toLocaleTimeString();
-// }
 
 const addDateToString = (orders) => {
     let ordersArr = orders.map(order => {
@@ -39,10 +27,8 @@ class UserOrders extends Component {
         const userId = this.props.userId || localStorage.getItem('userId');
         orderService.getUserOrders(userId).then(ordersResult => {
             if (ordersResult) {
-                console.log(ordersResult)
                 const isLoading = false;
                 let orders = addDateToString(ordersResult);
-                console.log(orders)
                 this.setState({ orders, isLoading })
             }
         }).catch(err => console.log(err))
@@ -75,15 +61,12 @@ class UserOrders extends Component {
                                 <tbody>
                                     {orders.map((order, index) => {
                                         return <UserSingle
-                                            // history={this.props.history}
                                             key={order._id}
                                             id={order._id}
                                             index={index + 1}
                                             status={order.status}
                                             date={order.dateToStr}
                                             total={order.total}
-                                        // handleFormElementChange={this.handleFormElementChange}
-                                        // handleClickDelete={this.handleClickDelete}
                                         >
                                         </UserSingle>;
                                     })}
@@ -99,7 +82,6 @@ class UserOrders extends Component {
             </section>
         );
     }
-
 }
 
 export default UserOrders;

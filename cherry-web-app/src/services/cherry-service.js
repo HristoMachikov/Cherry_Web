@@ -2,8 +2,6 @@ const cherryService = {
     getProducts: function () {
         return fetch(`http://localhost:4000`).then((res) => {
             // return fetch(`http://localhost:9999/api/origami${id ? `/${id}` : ""}${limit ? `?limit=${limit}` : ""}`).then((res) => {
-            console.log(res);
-
             return res.json()
         }).catch((notConectionErr) => console.error(notConectionErr));
     },
@@ -11,7 +9,6 @@ const cherryService = {
         return fetch(`http://localhost:4000/cherry/all`, {
             credentials: 'include',
         }).then((res) => {
-console.log(res)
             return res.json()
         }).catch((notConectionErr) => console.error(notConectionErr));
     },

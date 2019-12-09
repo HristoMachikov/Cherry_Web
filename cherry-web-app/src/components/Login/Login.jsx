@@ -4,38 +4,10 @@ import withForm from '../../shared/hocs/withForm';
 import { ToastContainer, toast } from 'react-toastify';
 
 import * as yup from 'yup'
-// import './shared/styles/_forms.scss';
 
 import { minLength } from '../../config/app-config';
 
 class Login extends Component {
-    // constructor(props) {
-    //     super(props)
-
-    //     this.state = {
-    //         username: "",
-    //         password: "",
-    //         errorMessages: []
-    //     };
-
-    //     this.handleSubmit = this.props.handleSubmit.bind(this);
-    //     this.handleFormElementChange = this.props.handleFormElementChange.bind(this);
-    // }
-
-    // checkValidity = (event) => {
-    //     const { target } = event;
-    //     if (!target.checkValidity()) {
-    //         console.error("Something went wrong...")
-    //         console.error(target.validationMessage)
-    //         this.setState(({ errorMessages }) => ({
-    //             errorMessages: [target.validationMessage]
-    //         }))
-    //     } else {
-    //         this.setState(() => ({
-    //             errorMessages: []
-    //         }))
-    //     }
-    // }
 
     onChangeHandler = this.props.controlOnChangeHandlerFactory();
 
@@ -47,8 +19,6 @@ class Login extends Component {
 
         this.props.runValidations()
         .then(formData => {
-            console.log(formData)
-
             const errors = this.props.getFormErrorState();
 
             const firstError = this.getFirstControlError('email')
@@ -71,9 +41,7 @@ class Login extends Component {
         return errorState && errorState[name] && errorState[name][0];
     };
 
-
     render() {
-
         const currentInputName = this.props.getFormState().currentName;
         const currentInputChecked = this.props.getFormState()[currentInputName];
 
@@ -95,11 +63,6 @@ class Login extends Component {
                                 name="email"
                                 id="email"
                                 onChange={this.onChangeHandler}
-                            // value={username}
-                            // onChange={this.handleFormElementChange}
-                            // required
-                            // onBlur={this.checkValidity}
-                            // minLength={4}
                             />
                             <span></span>
                         </p>
@@ -111,10 +74,6 @@ class Login extends Component {
                                 name="password"
                                 id="password"
                                 onChange={this.onChangeHandler}
-                            // value={password}
-                            // onChange={this.handleFormElementChange}
-                            // required
-                            // onBlur={this.checkValidity}
                             />
                             <span></span>
                         </p>
@@ -142,4 +101,3 @@ const schema = yup.object().shape({
 
 });
 export default withForm(Login, { email: '', password: '' }, schema);
-// export default Login;

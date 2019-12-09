@@ -29,8 +29,7 @@ class Create extends Component {
         price: "",
         imagePath: "",
         description: "",
-        checkBox: false,
-        isPublic: this.checkBox,
+        isPublic: false,
         errorMessages: {}
     };
 
@@ -38,7 +37,7 @@ class Create extends Component {
         event.preventDefault();
         const gallery = [];
         const { sort, description, imagePath, isPublic, price } = this.state;
-        
+        console.log(isPublic)
         cherryService.postCreate({ sort, description, imagePath, isPublic, price, gallery }).then(res => {
             if (res.sort) {
                 toast.info(`Успешно създадохте сорт ${res.sort}!`, {
@@ -51,7 +50,6 @@ class Create extends Component {
                 })
                 return null;
             }
-
         }).catch(err => {
             console.log(err);
         })
@@ -63,8 +61,7 @@ class Create extends Component {
         if (event.target.type === "checkbox") {
             const { checked } = event.target;
             this.setState({
-                [parsedId]: checked,
-                isPublic: this.state.checkBox
+                isPublic: checked
             })
             return;
         }
@@ -87,7 +84,7 @@ class Create extends Component {
     }
 
     render() {
-        const { sort, price, imagePath, description, checkBox, errorMessages } = this.state;
+        const { sort, price, imagePath, description, isPublic, errorMessages } = this.state;
 
         const sortError = errorMessages && errorMessages["sort"];
         const priceError = errorMessages && errorMessages["price"];
@@ -161,7 +158,7 @@ class Create extends Component {
                                 type="checkbox"
                                 id="check-box"
                                 name="checkBox"
-                                value={checkBox}
+                                value={isPublic}
                                 onChange={this.handleFormElementChange}
                             />
                         </div>
