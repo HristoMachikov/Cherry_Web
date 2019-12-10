@@ -26,8 +26,8 @@ function loginPost(req, res, next) {
         .then(([user, match]) => {
             if (!match) {
                 const error = "Грешен e-mail или парола!";
-
-                res.status(401).send(JSON.stringify(error));
+                res.status(401).send(error);
+                // res.status(401).send(JSON.stringify(error));
                 // handleError(error, res);
                 // res.render('user/login', userBody);
                 return;
@@ -66,12 +66,12 @@ function registerPost(req, res, next) {
         res.send(newUser);
         // res.redirect('/user/login');
     }).catch(err => {
-        console.log(err);
+       
         if (err.name === 'MongoError' && err.code === 11000) {
 
             const error = "Потребител с този Е-mail съществува!"
-            console.log(error + 'then')
-            res.status(401).send(JSON.stringify(error));
+            res.status(401).send(error);
+            // res.status(401).send(JSON.stringify(error));
             // handleError(error, res);
             // res.render('user/register', userBody);
             return;
@@ -86,7 +86,8 @@ function logoutGet(req, res, next) {
     const token = req.cookies[userCookieName];
     TokenBlacklist.create({ token }).then(() => {
         res.clearCookie(userCookieName)
-        res.send(JSON.stringify('Успешно излизане!'));
+        // res.send(JSON.stringify('Успешно излизане!'));
+        res.send('Успешно излизане!');
         // res.redirect('/');
     }).catch(next);
 }

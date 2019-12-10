@@ -4,11 +4,11 @@ import { BrowserRouter } from 'react-router-dom';
 
 import './shared/styles/site.scss';
 
-import App from './components/App/App';
+import AppContext from './components/App/AppContext';
 
 // import './index.css';
 // import App from './App';
 
 ReactDOM.render(<BrowserRouter>
-    <App />
+    <AppContext />
 </BrowserRouter>, document.getElementById('root'));

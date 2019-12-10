@@ -16,7 +16,7 @@ export const getValidationsRunnerForSchema = schema => form => {
         });
 }
 
-const getControlChangeHandler = (validations, setErrors, setValue) => {
+const getControlChangeHandler = (validations, setValue, setErrors) => {
     let debounce;
     return e => {
         const newValue = e.target.value;
@@ -41,12 +41,8 @@ export const useFormControl = (defaultValue, validations) => {
     const [errors, setErrors] = React.useState(undefined);
 
     const changeHandler = React.useCallback(
-        getControlChangeHandler(
-            validations,
-            setValue, setErrors),
-        [
-            validations,
-            setValue, setErrors]
+        getControlChangeHandler(validations, setValue, setErrors),
+        [validations, setValue, setErrors]
     );
 
     return React.useMemo(() => ({

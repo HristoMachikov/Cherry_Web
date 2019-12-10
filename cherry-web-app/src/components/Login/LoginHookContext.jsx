@@ -1,9 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+// import { useHistory  } from 'react-router-dom';
 // import withForm from '../../shared/hocs/withForm';
 import { ToastContainer, toast } from 'react-toastify';
 
 import * as yup from 'yup';
+
+import { StoreContext } from '../Store/Store';
+import { login } from '../Store/actions';
 
 import { minLength } from '../../config/app-config';
 
@@ -26,25 +30,32 @@ const schema = yup.object().shape(validations);
 
 const validationsRunner = getValidationsRunnerForSchema(schema);
 
-const LoginHook = ({ setLogin, history }) => {
+const LoginHookContext = () => {
+  const { state, dispatch } = React.useContext(StoreContext);
+  // const history = useHistory();
 
   const emailFormControl = useFormControl('', validations.email);
   const passwordFormControl = useFormControl('', validations.password);
-  const [serverError, setServerError] = React.useState(undefined);
+  // const [serverError, setServerError] = React.useState(undefined);
+
+  // React.useEffect(() => {
+  //   if (!!state.user) { history.push('/'); }
+  // }, [state.user, history]);
 
   const submitHandler = React.useCallback(() => {
     validationsRunner({
       email: emailFormControl.value,
       password: passwordFormControl.value
     }).then(data => {
-      setLogin(history, data).catch(error => {
-        if (typeof error === 'object') { throw error; }
-        setServerError(error);
-        console.log(serverError);
-        toast.error(serverError, {
-          closeButton: false
-        })
-      });
+      dispatch(login(data));
+      // setLogin(history, data).catch(error => {
+      //   if (typeof error === 'object') { throw error; }
+      //   setServerError(error);
+      //   console.log(serverError);
+      //   toast.error(serverError, {
+      //     closeButton: false
+      //   })
+      // });
 
     }).catch(errors => {
       if (errors.email) { emailFormControl.setErrors(errors.email); }
@@ -54,16 +65,13 @@ const LoginHook = ({ setLogin, history }) => {
 
       const getFirstPasswordFormControlError = passwordFormControl.errors && passwordFormControl.errors[0];
 
-      console.log(emailFormControl.errors)
-      console.log(passwordFormControl.errors)
-
       const firstError = getFirstEmailFormControlError || getFirstPasswordFormControlError
 
       firstError && toast.warn(firstError, {
         closeButton: false
       })
     })
-  }, [emailFormControl, passwordFormControl, serverError, setServerError, history, setLogin]);
+  }, [emailFormControl, passwordFormControl, dispatch]);
 
   const classErrorEmail = (emailFormControl && emailFormControl.value && emailFormControl.value.length < minLength) ? " error" : "";
   const classErrorPassword = (passwordFormControl && passwordFormControl.value && passwordFormControl.value.length < minLength) ? " error" : "";
@@ -105,7 +113,7 @@ const LoginHook = ({ setLogin, history }) => {
     </section>
   );
 }
-export default LoginHook;
+export default LoginHookContext;
   // class Login extends Component {
 
   //     onChangeHandler = this.props.controlOnChangeHandlerFactory();

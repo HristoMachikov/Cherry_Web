@@ -25,13 +25,13 @@ class Gallery extends Component {
     render() {
         const { images, sort } = this.state;
         return (
-            <section class="site-section gallery">
+            <section className="site-section gallery">
                 {images ? <Fragment>
                     <header>
                         <h2>Галерия  - {sort}</h2>
                     </header>
                     {images.length
-                        ? <ul class="image-gallery">
+                        ? <ul className="image-gallery">
                             {images.map((image, index) => {
 
                                 return <SingleImg

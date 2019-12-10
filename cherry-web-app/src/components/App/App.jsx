@@ -1,32 +1,39 @@
 import React, { Component, Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
 
 import userService from '../../services/user-service';
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
-import Menu from '../Menu/Menu';
-import About from '../About/About';
-import Home from '../Home/Home';
+// import Menu from '../Menu/Menu';
+// import About from '../About/About';
+// import Home from '../Home/Home';
 // import Login from '../Login/Login';
 // import Register from '../Register/Register';
 // import Create from '../Cherry/Create/Create';
-import Edit from '../Cherry/Edit/Edit';
-import Remove from '../Cherry/Remove/Remove';
-import Gallery from '../Cherry/Gallery/Gallery';
+// import Edit from '../Cherry/Edit/Edit';
+// import Remove from '../Cherry/Remove/Remove';
+// import Gallery from '../Cherry/Gallery/Gallery';
 import Basket from '../Basket/Basket';
 import UserOrders from '../UserOrders/UserOrders';
 import AdminOrders from '../AdminOrders/AdminOrders';
 import ApproveOrder from '../AdminOrders/Actions/ApproveOrder';
 import RemoveOrder from '../AdminOrders/Actions/RemoveOrder';
 
+const Menu = React.lazy(() => import('../Menu/Menu'));
+const About = React.lazy(() => import('../About/About'));
+const Home = React.lazy(() => import('../Home/Home'));
 const LoginHook = React.lazy(() => import('../Login/LoginHook'));
 const Login = React.lazy(() => import('../Login/Login'));
 const Register = React.lazy(() => import('../Register/Register'));
+const Logout = React.lazy(() => import('../Logout/Logout'));
 const Create = React.lazy(() => import('../Cherry/Create/Create'));
+const Edit = React.lazy(() => import('../Cherry/Edit/Edit'));
+const Remove = React.lazy(() => import('../Cherry/Remove/Remove'));
+const Gallery = React.lazy(() => import('../Cherry/Gallery/Gallery'));
+
 const NotFound = React.lazy(() => import('../NotFound/NotFound'));
 
 function parseCookies() {
@@ -67,8 +74,8 @@ class App extends Component {
         }
     }
 
-    logout(history) {
-        userService.getLogout().then(res => {
+    logout = (history) =>{
+        userService.logout().then(res => {
             if (res) {
                 this.setState({
                     username: null,
@@ -89,7 +96,7 @@ class App extends Component {
     }
 
     setLogin = (history, data) => {
-       return userService.login(data).then((res) => {
+        return userService.login(data).then((res) => {
             if (res.username) {
                 this.setState({
                     username: res.username,
@@ -119,7 +126,7 @@ class App extends Component {
     render() {
         const { isLogged, isAdmin } = this.state;
         return (<div className="main">
-            <Header isAdmin={this.state.isAdmin} username={this.state.username} history={this.props.history} location={this.props.location} />
+            <Header isAdmin={isAdmin} username={this.state.username} />
             <main className="main-content">
                 <div className="wrapper">
                     <ToastContainer autoClose={3500} />
@@ -148,13 +155,16 @@ class App extends Component {
                                     <Redirect to="/" />)}
                             />
                             <Route path="/user/login" exact
-                                render={({ history }) => (!this.state.isLogged ? <Login
+                                render={({ history }) => (!this.state.isLogged ? <LoginHook
                                     setLogin={this.setLogin}
                                     history={history}
                                 /> : <Redirect to="/" />)}
                             />
                             <Route path="/user/logout"
-                                render={({ history }) => (this.state.isLogged ? this.logout(history) : <Redirect to="/" />)}
+                                render={({ history }) => (this.state.isLogged ? <Logout
+                                    logout={this.logout}
+                                    history={history}
+                                /> : <Redirect to="/" />)}
                             />
                             <Route path="/order/products/:id"
                                 render={({ history, match, location }) => (!isLogged ? <Redirect to="/user/login" /> : <Basket match={match}

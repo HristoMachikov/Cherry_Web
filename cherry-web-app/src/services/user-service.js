@@ -9,10 +9,10 @@ const userService = {
             credentials: 'include',
             body: JSON.stringify(body)
         }).then((res) => {
-            return res.json()
+            return res.status === 200 ? res.json() : res.text();
         }).catch((err) => console.error(err));
     },
-    login: function (body, isLoginPage) {
+    login: function (body) {
         return fetch(`http://localhost:4000/user/login`, {
             method: "POST",
             headers: {
@@ -22,14 +22,16 @@ const userService = {
             credentials: 'include',
             body: JSON.stringify(body)
         }).then((res) => {
-            return res.json()
+            return res.status === 200 ? res.json() : res.text()
+            // .then(text => Promise.reject(text));
+            // .then(res => res.text().then(text => res.status === 200 ? text : Promise.reject(text)));
         }).catch((err) => console.error(err));
     },
-    getLogout: function () {
+    logout: function () {
         return fetch('http://localhost:4000/user/logout', {
             credentials: 'include'
         }).then((res) => {
-            return res.json()
+            return res.text()
         }).catch((err) => console.error(err));
     }
 };

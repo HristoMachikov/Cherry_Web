@@ -8,7 +8,7 @@ function RemoveOrder(props) {
 
     orderService.getRemoveOrder(id).then(res => {
 
-        if (res[0].ok) {
+        if (res && res[0].ok) {
             toast.info("Успешно изтрита заявка!", {
                 closeButton: false
             })

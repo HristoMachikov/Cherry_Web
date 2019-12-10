@@ -10,7 +10,7 @@ function SingleImg({ imageUrl, sort, index }) {
             <figure>
                 <img src={imageUrl} alt={numb} />
                 <figcaption>{sort}</figcaption>
-                <label for={numb}></label>
+                <label htmlFor={numb}></label>
             </figure>
         </li>
     </Fragment>);
