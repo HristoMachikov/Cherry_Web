@@ -132,7 +132,7 @@ class Create extends Component {
                                 type="text"
                                 name="imagePath"
                                 id="image-path"
-                                placeholder="Type image path"
+                                placeholder="/images/imgName.jpg"
                                 value={imagePath}
                                 onChange={this.handleFormElementChange}
                                 required
@@ -145,7 +145,7 @@ class Create extends Component {
                                 name="description"
                                 id="description"
                                 rows="5"
-                                placeholder="Type some description..."
+                                placeholder="Type some description up to 80 symbols"
                                 value={description}
                                 onChange={this.handleFormElementChange}
                                 required

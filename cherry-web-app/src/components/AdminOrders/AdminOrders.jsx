@@ -62,13 +62,13 @@ class AdminOrders extends Component {
                                 <tbody>
                                     {orders.map((order, index) => {
                                         return <AdminSingle
-                                          
                                             key={order._id}
                                             id={order._id}
                                             index={index + 1}
                                             status={order.status}
                                             date={order.dateToStr}
                                             total={order.total}
+                                            products={order.productsJson}
                                         >
                                         </AdminSingle>;
                                     })}

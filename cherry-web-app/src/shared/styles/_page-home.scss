@@ -318,6 +318,7 @@
                 }
             }
             th {
+                padding:0.5em 0;
                 border-bottom: 1px solid var(--color-primary-site);
                 @include mq(phone-small) {
                     display: block;
@@ -409,7 +410,8 @@
                     flex:0 0 20%;
                 }
             }
-            &.new-order{
+            // &.new-order{
+            tr.new-order{
                 th {
                     border-bottom: 1px solid var(--color-primary-site);
                     @include mq(phone-small) {
@@ -476,40 +478,35 @@
                     }
                 }
             }
+            tr.ordered-products {
+                @extend .new-order
+            }
+            tr.ordered-products {
+               display: none;
+            }
+
+            input.check-ordered-products {
+                position: absolute;
+                pointer-events: none;
+                display: none;
+            }
+
+            label.check-ordered-products {
+                color:var(--color-link-defaut);
+
+                &:hover {
+                    color:var(--color-link-hover);
+                } 
+            }
+
+            input.check-ordered-products:checked+.template-ordered-products .ordered-products {
+                display: flex;
+
+                @include mq(phone-small) {
+                    display: block;
+                    border: 1px solid var(--color-border-ligth);
+                }
+            }
         } 
     }
-    // .not-found {
-
-    //     header{
-    //         span:after {
-    //             content: "\f12a";
-    //         }
-    //     }
-        
-    //     .imаges {
-    //         display: block;
-    //         overflow: hidden;
-    //         position: relative;
-    //         width: 50%;
-    //         text-align: center;
-    //         padding: 0;
-    //         margin: 0 auto;
-
-    //         img {  
-    //             display: block;
-    //             width: 100%;
-    //             height: auto;
-    //             position: absolute;
-    //             top: 50%;
-    //             left: 50%;
-    //             transform: translate(-50%, -50%);
-    //         }
-    //     }
-
-    //     .imаges:before {
-    //         display: block;
-    //         content: '';
-    //         padding-top: 100%;
-    //     }
-    // }
 }

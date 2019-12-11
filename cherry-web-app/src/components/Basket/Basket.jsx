@@ -151,9 +151,9 @@ class Basket extends Component {
                             </header>
                             {Object.keys(products).length
                                 ? <Fragment>
-                                    <table className="main-table new-order">
+                                    <table className="main-table">
                                         <thead>
-                                            <tr>
+                                            <tr className="new-order">
                                                 <th>Снимка</th>
                                                 <th>Сорт</th>
                                                 <th>Цена</th>

@@ -9,7 +9,7 @@ class Product extends Component {
     render() {
         const { id, imagePath, sort, price, quantity, weigth, subTotal } = this.props;
         return (
-            <tr>
+            <tr className="new-order">
                 <td><img src={imagePath} alt={imagePath} width="100px" /></td>
                 <td>{sort}</td>
                 <td>{price.toFixed(2)} лв/кг</td>
