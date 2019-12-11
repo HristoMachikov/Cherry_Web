@@ -18,15 +18,16 @@ const asyncActionMap = {
         ({ user }) => userService.login(user)
             .then(user => {
                 if (user.username) {
-                    toast.success(`Здравей, ${user.username}!`, { closeButton: false })
+                    toast.success(`Здравей, ${user.username}!`, { closeButton: false });
                     return loginSuccess(user);
                 } else {
-                    toast.error(user, { closeButton: false })
+                    toast.error(user, { closeButton: false });
                     return loginFailure(user);
                 }
             })
-            .catch(error => {
-                return loginFailure(error)
+            .catch((err) => {
+                toast.error(err);
+                return loginFailure(err);
             }),
     [ActionTypes.Logout]:
         () => userService.logout()

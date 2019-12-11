@@ -46,7 +46,7 @@ function auth(redirectUnauthenticated = true, adminOnly = false) {
                 return
             }
             if ([
-                'token expired',
+                'jwt expired',
                 'blacklisted token',
                 'jwt must be provided'
             ].includes(err.message)

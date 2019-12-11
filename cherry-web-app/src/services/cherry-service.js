@@ -1,20 +1,22 @@
 const cherryService = {
     getProducts: function () {
-        return fetch(`http://localhost:4000`).then((res) => {
+        return fetch(`http://localhost:4000`, {
+            credentials: 'include'
+        }).then((res) => {
             // return fetch(`http://localhost:9999/api/origami${id ? `/${id}` : ""}${limit ? `?limit=${limit}` : ""}`).then((res) => {
             return res.json()
         }).catch((notConectionErr) => console.error(notConectionErr));
     },
     getProductsAdmin: function () {
         return fetch(`http://localhost:4000/cherry/all`, {
-            credentials: 'include',
+            credentials: 'include'
         }).then((res) => {
             return res.json()
         }).catch((notConectionErr) => console.error(notConectionErr));
     },
     getRemove: function (id) {
         return fetch(`http://localhost:4000/cherry/remove/${id}`, {
-            credentials: 'include',
+            credentials: 'include'
         }
         ).then((res) => {
             return res.json()
@@ -22,9 +24,8 @@ const cherryService = {
     },
     getEdit: function (id) {
         return fetch(`http://localhost:4000/cherry/edit/${id}`, {
-            credentials: 'include',
-        }
-        ).then((res) => {
+            credentials: 'include'
+        }).then((res) => {
             return res.json()
         }).catch((notConectionErr) => console.error(notConectionErr));
     },
