@@ -20,29 +20,11 @@ function auth(redirectUnauthenticated = true, adminOnly = false) {
                 req.user = user;
                 next();
             })
-            // .catch(err => {
-            //     console.log(err);
-            // });
-
-
-            // User.findOne({ _id: data.id }, (err, user) => {
-            //     if (err) console.log(err);
-            //     if (!user || (adminOnly && !user.isAdmin)) {
-            //         return Promise.reject();
-            //     }
-            //     req.user = user;
-            //     next();
-            // });
         }).catch(err => {
             console.log(err.message)
             if (!redirectUnauthenticated) { next(); return; }
             if (adminOnly) {
-                // const currUser = req.user;
-                // res.render('404', { user: currUser });
-                // const originalUrl = req.originalUrl;
-                // console.log(originalUrl)
                 res.status(401).send('[UNAUTHORIZED - ADMIN ONLY]');
-                // res.redirect('/');
                 return
             }
             if ([
@@ -52,7 +34,6 @@ function auth(redirectUnauthenticated = true, adminOnly = false) {
             ].includes(err.message)
             ) {
                 res.status(401).send('[UNAUTHORIZED]');
-                // res.redirect('/user/login');
                 return;
             }
             next(err);

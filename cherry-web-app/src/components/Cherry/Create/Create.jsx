@@ -5,7 +5,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import cherryService from '../../../services/cherry-service';
-// import './shared/styles/_forms.scss';
 
 const camelCased = myString => (
     myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
@@ -37,7 +36,7 @@ class Create extends Component {
         event.preventDefault();
         const gallery = [];
         const { sort, description, imagePath, isPublic, price } = this.state;
-        console.log(isPublic)
+        
         cherryService.postCreate({ sort, description, imagePath, isPublic, price, gallery }).then(res => {
             if (res.sort) {
                 toast.info(`Успешно създадохте сорт ${res.sort}!`, {

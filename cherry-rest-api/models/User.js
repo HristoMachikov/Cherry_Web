@@ -46,12 +46,6 @@ userSchema.pre('save', function (next) {
     next();
 });
 
-// userSchema.method({
-//     authenticate: function (password) {
-//         return encryption.generateHashedPassword(this.salt, password) === this.hashedPass;
-//     }
-// });
-
 const User = model('User', userSchema);
 
 // TODO: Create an admin at initialization here

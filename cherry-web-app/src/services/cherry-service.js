@@ -40,7 +40,7 @@ const cherryService = {
             credentials: 'include',
             body: JSON.stringify(body)
         }).then((res) => {
-            return res.json()
+            return res.text()
         }).catch((notConectionErr) => console.error(notConectionErr));
     },
     postCreate: function (body) {

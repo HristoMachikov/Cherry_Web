@@ -44,7 +44,7 @@ function Home(props) {
                     <header>
                         <h2>Предлагани сортове</h2><span></span>
                     </header>
-                    {cherrys.length ?
+                    {cherrys && cherrys.length ?
                         <ul>
                             {cherrys.map((cherry) => {
                                 return <CartHome

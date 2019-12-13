@@ -7,15 +7,6 @@ import userService from '../../services/user-service';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
-// import Menu from '../Menu/Menu';
-// import About from '../About/About';
-// import Home from '../Home/Home';
-// import Login from '../Login/Login';
-// import Register from '../Register/Register';
-// import Create from '../Cherry/Create/Create';
-// import Edit from '../Cherry/Edit/Edit';
-// import Remove from '../Cherry/Remove/Remove';
-// import Gallery from '../Cherry/Gallery/Gallery';
 import Basket from '../Basket/Basket';
 import UserOrders from '../UserOrders/UserOrders';
 import AdminOrders from '../AdminOrders/AdminOrders';
@@ -38,7 +29,6 @@ const Remove = React.lazy(() => import('../Cherry/Remove/Remove'));
 const Gallery = React.lazy(() => import('../Cherry/Gallery/Gallery'));
 
 const NotFound = React.lazy(() => import('../NotFound/NotFound'));
-
 
 function parseCookies() {
     return document.cookie.split('; ').reduce((acc, cookie) => {
@@ -66,88 +56,6 @@ const Auth = ({ children }) => {
     return <>{children}</>;
 };
 
-
-// class App extends Component {
-
-//     constructor(props) {
-//         super(props);
-//         const cookies = parseCookies();
-//         const isLogged = !!cookies["user_cookie"];
-//         this.state = {
-//             isLogged
-//         }
-//     }
-
-//     componentDidMount() {
-//         const isAdmin = localStorage.getItem('isAdmin') === "true";
-
-//         if (localStorage.getItem('username')) {
-//             this.setState({
-//                 username: localStorage.getItem('username'),
-//                 isAdmin,
-//                 userId: localStorage.getItem('userId')
-//             })
-//         } else {
-//             this.setState({
-//                 username: null,
-//                 isAdmin: false,
-//                 userId: ""
-//             });
-//         }
-//     }
-
-//     logout = (history) => {
-//         userService.logout().then(res => {
-//             if (res) {
-//                 this.setState({
-//                     username: null,
-//                     isAdmin: false,
-//                     userId: "",
-//                     isLogged: false
-//                 }, () => {
-//                     localStorage.clear();
-//                 })
-//                 toast.success(res, {
-//                     closeButton: false
-//                 })
-//             }
-//             history.push('/');
-//         }).catch(err => {
-//             console.log(err);
-//         })
-//     }
-
-//     setLogin = (history, data) => {
-//         return userService.login(data).then((res) => {
-//             if (res.username) {
-//                 this.setState({
-//                     username: res.username,
-//                     isAdmin: res.roles.includes('Admin'),
-//                     userId: res._id,
-//                     isLogged: true
-//                 }, () => {
-//                     localStorage.setItem('username', `${res.username}`);
-//                     localStorage.setItem('userId', `${res._id}`);
-//                     localStorage.setItem('isAdmin', `${res.roles.includes('Admin')}`);
-//                 });
-//                 toast.success(`Здравей, ${res.username}!`, {
-//                     closeButton: false
-//                 })
-//                 history.push('/');
-//             } else {
-//                 toast.error(res, {
-//                     closeButton: false
-//                 })
-//             }
-//         })
-//         // .catch(err => {
-//         //     console.log(err);
-//         // });
-//     }
-
-// render() {
-//     const { isLogged, isAdmin } = this.state;
-
 const App = () => {
     return (<div className="main">
         <Store>
@@ -155,12 +63,9 @@ const App = () => {
                 <StoreContext.Consumer>
                     {({ state }) => {
                         const { user, error } = state;
-                        // console.log("App");
-                        // console.log(user);
-                        // console.log(error);
                         const isLogged = !!user;
-                        // const isAdmin = false;
-                        const isAdmin = isLogged ? user.roles.includes('Admin') : false;
+                        // const isAdmin = isLogged ? user.roles.includes('Admin') : false;
+                        const isAdmin = isLogged && user.roles.includes('Admin');
                         return user === undefined ? <header>
                             <h2>Loading...</h2>
                         </header> :
@@ -199,18 +104,14 @@ const App = () => {
                                                     render={() => (isLogged ? <Logout /> : <Redirect to="/" />)}
                                                 />
                                                 <Route path="/order/products/:id"
-                                                    render={({ history, match }) => (!isLogged ? <Redirect to="/user/login" /> : <Basket match={match} history={history} userId={user._id}
-                                                    // location={location} basket={history.location.state} 
-                                                    />)}
+                                                    render={({ history, match }) => (!isLogged ? <Redirect to="/user/login" /> : <Basket match={match} history={history} userId={user._id} />)}
                                                 />
-                                                {isLogged && <Route path="/order/products"
-                                                    render={({ history }) => <Basket history={history} userId={user._id}
-                                                    // location={location} basket={history.location.state}
-                                                    />}
-                                                />}
-                                                {isLogged && <Route path="/order/my-orders"
-                                                    render={() => <UserOrders userId={user && user._id} />}
-                                                />}
+                                                <Route path="/order/products"
+                                                    render={({ history }) => (!isLogged ? <Redirect to="/user/login" /> : <Basket history={history} userId={user._id} />)}
+                                                />
+                                                <Route path="/order/my-orders"
+                                                    render={() => (!isLogged ? <Redirect to="/user/login" /> : <UserOrders userId={user && user._id} />)}
+                                                />
                                                 {isAdmin && <Route path="/admin/pending-orders"
                                                     render={() => <AdminOrders />}
                                                 />}
@@ -240,6 +141,5 @@ const App = () => {
         </Store>
     </div>)
 }
-// }
 
 export default App;

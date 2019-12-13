@@ -13,35 +13,16 @@ function newProductGet(req, res, next) {
 
 function createOrderPost(req, res, next) {
     const { total, creatorId, productsJson } = req.body;
-    // let { total = null } = req.body;
-    // let { user } = req;
-
-    // State.find({ _id: { $in: user.states } }).then(states => {
-    //     user.total = 0;
-    //     states.forEach(function (state) {
-    //         state.options = options(state);
-    //         state.subTotal = (Number(state.price) * Number(state.weigth) * Number(state.quantity)).toFixed(2);
-    //         user.total += Number(state.subTotal);
-    //     });
-    //     user.total = user.total.toFixed(2);
-    //     const cherryArrayJson = JSON.stringify(calcSubTotal(states));
-    //     return 
-    Promise.all([
-        // states,
+    Promise.all([  
         Order.create({ total, creatorId, productsJson }),
-        User.findById({ _id: creatorId }),
-        // State.deleteMany({ _id: { $in: user.states } })
+        User.findById({ _id: creatorId }),  
     ]).then(([newOrder, user]) => {
         user.orders.push(newOrder._id);
         return User.updateOne({ _id: user._id }, { $set: { orders: user.orders } })
     }).then(updatedUser => {
         res.send(updatedUser)
-        // myOrdersGet(req, res);
-        // res.redirect('/');
     }).catch(err => {
         next(err);
-        // handleError(err, res);
-        // res.render('500', { errorMessage: err.message });
     });
 }
 

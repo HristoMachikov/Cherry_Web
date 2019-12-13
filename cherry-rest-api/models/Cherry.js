@@ -20,8 +20,6 @@ const cherrySchema = new Schema({
     },
     isPublic: { type: Schema.Types.Boolean, default: false },
     gallery: [{ type: Schema.Types.String, }]
-    // usersEnrolled: [{ type: Schema.Types.ObjectId, ref: 'User' }]
-    // creatorId: { type: Schema.Types.String }
 });
 
 cherrySchema.path('description').validate(function (v) {
