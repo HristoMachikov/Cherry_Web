@@ -2,6 +2,7 @@ const User = require('../models/User');
 const TokenBlacklist = require('../models/TokenBlacklist');
 const utils = require('../utils');
 const { userCookieName } = require('../app-config');
+const nodeMailer = require('nodemailer');
 
 function loginPost(req, res, next) {
     const { email, password } = req.body;
@@ -52,10 +53,39 @@ function authGet(req, res) {
         .then(user => res.send(user))
         .catch(() => res.status(401).send('HELLO!'));
 }
+function sendEmailPost(req, res, next) {
+    let transporter = nodeMailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: 'hristomachikov@gmail.com',
+            pass: 'XXXX'
+        }
+    });
+    let mailOptions = {
+        from: '"Hristo" <hristo2635@abv.bg>', // sender address
+        to: "<hristomachikov@gmail.com>",//req.body.to, // list of receivers
+        subject: "Order cherries", // Subject line
+        text: "Hello!", // plain text body
+        html: '<b>NodeJS Email Tutorial</b>' // html body
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            res.send(error);
+            return console.log(error);
+        }
+        console.log('Message %s sent: %s', info.messageId, info.response);
+        res.send(info.messageId);
+        // res.render('index');
+    });
+}
 
 module.exports = {
     loginPost,
     registerPost,
     logoutGet,
-    authGet
+    authGet,
+    sendEmailPost
 };

@@ -1,8 +1,44 @@
 import React from 'react';
 
+import userService from '../../../services/user-service';
 // import PropTypes from 'prop-types';
 
 function Contacts() {
+
+    const submitHandler = React.useCallback(() => {
+        console.log('hi!')
+   
+        userService.sendEmail()
+            .then(data => {
+                // setLogin(history, data).catch(error => {
+                    // if (typeof error === 'object') { throw error; }
+                    // setServerError(error);
+                    console.log(data);
+                    // toast.error(serverError, {
+                    //     closeButton: false
+                    // })
+                // });
+
+            }).catch(errors => {
+                // if (errors.email) { emailFormControl.setErrors(errors.email); }
+                // if (errors.password) { passwordFormControl.setErrors(errors.password); }
+
+                // const getFirstEmailFormControlError = emailFormControl.errors && emailFormControl.errors[0];
+
+                // const getFirstPasswordFormControlError = passwordFormControl.errors && passwordFormControl.errors[0];
+
+                console.log(errors)
+                // console.log(passwordFormControl.errors)
+
+                // const firstError = getFirstEmailFormControlError || getFirstPasswordFormControlError
+
+                // firstError && toast.warn(firstError, {
+                //     closeButton: false
+                // })
+            })
+    }, []);
+
+
     return (<article className="contacts" id="contacts">
         <header className="contact-header">
             <h2>Контакти</h2><span></span>
@@ -58,7 +94,7 @@ function Contacts() {
                 </p>
                 <div className="form-btn">
                     <p className="btn">
-                        <a className="primary-btn" href="/">Изпрати</a>
+                        <button className="primary-btn" type="button" onClick={submitHandler}>Изпрати</button>
                     </p>
                     <p className="btn">
                         <a className="primary-btn" href="/">Изчисти</a>

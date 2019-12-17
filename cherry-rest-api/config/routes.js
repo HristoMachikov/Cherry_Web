@@ -24,6 +24,7 @@ module.exports = (app) => {
     app.post('/user/login', userController.loginPost);
     app.post('/user/register', userController.registerPost);
     app.get('/user/logout', userController.logoutGet);
+    app.post('/user/send-email', userController.sendEmailPost);
     app.get('/auth', userController.authGet);
 
     app.get('/', auth(false), homeController.homeGet);

@@ -33,6 +33,21 @@ const userService = {
         }).then((res) => {
             return res.text()
         }).catch((err) => console.error(err));
+    },
+    sendEmail: function () {
+        return fetch(`http://localhost:4000/user/send-email`, {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            // body: JSON.stringify(body)
+        }).then((res) => {
+            return res.status === 200 ? res.json() : res.text();
+            // .then(text => Promise.reject(text));
+            // .then(res => res.text().then(text => res.status === 200 ? text : Promise.reject(text)));
+        }).catch((err) => console.error(err));
     }
 };
 
