@@ -12,7 +12,7 @@ The main aim of this project is to refactor static Jekyll generated site [Get Ch
 E-mail: *admin@admin.com*<br/>
 password: *Admin*
 - You have to create new products with this "Admin" functionality of the project at first, and make this product Public if you want to be  visible for every new user
-- Before you create new product, you have to add product's image in *cherry-web-app/public/static/images/* folder, and then you can type the image name as string, prexixed by "/images/" 
+- Before you create new product, you have to add product's image in *cherry-web-app/public/static/images/* folder, and then you can type the image name as string, prefixed by "/images/" 
 
 ## What consist each folder?
 ### [cherry-rest-api](https://github.com/HristoMachikov/Cherry_Web/tree/master/cherry-rest-api)
