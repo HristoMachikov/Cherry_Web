@@ -60,15 +60,16 @@ function sendEmailPost(req, res, next) {
         secure: true,
         auth: {
             user: 'hristomachikov@gmail.com',
-            pass: 'XXXX'
+            pass: 'Levski1914Gmail'
         }
     });
+    let fsd = 'Peter Petrov';
     let mailOptions = {
-        from: '"Hristo" <hristo2635@abv.bg>', // sender address
-        to: "<hristomachikov@gmail.com>",//req.body.to, // list of receivers
+        from: '', // sender address
+        to: "hristo2635@abv.bg",//req.body.to, // list of receivers
         subject: "Order cherries", // Subject line
-        text: "Hello!", // plain text body
-        html: '<b>NodeJS Email Tutorial</b>' // html body
+        text: "Hello! hristo2635@abv.bg", // plain text body
+        // html: '<b>NodeJS Email Tutorial</b>' // html body
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -77,7 +78,7 @@ function sendEmailPost(req, res, next) {
             return console.log(error);
         }
         console.log('Message %s sent: %s', info.messageId, info.response);
-        res.send(info.messageId);
+        res.send(info);
         // res.render('index');
     });
 }
