@@ -7,6 +7,7 @@ import Why from './Why/Why';
 import Order from './Order/Order';
 import Contacts from './Contacts/Contacts';
 import Location from './Location/Location';
+import Calendar from './Calendar/Calendar';
 
 import cherryService from '../../services/cherry-service'
 
@@ -66,6 +67,7 @@ function Home(props) {
         <Order />
         <Contacts />
         <Location />
+        <Calendar />
     </section>
 }
 
