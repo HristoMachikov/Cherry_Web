@@ -7,25 +7,29 @@ import DatePicker from 'rc-calendar/lib/Picker';
 
 import zhCN from 'rc-calendar/lib/locale/zh_CN';
 import enUS from 'rc-calendar/lib/locale/en_US';
+import bgBG from 'rc-calendar/lib/locale/bg_BG';
+
 import 'rc-time-picker/assets/index.css';
 import TimePickerPanel from 'rc-time-picker/lib/Panel';
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import 'moment/locale/en-gb';
+import 'moment/locale/bg';
 
-const format = 'YYYY-MM-DD HH:mm:ss';
+const format = 'DD.MM.YYYY HH:mm:ss';
 const cn = window.location.search.indexOf('cn') !== -1;
 
 const now = moment();
-if (cn) {
-  now.locale('zh-cn').utcOffset(8);
-} else {
-  now.locale('en-gb').utcOffset(0);
-}
+// if (cn) {
+//   now.locale('zh-cn').utcOffset(8);
+// } else {
+//   now.locale('en-gb').utcOffset(0);
+// }
+now.locale('bg').utcOffset(2);
 
 function getFormat(time) {
-  return time ? format : 'YYYY-MM-DD';
+  return time ? format : 'DD.MM.YYYY';
 }
 
 
@@ -46,7 +50,8 @@ class Picker extends React.Component {
   render() {
     const props = this.props;
     const calendar = (<Calendar
-      locale={cn ? zhCN : enUS}
+      // locale={cn ? zhCN : enUS}
+      locale= {bgBG}
       defaultValue={now}
       timePicker={props.showTime ? timePickerElement : null}
       disabledDate={props.disabledDate}
@@ -85,6 +90,7 @@ class Demo extends React.Component {
 
   onChange = (field, value) => {
     console.log('onChange', field, value && value.format(getFormat(SHOW_TIME)));
+    console.log(defaultCalendarValue.toDate())
     this.setState({
       [field]: value,
     });
