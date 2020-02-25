@@ -1,4 +1,4 @@
-import React,{ Component, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import AdminSingle from './AdminSingle/AdminSingle';
 
@@ -19,15 +19,43 @@ class AdminOrders extends Component {
         super(props);
         this.state = {
             isLoading: true,
-            orders: []
+            orders: [],
+            status: 'Pending',
+            startDate: '',
+            endDate: ''
         }
+    }
+
+    handleFormElementChange = (event) => {
+        // const { name, value, id } = event.target;
+        let status = event.target.value;
+        // const { products } = this.state;
+        // let subTotal = 0;
+        // const { price } = products[id];
+
+        // if (name === "weigth") { subTotal = products[id].quantity * value * price };
+        // if (name === "quantity") { subTotal = products[id].weigth * value * price };
+        // if (Number(subTotal) < 0) subTotal = 0;
+
+        // const prevTotal = Object.keys(products)
+        //     .filter(key => key !== id)
+        //     .reduce((acc, key) => {
+        //         return acc + products[key].subTotal;
+        //     }, 0);
+
+        // const total = prevTotal + subTotal;
+
+        // products[id][name] = value;
+        // products[id].subTotal = subTotal;
+        this.setState({ status });
+        console.log(status);
     }
 
     componentDidMount() {
         // const userId = this.props.userId || localStorage.getItem('userId');
-        orderService.getPendingOrders().then(pendingOrders => {
+        orderService.getPendingOrders(this.state.status).then(pendingOrders => {
             if (pendingOrders) {
-               
+
                 const isLoading = false;
                 let orders = addDateToString(pendingOrders);
                 this.setState({ orders, isLoading })
@@ -35,8 +63,20 @@ class AdminOrders extends Component {
         }).catch(err => console.log(err))
     }
 
+    componentDidUpdate() {
+        orderService.getPendingOrders(this.state.status).then(pendingOrders => {
+            if (pendingOrders) {
+
+                const isLoading = false;
+                let orders = addDateToString(pendingOrders);
+                this.setState({ orders, isLoading })
+            }
+        }).catch(err => console.log(err))
+        console.log(this.state.status);
+    }
+
     render() {
-        const { orders, isLoading } = this.state;
+        const { orders, isLoading, status } = this.state;
         return (
             <section className="site-section home">
                 <article className="schedule" id="schedule">
@@ -48,6 +88,16 @@ class AdminOrders extends Component {
                             <header>
                                 <h2>Чакащи поръчки</h2><span></span>
                             </header>
+                            <span>
+                                <select name="status" value={status} onChange={this.handleFormElementChange} placeholder="Изберете">
+                                    <option value="">-</option>
+                                    <option value="Pending">Чакащи</option>
+                                    <option value="Approve">Одобрени</option>
+                                    <option value="Comming">За дата</option>
+                                    <option value="Done">Доставени</option>
+                                    {/* <option value="archive">Архиви</option> */}
+                                </select>
+                            </span>
                             {orders.length ? <table className="main-table">
                                 <thead>
                                     <tr>

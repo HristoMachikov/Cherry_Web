@@ -13,9 +13,9 @@ function newProductGet(req, res, next) {
 
 function createOrderPost(req, res, next) {
     const { total, creatorId, productsJson } = req.body;
-    Promise.all([  
+    Promise.all([
         Order.create({ total, creatorId, productsJson }),
-        User.findById({ _id: creatorId }),  
+        User.findById({ _id: creatorId }),
     ]).then(([newOrder, user]) => {
         user.orders.push(newOrder._id);
         return User.updateOne({ _id: user._id }, { $set: { orders: user.orders } })
@@ -38,7 +38,8 @@ function myOrdersGet(req, res, next) {
 }
 
 function pendingOrdersGet(req, res, next) {
-    Order.find({ status: "Pending" }).then(pendingOrdersResult => {
+    const status = req.params.status;
+    Order.find({ status }).then(pendingOrdersResult => {
         res.send(pendingOrdersResult);
     }).catch(err => {
         next(err);

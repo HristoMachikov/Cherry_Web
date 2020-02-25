@@ -1,7 +1,8 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import 'rc-calendar/assets/index.css';
-import React from 'react';
+import React, { Fragment } from 'react';
+
 import Calendar from 'rc-calendar';
 import DatePicker from 'rc-calendar/lib/Picker';
 
@@ -51,7 +52,7 @@ class Picker extends React.Component {
     const props = this.props;
     const calendar = (<Calendar
       // locale={cn ? zhCN : enUS}
-      locale= {bgBG}
+      locale={bgBG}
       defaultValue={now}
       timePicker={props.showTime ? timePickerElement : null}
       disabledDate={props.disabledDate}
@@ -68,8 +69,8 @@ class Picker extends React.Component {
           return (
             <span>
               <input
-                placeholder="Please select a date"
-                style={{ width: 250 }}
+                placeholder="Моля изберете дата"
+                // style={{ width: 250 }}
                 disabled={props.disabled}
                 readOnly
                 value={value && value.format(getFormat(props.showTime)) || ''}
@@ -121,27 +122,29 @@ class Demo extends React.Component {
   }
 
   render() {
-    
     const state = this.state;
-    return (<div style={{ width: 240, margin: 20 }}>
+    return (
+      <div 
+      style={{ width: 240, margin: 20 }}
+      >
         <p>
-      Start date：
-        <Picker
-          disabledDate={this.disabledStartDate}
-          value={state.startValue}
-          onChange={this.onChange.bind(this, 'startValue')}
-        />
-      </p>
+          <span>От дата:</span>
+          <Picker
+            disabledDate={this.disabledStartDate}
+            value={state.startValue}
+            onChange={this.onChange.bind(this, 'startValue')}
+          />
+        </p>
 
         <p>
-      End date：
-        <Picker
-          disabledDate={this.disabledEndDate}
-          value={state.endValue}
-          onChange={this.onChange.bind(this, 'endValue')}
-        />
-      </p>
-    </div>);
+          <span>До дата:</span>
+          <Picker
+            disabledDate={this.disabledEndDate}
+            value={state.endValue}
+            onChange={this.onChange.bind(this, 'endValue')}
+          />
+        </p>
+      </div>);
   }
 }
 

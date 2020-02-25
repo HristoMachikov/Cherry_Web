@@ -27,8 +27,8 @@ const orderService = {
             return res.json()
         }).catch((err) => console.error(err));
     },
-    getPendingOrders: function () {
-        return fetch(`http://localhost:4000/admin/pending-orders`, {
+    getPendingOrders: function (status) {
+        return fetch(`http://localhost:4000/admin/pending-orders/${status}`, {
             credentials: 'include'
         }).then((res) => {
             return res.json()
