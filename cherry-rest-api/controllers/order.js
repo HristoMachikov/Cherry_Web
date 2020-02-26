@@ -38,8 +38,28 @@ function myOrdersGet(req, res, next) {
 }
 
 function pendingOrdersGet(req, res, next) {
-    const status = req.params.status;
-    Order.find({ status }).then(pendingOrdersResult => {
+    // const status = req.query.status;
+
+
+    let { startDate, endDate, status } = req.query;
+
+    let query = {};
+    if (status) {
+        query = { ...query, status: { $regex: status, $options: 'i' } };
+        //  name: `/${search}/i` ???
+        // name: { $regex: search }
+    }
+    if (startDate) {
+        query = { ...query, date: { $gte: startDate } };
+    }
+    if (endDate) {
+        query = { ...query, date: { $lte: endDate } };
+    }
+    if (startDate && endDate) {
+        query = { ...query, date: { $gte: startDate, $lte: endDate } };
+    }
+
+    Order.find(query).then(pendingOrdersResult => {
         res.send(pendingOrdersResult);
     }).catch(err => {
         next(err);
