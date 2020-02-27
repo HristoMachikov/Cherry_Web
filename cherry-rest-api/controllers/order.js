@@ -38,8 +38,6 @@ function myOrdersGet(req, res, next) {
 }
 
 function pendingOrdersGet(req, res, next) {
-    // const status = req.query.status;
-
 
     let { startDate, endDate, status } = req.query;
 
@@ -58,7 +56,6 @@ function pendingOrdersGet(req, res, next) {
     if (startDate && endDate) {
         query = { ...query, date: { $gte: startDate, $lte: endDate } };
     }
-
     Order.find(query).then(pendingOrdersResult => {
         res.send(pendingOrdersResult);
     }).catch(err => {

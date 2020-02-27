@@ -20,6 +20,7 @@ const format = 'DD.MM.YYYY HH:mm:ss';
 const cn = window.location.search.indexOf('cn') !== -1;
 
 const now = moment();
+
 // if (cn) {
 //   now.locale('zh-cn').utcOffset(8);
 // } else {

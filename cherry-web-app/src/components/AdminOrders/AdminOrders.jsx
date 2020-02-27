@@ -17,133 +17,46 @@ const addDateToString = (orders) => {
     return ordersArr;
 }
 
-// class AdminOrders extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             isLoading: true,
-//             orders: [],
-//             status: 'Pending',
-//             // startDate: '',
-//             // endDate: ''
-//         }
-//     }
-
-
 const SHOW_TIME = true;
-// class Demo extends React.Component {
-//     state = {
-//         startDate: null,
-//         endDate: null,
-//     };
-
-//     onChange = (field, value) => {
-//         console.log('onChange', field, value && value.format(FromPicker.getFormat(SHOW_TIME)));
-
-//         this.setState({
-//             [field]: value,
-//         });
-
-//     }
-
-//     disabledEndDate = (endDate) => {
-//         if (!endDate) {
-//             return false;
-//         }
-//         const startDate = this.state.startDate;
-//         if (!startDate) {
-//             return false;
-//         }
-//         return SHOW_TIME ? endDate.isBefore(startDate) :
-//             endDate.diff(startDate, 'days') <= 0;
-//     }
-
-//     disabledStartDate = (startDate) => {
-//         if (!startDate) {
-//             return false;
-//         }
-//         const endDate = this.state.endDate;
-//         if (!endDate) {
-//             return false;
-//         }
-//         return SHOW_TIME ? endDate.isBefore(startDate) :
-//             endDate.diff(startDate, 'days') <= 0;
-//     }
-
-//     render() {
-//         const state = this.state;
-//         console.log(this.state.startDate && this.state.startDate.toDate())
-//         console.log(this.state.endDate && this.state.endDate.toDate())
-//         return (
-//             <div
-//                 style={{ width: 1024, margin: 20 }}
-//             >
-//                 <span>
-//                     <span>От дата:</span>
-//                     <Picker
-//                         disabledDate={this.disabledStartDate}
-//                         value={state.startDate}
-//                         onChange={this.onChange.bind(this, 'startDate')}
-//                     />
-//                 </span>
-
-//                 <span>
-//                     <span>До дата:</span>
-//                     <Picker
-//                         disabledDate={this.disabledEndDate}
-//                         value={state.endDate}
-//                         onChange={this.onChange.bind(this, 'endDate')}
-//                     />
-//                 </span>
-//             </div>);
-//     }
-// }
-
-// export default Demo;
 
 const AdminOrders = () => {
     const [isLoading, setIsLoading] = React.useState(true);
     const [orders, setOrders] = React.useState([]);
-    const [status, setStatus] = React.useState(null);
+    const [status, setStatus] = React.useState("");
     const [startDate, setStartDate] = React.useState(null);
     const [endDate, setEndDate] = React.useState(null);
 
-    const handleFormElementChange = React.useCallback((event) => {
+    // const handleFormElementChange = React.useCallback((event) => {
+    //     let status = event.target.value;
+    //     setStatus(status);
+    // }, [status, setStatus]);
+
+    const handleFormElementChange = (event) => {
         let status = event.target.value;
         setStatus(status);
-        console.log(status);
-    }, [status, setStatus]);
+    };
 
     React.useEffect(() => {
+        startDate && startDate.set({ 'hour': 0, 'minute': 0, 'second': 0 });
+        endDate && endDate.set({ 'hour': 23, 'minute': 59, 'second': 59 });
         orderService.getPendingOrders(status, startDate, endDate).then(pendingOrders => {
             if (pendingOrders) {
-
-                // const isLoading = false;
                 setIsLoading(false);
                 let orders = addDateToString(pendingOrders);
                 setOrders(orders);
-                // this.setState({ orders, isLoading })
             }
         }).catch(err => console.log(err))
-        console.log(status);
-        console.log(startDate && startDate.toDate());
-        console.log(endDate && endDate.toDate());
+
     }, [status, setStatus, startDate, endDate]);
 
     const onChangeStartDate = (field, value) => {
-        console.log('onChange', field, value && value.format(FromPicker.getFormat(SHOW_TIME)));
+        // console.log('onChange', field, value && value.format(FromPicker.getFormat(SHOW_TIME)));
         setStartDate(value)
-        // this.setState({
-        //     [field]: value,
-        // });
     };
 
     const onChangeEndDate = (field, value) => {
-        console.log('onChange', field, value && value.format(FromPicker.getFormat(SHOW_TIME)));
+        // console.log('onChange', field, value && value.format(FromPicker.getFormat(SHOW_TIME)));
         setEndDate(value)
-        // this.setState({
-        //     [field]: value,
-        // });
     };
 
     const disabledEndDate = (endDate) => {
@@ -170,32 +83,15 @@ const AdminOrders = () => {
             endDate.diff(startDate, 'days') <= 0;
     }
 
-
-    // componentDidMount() {
-    //     orderService.getPendingOrders(this.state.status).then(pendingOrders => {
-    //         if (pendingOrders) {
-
-    //             const isLoading = false;
-    //             let orders = addDateToString(pendingOrders);
-    //             this.setState({ orders, isLoading })
-    //         }
-    //     }).catch(err => console.log(err))
-    // }
-
-    // componentDidUpdate() {
-    //     orderService.getPendingOrders(this.state.status).then(pendingOrders => {
-    //         if (pendingOrders) {
-
-    //             const isLoading = false;
-    //             let orders = addDateToString(pendingOrders);
-    //             this.setState({ orders, isLoading })
-    //         }
-    //     }).catch(err => console.log(err))
-    //     console.log(this.state.status);
-    // }
-
-    // render() {
-    // const { orders, isLoading, status } = this.state;
+    const bgStatus = (status) => {
+        switch (status) {
+            case "Pending": return "Чакащи";
+            case "Approve": return "Одобрени";
+            case "Comming": return "Идващи";
+            case "Done": return "Доставени";
+            default: return "Всички"
+        }
+    }
     return (
         <section className="site-section home">
             <article className="schedule" id="schedule">
@@ -205,12 +101,19 @@ const AdminOrders = () => {
                     </header>
                     : <Fragment>
                         <header>
-                            <h2>Чакащи поръчки</h2><span></span>
+                            <h2>{bgStatus(status)} поръчки</h2><span></span>
                         </header>
 
-                        <div
-                            style={{ width: 1024, margin: 20 }}
-                        >
+                        <div style={{ width: 1024, margin: 20 }}>
+                            <span>Статус:</span>
+                            <select name="status" value={status} onChange={handleFormElementChange} placeholder="Изберете">
+                                <option value="">-</option>
+                                <option value="Pending">Чакащи</option>
+                                <option value="Approve">Одобрени</option>
+                                <option value="Comming">Идващи</option>
+                                <option value="Done">Доставени</option>
+                                {/* <option value="archive">Архиви</option> */}
+                            </select>
                             <span>
                                 <span>От дата:</span>
                                 <Picker
@@ -228,15 +131,6 @@ const AdminOrders = () => {
                                     onChange={onChangeEndDate.bind(this, 'endDate')}
                                 />
                             </span>
-                            <span>Статус:</span>
-                            <select name="status" value={status} onChange={handleFormElementChange} placeholder="Изберете">
-                                <option value="">-</option>
-                                <option value="Pending">Чакащи</option>
-                                <option value="Approve">Одобрени</option>
-                                <option value="Comming">За дата</option>
-                                <option value="Done">Доставени</option>
-                                {/* <option value="archive">Архиви</option> */}
-                            </select>
                         </div>
                         {orders.length ? <table className="main-table">
                             <thead>
@@ -265,7 +159,7 @@ const AdminOrders = () => {
                             </tbody>
                         </table>
                             : <header>
-                                <h4>В момента няма чакащи поръчки!</h4>
+                                <h4>В момента няма {status === "" ? "" : bgStatus(status).toLowerCase()} поръчки!</h4>
                             </header>
                         }
                     </Fragment>
@@ -273,7 +167,6 @@ const AdminOrders = () => {
             </article>
         </section>
     );
-    // }
 }
 
 export default AdminOrders;

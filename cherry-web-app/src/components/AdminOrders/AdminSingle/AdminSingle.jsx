@@ -18,8 +18,10 @@ const AdminSingle = ({ index, date, total, status, id, products }) => {
                     <label className="check-ordered-products" htmlFor={index}>Виж</label>
                     {/* <Link to={`/order/my-orders/${id}`}>Виж</Link> */}
                 </td>
-                <td>
+                <td>{status !== "Approve" ?
                     <Link className="primary-btn approve" to={`/admin/approve-order/${id}`}></Link>
+                    : <Link className="primary-btn calendar" to={`#`}></Link>
+                }
                     <Link className="primary-btn remove" to={`/admin/remove-order/${id}`}></Link>
                 </td>
             </tr>
