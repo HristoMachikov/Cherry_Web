@@ -104,7 +104,9 @@ const AdminOrders = () => {
                             <h2>{bgStatus(status)} поръчки</h2><span></span>
                         </header>
 
-                        <div style={{ width: 1024, margin: 20 }}>
+                        <div 
+                        // style={{ width: 1024, margin: 20 }}
+                        >
                             <span>Статус:</span>
                             <select name="status" value={status} onChange={handleFormElementChange} placeholder="Изберете">
                                 <option value="">-</option>

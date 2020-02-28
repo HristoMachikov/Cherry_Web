@@ -16,6 +16,25 @@
         @include fap;
         display: inline-block;
         content: "\f46c";
+        color:var(--color-main-site);
+    }
+
+    &.comming:before {
+        @include fap;
+        display: inline-block;
+        content: "\f073";
+    }
+
+    &.done:before {
+        @include fap;
+        display: inline-block;
+        content: "\f0fb";
+    }
+
+    &.archive:before {
+        @include fap;
+        display: inline-block;
+        content: "\f187";
     }
 
     &.edit:before {

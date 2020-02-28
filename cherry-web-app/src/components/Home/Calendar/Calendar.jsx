@@ -134,25 +134,25 @@ class Demo extends React.Component {
     console.log(this.state.endValue && this.state.endValue.toDate())
     return (
       <div 
-      style={{ width: 1024, margin: 20 }}
+      style={{ width: 250, margin: 20 }}
       >
-        <span>
-          <span>От дата:</span>
+        <p>
+          От дата:
           <Picker
             disabledDate={this.disabledStartDate}
             value={state.startValue}
             onChange={this.onChange.bind(this, 'startValue')}
           />
-        </span>
+        </p>
 
-        <span>
-          <span>До дата:</span>
+        <p>
+          До дата:
           <Picker
             disabledDate={this.disabledEndDate}
             value={state.endValue}
             onChange={this.onChange.bind(this, 'endValue')}
           />
-        </span>
+        </p>
       </div>);
   }
 }
