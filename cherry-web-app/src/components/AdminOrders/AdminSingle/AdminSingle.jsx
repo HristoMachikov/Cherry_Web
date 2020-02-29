@@ -8,10 +8,22 @@ import Picker from '../../Home/Calendar/Picker/Picker';
 const allStatus = ["Pending", "Approve", "Comming", "Done", "Archive"];
 
 const AdminSingle = ({ index, date, total, status, id, products }) => {
+    const [commingDate, setCommingDate] = React.useState(null);
+    // React.useEffect(() => {
+       
+    //     commingDate && commingDate.set({ 'hour': 23, 'minute': 59, 'second': 59 });
+
+    // }, [commingDate]);
+    const onChangeCommingDate = (field,value) => {
+        // console.log('onChange', field, value && value.format(FromPicker.getFormat(SHOW_TIME)));
+        setCommingDate(value)
+    };
 
     const indexOfStatus = allStatus.indexOf(status);
-    const stepForward = indexOfStatus + 1;
-    const stepBack = indexOfStatus - 1;
+
+    const statusNext = allStatus[indexOfStatus + 1];
+    const statusBefore = allStatus[indexOfStatus - 1];
+
     return (
         <Fragment>
             <tr>
@@ -19,19 +31,29 @@ const AdminSingle = ({ index, date, total, status, id, products }) => {
                 <td>{date}</td>
                 <td>{total.toFixed(2)} лв</td>
                 <td>
-                {status === "Approve" 
-                ?<Picker/>
-                :status}
+                    {status === "Approve"
+                        ? <Picker
+                        value={commingDate}
+                        onChange={onChangeCommingDate.bind(this, 'commingDate')}
+                        />
+                        : status}
                 </td>
                 <td>
                     <label className="check-ordered-products" htmlFor={index}>Виж</label>
                     {/* <Link to={`/order/my-orders/${id}`}>Виж</Link> */}
                 </td>
-                <td>{status !== "Approve" ?
-                    <Link className="primary-btn approve" to={`/admin/approve-order/${id}`}></Link>
-                    : <Link className="primary-btn comming" to={`#`}></Link>
-                }
-                    <Link className="primary-btn remove" to={`/admin/remove-order/${id}`}></Link>
+                <td>
+                    {status !== "Archive"
+                        ? <Link
+                            className={`primary-btn ${statusNext.toLowerCase()}`}
+                            to={`/admin/approve-order/${id}/${statusNext}`}>
+                        </Link>
+                        : <Link className="primary-btn remove" to={`/admin/remove-order/${id}`}></Link>
+                    }
+                    {["Comming", "Done", "Archive"].includes(status)
+                        ? <Link className="primary-btn back" to={`/admin/previews-status/${id}/${statusBefore}`}></Link>
+                        : <Link className="primary-btn remove" to={`/admin/remove-order/${id}`}></Link>
+                    }
                 </td>
             </tr>
             <input className="check-ordered-products" type="checkbox" name={index} id={index} />

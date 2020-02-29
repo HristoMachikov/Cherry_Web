@@ -4,12 +4,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import orderService from '../../../services/order-service';
 
 function ApproveOrder(props) {
-    const { id } = props.match.params;
+    const { id, status } = props.match.params;
 
-    orderService.getApproveOrder(id).then(res => {
-
+    orderService.getApproveOrder(id, status).then(res => {
         if (res.ok) {
-            toast.info("Успешно одобрена заявка!", {
+            toast.info("Успешно променен статус!", {
                 closeButton: false
             })
             props.history.push('/admin/pending-orders');
@@ -19,7 +18,6 @@ function ApproveOrder(props) {
             })
             return null;
         }
-
     }).catch(err => {
         console.log(err);
     })

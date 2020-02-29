@@ -67,7 +67,7 @@ class Picker extends React.Component {
             <span>
               <input
                 placeholder="Моля изберете дата"
-                style={{ width: 50 }}
+                style={{ width: 70 }}
                 disabled={props.disabled}
                 readOnly
                 value={value && value.format(getFormat(props.showTime)) || ''}

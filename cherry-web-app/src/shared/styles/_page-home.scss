@@ -333,10 +333,10 @@
                     flex:0 0 15%;
                 }
                 &:nth-child(4){
-                    flex:0 0 12.5%;
+                    flex:0 0 16.5%;
                 }
                 &:nth-child(5){
-                    flex:0 0 12.5%;
+                    flex:0 0 8.5%;
                 }
                 &:nth-child(6){
                     flex:0 0 20%;
@@ -386,7 +386,7 @@
                 &:nth-of-type(2):before {  @include mq(phone-small) { content: "Дата"; } }
                 &:nth-of-type(3):before {  @include mq(phone-small) { content: "Общо"; } }
                 &:nth-of-type(4):before {  @include mq(phone-small) { content: "Статус"; } }
-                &:nth-of-type(5):before {  @include mq(phone-small) { content: "Детайли"; } }
+                &:nth-of-type(5):before {  @include mq(phone-small) { content: "Инфо"; } }
                 &:nth-of-type(6):before {  @include mq(phone-small) { content: "Action"; } }
 
                 &:nth-of-type(6) {  @include mq(phone-small) { display: flex; } }
@@ -401,10 +401,10 @@
                     flex:0 0 15%;
                 }
                 &:nth-child(4){
-                    flex:0 0 12.5%;
+                    flex:0 0 16.5%;
                 }
                 &:nth-child(5){
-                    flex:0 0 12.5%;
+                    flex:0 0 8.5%;
                 }
                 &:nth-child(6){
                     flex:0 0 20%;
