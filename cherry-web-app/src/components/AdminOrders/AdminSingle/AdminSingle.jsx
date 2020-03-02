@@ -10,14 +10,23 @@ const allStatus = ["Pending", "Approve", "Comming", "Done", "Archive"];
 const AdminSingle = ({ index, date, total, status, id, products }) => {
     const [commingDate, setCommingDate] = React.useState(null);
     // React.useEffect(() => {
-       
+
     //     commingDate && commingDate.set({ 'hour': 23, 'minute': 59, 'second': 59 });
 
     // }, [commingDate]);
-    const onChangeCommingDate = (field,value) => {
+    const onChangeCommingDate = (field, value) => {
         // console.log('onChange', field, value && value.format(FromPicker.getFormat(SHOW_TIME)));
+        // value.set({ 'hour': 23, 'minute': 59, 'second': 59 });
         setCommingDate(value)
+        console.log(value)
+        console.log(commingDate)
     };
+
+    const onClickNextStatus = (e) => {
+        if (!commingDate && status === "Approve") {
+            e.preventDefault()
+        }
+    }
 
     const indexOfStatus = allStatus.indexOf(status);
 
@@ -33,8 +42,9 @@ const AdminSingle = ({ index, date, total, status, id, products }) => {
                 <td>
                     {status === "Approve"
                         ? <Picker
-                        value={commingDate}
-                        onChange={onChangeCommingDate.bind(this, 'commingDate')}
+                            placeholder={status}
+                            value={commingDate}
+                            onChange={onChangeCommingDate.bind(this, 'commingDate')}
                         />
                         : status}
                 </td>
@@ -46,12 +56,13 @@ const AdminSingle = ({ index, date, total, status, id, products }) => {
                     {status !== "Archive"
                         ? <Link
                             className={`primary-btn ${statusNext.toLowerCase()}`}
-                            to={`/admin/approve-order/${id}/${statusNext}`}>
+                            to={`/admin/approve-order/${id}/${statusNext}`}
+                            onClick={e => onClickNextStatus(e)}>
                         </Link>
                         : <Link className="primary-btn remove" to={`/admin/remove-order/${id}`}></Link>
                     }
                     {["Comming", "Done", "Archive"].includes(status)
-                        ? <Link className="primary-btn back" to={`/admin/previews-status/${id}/${statusBefore}`}></Link>
+                        ? <Link className="primary-btn back" to={`/admin/approve-order/${id}/${statusBefore}`}></Link>
                         : <Link className="primary-btn remove" to={`/admin/remove-order/${id}`}></Link>
                     }
                 </td>

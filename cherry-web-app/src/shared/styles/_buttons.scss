@@ -36,6 +36,7 @@
         @include fap;
         display: inline-block;
         content: "\f187";
+        font-size:0.9rem;
     }
 
     &.back:before {
