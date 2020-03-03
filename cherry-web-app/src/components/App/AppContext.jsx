@@ -115,7 +115,7 @@ const App = () => {
                                                 {isAdmin && <Route path="/admin/pending-orders"
                                                     render={() => <AdminOrders />}
                                                 />}
-                                                {isAdmin && <Route path="/admin/approve-order/:id/:status" exact
+                                                {isAdmin && <Route path="/admin/approve-order/:id/:status/:commingDate?" exact
                                                     render={({ history, match }) => <ApproveOrder history={history} match={match} />}
                                                 />}
                                                 {isAdmin && <Route path="/admin/remove-order/:id" exact

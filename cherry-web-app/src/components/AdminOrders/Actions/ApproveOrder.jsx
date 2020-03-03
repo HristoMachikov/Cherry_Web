@@ -4,8 +4,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import orderService from '../../../services/order-service';
 
 function ApproveOrder(props) {
-    const { id, status } = props.match.params;
-
+    const { id, status, commingDate } = props.match.params;
+    commingDate && console.log(commingDate.toString())
     orderService.getApproveOrder(id, status).then(res => {
         if (res.ok) {
             toast.info("Успешно променен статус!", {

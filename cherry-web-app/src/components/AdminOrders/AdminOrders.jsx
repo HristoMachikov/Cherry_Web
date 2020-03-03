@@ -143,7 +143,7 @@ const AdminOrders = () => {
                                     <th>Дата</th>
                                     <th>Общо</th>
                                     <th>Статус</th>
-                                    <th>Детайли</th>
+                                    <th>Инфо</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

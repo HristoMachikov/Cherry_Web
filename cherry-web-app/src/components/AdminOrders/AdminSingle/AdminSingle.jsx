@@ -56,7 +56,7 @@ const AdminSingle = ({ index, date, total, status, id, products }) => {
                     {status !== "Archive"
                         ? <Link
                             className={`primary-btn ${statusNext.toLowerCase()}`}
-                            to={`/admin/approve-order/${id}/${statusNext}`}
+                            to={`/admin/approve-order/${id}/${statusNext}${commingDate ? `/${commingDate}` : ""}`}
                             onClick={e => onClickNextStatus(e)}>
                         </Link>
                         : <Link className="primary-btn remove" to={`/admin/remove-order/${id}`}></Link>
