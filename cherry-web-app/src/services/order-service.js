@@ -34,8 +34,8 @@ const orderService = {
             return res.json()
         }).catch((err) => console.error(err));
     },
-    getApproveOrder: function (id,status) {
-        return fetch(`http://localhost:4000/admin/approve-order/${id}${`?status=${status}`}`, {
+    getApproveOrder: function (id, status, commingDate) {
+        return fetch(`http://localhost:4000/admin/approve-order/${id}${`?status=${status}`}${commingDate ? `&commingDate=${commingDate}` : ""}`, {
             credentials: 'include'
         }).then((res) => {
             return res.json()

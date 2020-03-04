@@ -65,8 +65,8 @@ function pendingOrdersGet(req, res, next) {
 
 function approveOrderGet(req, res, next) {
     const orderId = req.params.id;
-    const {status} = req.query;
-    Order.updateOne({ _id: orderId }, { $set: { status } }).then(updatedOrder => {
+    // const { status } = req.query;
+    Order.updateOne({ _id: orderId }, { $set: req.query }).then(updatedOrder => {
         res.send(updatedOrder);
     }).catch(err => {
         next(err);

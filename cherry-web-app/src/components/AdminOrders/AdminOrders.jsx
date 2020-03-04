@@ -9,6 +9,7 @@ import orderService from '../../services/order-service';
 
 import dateToString from '../../shared/methods/date-to-string';
 
+
 const addDateToString = (orders) => {
     let ordersArr = orders.map(order => {
         order.dateToStr = dateToString(order.date)
@@ -42,6 +43,7 @@ const AdminOrders = () => {
         endDate && endDate.set({ 'hour': 23, 'minute': 59, 'second': 59 });
         orderService.getPendingOrders(status, startDate, endDate).then(pendingOrders => {
             if (pendingOrders) {
+                console.log(pendingOrders)
                 setIsLoading(false);
                 let orders = addDateToString(pendingOrders);
                 setOrders(orders);
@@ -155,6 +157,7 @@ const AdminOrders = () => {
                                         index={index + 1}
                                         status={order.status}
                                         date={order.dateToStr}
+                                        dateComming={order.commingDate}
                                         total={order.total}
                                         products={order.productsJson}
                                     >

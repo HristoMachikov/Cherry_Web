@@ -26,7 +26,8 @@ const now = moment();
 // } else {
 //   now.locale('en-gb').utcOffset(0);
 // }
-now.locale('bg').utcOffset(2);
+// now.locale('bg').utcOffset(2);
+now.locale('bg').utcOffset(-2);
 
 export function getFormat(time) {
   return time ? format : 'DD.MM.YYYY';

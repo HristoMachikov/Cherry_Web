@@ -10,6 +10,9 @@ const orderSchema = new Schema({
         required: [true, 'Date is required'],
         default: Date.now
     },
+    commingDate: {
+        type: Schema.Types.Date
+    },
     status: {
         type: Schema.Types.String,
         required: [true, 'Status is required'],
