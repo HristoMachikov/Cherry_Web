@@ -5,8 +5,7 @@ import orderService from '../../../services/order-service';
 
 function ApproveOrder(props) {
     const { id, status, commingDate } = props.match.params;
-    commingDate && console.log(commingDate)
-    orderService.getApproveOrder(id, status,commingDate).then(res => {
+    orderService.getApproveOrder(id, status, commingDate).then(res => {
         if (res.ok) {
             toast.info("Успешно променен статус!", {
                 closeButton: false

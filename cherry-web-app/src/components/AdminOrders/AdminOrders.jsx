@@ -38,12 +38,10 @@ const AdminOrders = () => {
     };
 
     React.useEffect(() => {
-        console.log(startDate)
         startDate && startDate.set({ 'hour': 0, 'minute': 0, 'second': 0 });
         endDate && endDate.set({ 'hour': 23, 'minute': 59, 'second': 59 });
         orderService.getPendingOrders(status, startDate, endDate).then(pendingOrders => {
             if (pendingOrders) {
-                console.log(pendingOrders)
                 setIsLoading(false);
                 let orders = addDateToString(pendingOrders);
                 setOrders(orders);
@@ -54,7 +52,6 @@ const AdminOrders = () => {
 
     const onChangeStartDate = (field, value) => {
         // console.log('onChange', field, value && value.format(FromPicker.getFormat(SHOW_TIME)));
-        console.log(value)
         setStartDate(value)
     };
 

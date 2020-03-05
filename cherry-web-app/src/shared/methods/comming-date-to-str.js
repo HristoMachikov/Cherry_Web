@@ -3,8 +3,6 @@ export default function commingDateToStr(commingDate) {
         return "Comming";
     }
     const date = new Date(commingDate);
-    console.log(typeof(date))
-    console.log(date)
     let day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate()
     let currMonth = date.getMonth() + 1;
     let bgMonth = "";

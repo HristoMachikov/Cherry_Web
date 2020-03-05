@@ -19,10 +19,8 @@ const AdminSingle = ({ index, date, total, status, id, products, dateComming }) 
     const onChangeCommingDate = (field, value) => {
         // console.log('onChange', field, value && value.format(FromPicker.getFormat(SHOW_TIME)));
         // value.set({ 'hour': 23, 'minute': 59, 'second': 59 });
-        console.log("Moment...")
-        setCommingDate(value.locale('bg'))
-        console.log(value.locale('bg').utcOffset(-2))
-        console.log(commingDate)
+        setCommingDate(value)
+        // console.log(value.locale('bg').utcOffset(2))
     };
 
     const onClickNextStatus = (e) => {
@@ -38,9 +36,7 @@ const AdminSingle = ({ index, date, total, status, id, products, dateComming }) 
 
     let currStatus = status;
     if (status === "Comming") {
-        console.log(dateComming)
         currStatus = commingDateToStr(dateComming);
-        console.log(currStatus)
     }
 
     return (

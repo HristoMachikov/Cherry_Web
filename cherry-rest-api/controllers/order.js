@@ -40,7 +40,6 @@ function myOrdersGet(req, res, next) {
 function pendingOrdersGet(req, res, next) {
 
     let { startDate, endDate, status } = req.query;
-
     let query = {};
     if (status) {
         query = { ...query, status: { $regex: status, $options: 'i' } };
