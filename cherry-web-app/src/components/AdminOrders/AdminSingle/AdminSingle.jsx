@@ -9,7 +9,7 @@ import commingDateToStr from '../../../shared/methods/comming-date-to-str';
 const allStatus = ["Pending", "Approve", "Comming", "Done", "Archive"];
 
 
-const AdminSingle = ({ index, date, total, status, id, products, dateComming }) => {
+const AdminSingle = ({ index, date, total, status, id, products, dateComming, user }) => {
     const [commingDate, setCommingDate] = React.useState(null);
     // React.useEffect(() => {
 
@@ -74,7 +74,7 @@ const AdminSingle = ({ index, date, total, status, id, products, dateComming }) 
                 </td>
             </tr>
             <input className="check-ordered-products" type="checkbox" name={index} id={index} />
-            <OrderedProducts products={products} />
+            <OrderedProducts products={products} user={user} />
         </Fragment>
     );
 }

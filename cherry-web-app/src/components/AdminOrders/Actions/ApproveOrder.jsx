@@ -10,7 +10,7 @@ function ApproveOrder(props) {
             toast.info("Успешно променен статус!", {
                 closeButton: false
             })
-            props.history.push('/admin/pending-orders');
+            props.history.push('/admin/orders');
         } else {
             toast.error(`${res}`, {
                 closeButton: false

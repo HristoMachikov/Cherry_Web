@@ -37,7 +37,20 @@ function myOrdersGet(req, res, next) {
     })
 }
 
-function pendingOrdersGet(req, res, next) {
+// function myOrdersGet(req, res, next) {
+//     let userId = req.params.id;
+//     User.findById({ _id: userId }).populate('orders').then((user) => {
+//         //     return Order.find({ _id: { $in: user.orders } }).sort({ date: -1 })
+//         // }).then(orders => {
+//         console.log(user);
+//         let orders = user.orders;
+//         res.send(orders);
+//     }).catch(err => {
+//         next(err);
+//     })
+// }
+
+function adminOrdersGet(req, res, next) {
 
     let { startDate, endDate, status } = req.query;
     let query = {};
@@ -55,8 +68,23 @@ function pendingOrdersGet(req, res, next) {
     if (startDate && endDate) {
         query = { ...query, date: { $gte: startDate, $lte: endDate } };
     }
-    Order.find(query).then(pendingOrdersResult => {
-        res.send(pendingOrdersResult);
+    Order.find(query).then(adminOrdersResult => {
+
+        adminOrdersResult.forEach(async function (order) {
+            let user = await User.findById({ _id: order.creatorId })
+            const { username, email, phone, address } = user;
+            order.user = { username, email, phone, address };
+            console.log(order.user.username)
+        });
+     
+        // if (adminOrdersResult.user) {
+        //     const { username, email, phone, address } = adminOrdersResult.user;
+        //     adminOrdersResult.user = { username, email, phone, address };
+        //     // console.log(adminOrdersResult.user);
+        // }
+
+        console.log(adminOrdersResult);
+        res.send(adminOrdersResult);
     }).catch(err => {
         next(err);
     })
@@ -92,7 +120,7 @@ function removeOrderGet(req, res, next) {
 module.exports = {
     newProductGet,
     createOrderPost,
-    pendingOrdersGet,
+    adminOrdersGet,
     approveOrderGet,
     removeOrderGet,
     myOrdersGet

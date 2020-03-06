@@ -40,10 +40,10 @@ const AdminOrders = () => {
     React.useEffect(() => {
         startDate && startDate.set({ 'hour': 0, 'minute': 0, 'second': 0 });
         endDate && endDate.set({ 'hour': 23, 'minute': 59, 'second': 59 });
-        orderService.getPendingOrders(status, startDate, endDate).then(pendingOrders => {
-            if (pendingOrders) {
+        orderService.getAdminOrders(status, startDate, endDate).then(adminOrders => {
+            if (adminOrders) {
                 setIsLoading(false);
-                let orders = addDateToString(pendingOrders);
+                let orders = addDateToString(adminOrders);
                 setOrders(orders);
             }
         }).catch(err => console.log(err))
@@ -157,6 +157,7 @@ const AdminOrders = () => {
                                         dateComming={order.commingDate}
                                         total={order.total}
                                         products={order.productsJson}
+                                        user={order.user}
                                     >
                                     </AdminSingle>;
                                 })}

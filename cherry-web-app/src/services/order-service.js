@@ -27,8 +27,8 @@ const orderService = {
             return res.json()
         }).catch((err) => console.error(err));
     },
-    getPendingOrders: function (status, startDate, endDate) {
-        return fetch(`http://localhost:4000/admin/pending-orders${`?status=${status}`}${startDate ? `&startDate=${startDate}` : ""}${endDate ? `&endDate=${endDate}` : ""}`, {
+    getAdminOrders: function (status, startDate, endDate) {
+        return fetch(`http://localhost:4000/admin/orders${`?status=${status}`}${startDate ? `&startDate=${startDate}` : ""}${endDate ? `&endDate=${endDate}` : ""}`, {
             credentials: 'include'
         }).then((res) => {
             return res.json()

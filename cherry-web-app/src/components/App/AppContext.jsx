@@ -112,7 +112,7 @@ const App = () => {
                                                 <Route path="/order/my-orders"
                                                     render={() => (!isLogged ? <Redirect to="/user/login" /> : <UserOrders userId={user && user._id} />)}
                                                 />
-                                                {isAdmin && <Route path="/admin/pending-orders"
+                                                {isAdmin && <Route path="/admin/orders"
                                                     render={() => <AdminOrders />}
                                                 />}
                                                 {isAdmin && <Route path="/admin/approve-order/:id/:status/:commingDate?" exact

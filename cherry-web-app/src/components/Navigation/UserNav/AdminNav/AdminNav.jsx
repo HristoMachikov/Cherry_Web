@@ -9,7 +9,7 @@ function AdminNav({ isAdmin }) {
             <NavLink to="/cherry/create" activeClassName="selected">Нов сорт</NavLink>
         </li>
         <li>
-            <NavLink to="/admin/pending-orders" activeClassName="selected">Поръчки</NavLink>
+            <NavLink to="/admin/orders" activeClassName="selected">Поръчки</NavLink>
         </li>
     </Fragment> : <Fragment>
             <li>

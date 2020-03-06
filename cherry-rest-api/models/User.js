@@ -18,6 +18,9 @@ const userSchema = new Schema({
         type: Schema.Types.String,
         required: [true, 'Phone is required'],
     },
+    // address: {
+    //     type: Schema.Types.String
+    // },
     orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
     cherries: [{ type: Schema.Types.ObjectId, ref: "Cherry" }],
     states: [{ type: Schema.Types.ObjectId, ref: "State" }],

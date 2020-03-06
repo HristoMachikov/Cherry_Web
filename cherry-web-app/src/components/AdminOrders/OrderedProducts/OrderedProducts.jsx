@@ -1,9 +1,23 @@
 import React, { Fragment } from 'react';
 
-const OrderedProducts = ({ products }) => {
+const OrderedProducts = ({ products, user }) => {
     const productsObj = JSON.parse(products)
     return (<Fragment>
         <div className="template-ordered-products">
+           {user && <tr className="ordered-products">
+                <td>{user.username}</td>
+                <td>{user.phone}</td>
+                <td>{user.email}</td>
+                <td>
+                    <span>-</span>
+                </td>
+                <td>
+                    <span>-</span>
+                </td>
+                <td>
+                    <span>-</span>
+                </td>
+            </tr>}
             {Object.keys(productsObj).map((product, index) => {
                 let { imagePath, sort, price, quantity, weigth, subTotal } = productsObj[product];
                 return <tr className="ordered-products" key={index}>
