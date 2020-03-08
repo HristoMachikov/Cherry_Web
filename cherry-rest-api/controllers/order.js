@@ -68,20 +68,13 @@ function adminOrdersGet(req, res, next) {
     if (startDate && endDate) {
         query = { ...query, date: { $gte: startDate, $lte: endDate } };
     }
-    Order.find(query).then(adminOrdersResult => {
+    Order.find(query).populate("creatorId").lean().then(adminOrdersResult => {
 
-        adminOrdersResult.forEach(async function (order) {
-            let user = await User.findById({ _id: order.creatorId })
-            const { username, email, phone, address } = user;
-            order.user = { username, email, phone, address };
-            console.log(order.user.username)
+        adminOrdersResult.forEach(function (order) {
+            let { username, email, phone } = order.creatorId;
+            delete order.creatorId;
+            order.user = { username, email, phone };
         });
-     
-        // if (adminOrdersResult.user) {
-        //     const { username, email, phone, address } = adminOrdersResult.user;
-        //     adminOrdersResult.user = { username, email, phone, address };
-        //     // console.log(adminOrdersResult.user);
-        // }
 
         console.log(adminOrdersResult);
         res.send(adminOrdersResult);

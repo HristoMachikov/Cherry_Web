@@ -19,7 +19,7 @@ const orderSchema = new Schema({
         default: "Pending"
     },
     productsJson: { type: Schema.Types.String },
-    creatorId: { type: Schema.Types.ObjectId },
+    creatorId: { type: Schema.Types.ObjectId , ref: "User"},
     // user: { type: Schema.Types.ObjectId, ref: "User" }
 });
 
