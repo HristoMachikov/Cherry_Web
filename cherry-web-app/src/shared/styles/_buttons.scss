@@ -46,6 +46,18 @@
         content: "\f048";
     }
 
+    &.edit-address:before {
+        @include fap;
+        display: inline-block;
+        content: "\f3c5";
+    }
+
+    &.edit-address-success:before {
+        @include fap;
+        display: inline-block;
+        content: "\f058";
+    }
+
     &.edit:before {
         @include fap;
         display: inline-block;

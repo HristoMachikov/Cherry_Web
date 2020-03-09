@@ -8,9 +8,9 @@ import commingDateToStr from '../../../shared/methods/comming-date-to-str';
 // import 'react-toastify/dist/ReactToastify.css';
 const allStatus = ["Pending", "Approve", "Comming", "Done", "Archive"];
 
-
 const AdminSingle = ({ index, date, total, status, id, products, dateComming, user }) => {
     const [commingDate, setCommingDate] = React.useState(null);
+    
     // React.useEffect(() => {
 
     //     commingDate && commingDate.set({ 'hour': 23, 'minute': 59, 'second': 59 });
@@ -74,7 +74,7 @@ const AdminSingle = ({ index, date, total, status, id, products, dateComming, us
                 </td>
             </tr>
             <input className="check-ordered-products" type="checkbox" name={index} id={index} />
-            <OrderedProducts products={products} user={user} />
+            <OrderedProducts products={products} user={user} id={id} />
         </Fragment>
     );
 }

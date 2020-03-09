@@ -478,11 +478,61 @@
                     }
                 }
             }
+
             tr.ordered-products {
                 @extend .new-order
             }
+            
             tr.ordered-products {
                display: none;
+
+               td {
+                    &:nth-of-type(1):before {  @include mq(phone-small) { content: "Снимка"; } }
+                    &:nth-of-type(2):before {  @include mq(phone-small) { content: "Сорт"; } }
+                    &:nth-of-type(3):before {  @include mq(phone-small) { content: "Сума"; } }
+                    &:nth-of-type(4):before {  @include mq(phone-small) { content: "Количество"; } }
+                    &:nth-of-type(5):before {  @include mq(phone-small) { content: "Цена"; } }
+
+                    &:nth-child(1){
+                        flex:0 0 22.5%;
+                    }
+                    &:nth-child(2){
+                        flex:0 0 17.5%;
+                    }
+                    &:nth-child(3){
+                        flex:0 0 15%;
+                    }
+                    &:nth-child(4){
+                        flex:0 0 25%;
+                    }
+                    &:nth-child(5){
+                        flex:0 0 20%;
+                    }
+                }
+                td.user-info {
+                    &:nth-of-type(1):before {  @include mq(phone-small) { content: "Име"; } }
+                    &:nth-of-type(2):before {  @include mq(phone-small) { content: "Телефон"; } }
+                    &:nth-of-type(3):before {  @include mq(phone-small) { content: "Email"; } }
+                    &:nth-of-type(4):before {  @include mq(phone-small) { content: "Адрес"; } }
+                    &:nth-of-type(5):before {  @include mq(phone-small) { content: "Промени адрес"; } }
+
+                    &:nth-child(1){
+                        flex:0 0 22.5%;
+                    }
+                    &:nth-child(2){
+                        flex:0 0 22.5%;
+                    }
+                    &:nth-child(3){
+                        flex:0 0 20%;
+                    }
+                    &:nth-child(4){
+                        flex:0 0 25%;
+                    }
+                    &:nth-child(5){
+                        flex:0 0 10%;
+                    }
+                }
+
             }
 
             input.check-ordered-products {
