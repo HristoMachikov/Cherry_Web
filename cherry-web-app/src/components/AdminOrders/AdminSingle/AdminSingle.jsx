@@ -10,7 +10,6 @@ const allStatus = ["Pending", "Approve", "Comming", "Done", "Archive"];
 
 const AdminSingle = ({ index, date, total, status, id, products, dateComming, user }) => {
     const [commingDate, setCommingDate] = React.useState(null);
-    
     // React.useEffect(() => {
 
     //     commingDate && commingDate.set({ 'hour': 23, 'minute': 59, 'second': 59 });

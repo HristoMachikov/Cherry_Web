@@ -47,6 +47,13 @@ const orderService = {
         }).then((res) => {
             return res.json()
         }).catch((err) => console.error(err));
+    },
+    postEditAddress: function (orderId, userAddress) {
+        return fetch(`http://localhost:4000/admin/edit-address/${orderId}${`?address=${userAddress}`}`, {
+            credentials: 'include'
+        }).then((res) => {
+            return res.json()
+        }).catch((err) => console.error(err));
     }
 };
 export default orderService;

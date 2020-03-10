@@ -16,6 +16,7 @@ import RemoveOrder from '../AdminOrders/Actions/RemoveOrder';
 import Store, { StoreContext } from "../Store/Store";
 import { loginSuccess } from "../Store/actions";
 
+const EditAddress = React.lazy(() => import('../AdminOrders/Actions/EditAddress'));
 const Menu = React.lazy(() => import('../Menu/Menu'));
 const About = React.lazy(() => import('../About/About'));
 const Home = React.lazy(() => import('../Home/Home'));
@@ -120,6 +121,9 @@ const App = () => {
                                                 />}
                                                 {isAdmin && <Route path="/admin/remove-order/:id" exact
                                                     render={({ history, match }) => <RemoveOrder history={history} match={match} />}
+                                                />}
+                                                 {isAdmin && <Route path="/admin/edit-address/:orderId/:userAddress" exact
+                                                    render={({ history, match }) => <EditAddress history={history} match={match} />}
                                                 />}
                                                 <Route path="/about" exact component={About} />
                                                 <Route path="/menu" exact

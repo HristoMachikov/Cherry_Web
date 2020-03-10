@@ -531,8 +531,18 @@
                     &:nth-child(5){
                         flex:0 0 10%;
                     }
-                }
 
+                    &.address{
+                        flex-grow: 1;
+
+                        .edit-user-address {
+                            width: 100%;
+                        }
+                        .user-address{
+                            
+                        }
+                    }
+                }
             }
 
             input.check-ordered-products {

@@ -6,7 +6,7 @@ const orderController = require('../controllers/order');
 const { auth } = require('../utils');
 
 module.exports = (app) => {
-
+    app.get('/admin/edit-address/:id', auth(true, true), orderController.editAddressGet);
     app.get('/admin/remove-order/:id', auth(true, true), orderController.removeOrderGet);
     app.get('/admin/approve-order/:id', auth(true, true), orderController.approveOrderGet);
     app.get('/admin/orders', auth(true, true), orderController.adminOrdersGet);

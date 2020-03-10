@@ -1,12 +1,30 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const OrderedProducts = ({ products, user, id }) => {
-    const [editAddress, setEditAddress] = React.useState(true);
-    const [currAddress, setCurrAddress] = React.useState(user.address);
-    const onClickEditAddress = (e) => {
+    const [editAddress, setEditAddress] = useState(true);
+    const [currAddress, setCurrAddress] = useState(user.address);
+
+    const onClickEditAddress = () => {
         setEditAddress(false);
     }
+
+    const onChangeAddress = (event) => {
+        setCurrAddress(event.target.value)
+    }
+    const onClickBack = () => {
+        setEditAddress(true);
+        setCurrAddress(user.address)
+    }
+
+    const textRef = useRef(null);
+
+    useEffect(() => {
+        if (!editAddress) {
+            textRef.current.focus();
+        }
+    }, [editAddress])
+
     const productsObj = JSON.parse(products)
     return (<Fragment>
         <div className="template-ordered-products">
@@ -20,28 +38,36 @@ const OrderedProducts = ({ products, user, id }) => {
                 </td>
                 {editAddress
                     ? <td className="user-info">
-                        {user.address ? <span>{user.address}</span> : <span>Незададен адрес</span>}
+                        {currAddress
+                            ? <a className="user-address" href={`http://maps.google.com/?q=${currAddress}`}>{currAddress}</a>
+                            : <span>Незададен адрес</span>}
                     </td>
-                    : <td className="user-info">
-                        <textarea rows="1">гр.София, жк"Дианабад"</textarea>
+                    : <td className="user-info address">
+                        <textarea className="edit-user-address" ref={textRef} onChange={e => onChangeAddress(e)}>{currAddress}</textarea>
                     </td>
                 }
                 <td className="user-info">
                     {editAddress
                         ? <Link
                             className={`primary-btn edit-address`}
-                            onClick={e => onClickEditAddress(e)}
+                            onClick={onClickEditAddress}
                         >
                         </Link>
-                        : <Link
-                            className="primary-btn edit-address-success"
-                            to={`/admin/edit-address/${id}}`}
-                        ></Link>
+                        : <Fragment>
+                            {currAddress !== user.address
+                                ? <Link
+                                    className="primary-btn edit-address-success"
+                                    to={`/admin/edit-address/${id}/${currAddress}`}
+                                ></Link>
+                                : <Link
+                                    className="primary-btn back"
+                                    // to={`/admin/edit-address/${id}/${currAddress}`}
+                                    onClick={onClickBack}
+                                ></Link>
+                            }
+                        </Fragment>
                     }
                 </td>
-                {/* <td>
-                    <span>-</span>
-                </td> */}
             </tr>}
             {Object.keys(productsObj).map((product, index) => {
                 let { imagePath, sort, price, quantity, weigth, subTotal } = productsObj[product];
@@ -57,9 +83,6 @@ const OrderedProducts = ({ products, user, id }) => {
                         <span>{weigth} кг</span>
                     </td>
                     <td>{price.toFixed(2)} лв/кг</td>
-                    {/* <td>
-                        <span>-</span>
-                    </td> */}
                 </tr>
             })}
         </div>

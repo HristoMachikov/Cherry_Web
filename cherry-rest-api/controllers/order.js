@@ -71,9 +71,9 @@ function adminOrdersGet(req, res, next) {
     Order.find(query).populate("creatorId").lean().then(adminOrdersResult => {
 
         adminOrdersResult.forEach(function (order) {
-            let { username, email, phone } = order.creatorId;
+            let { username, email, phone, address } = order.creatorId;
             delete order.creatorId;
-            order.user = { username, email, phone };
+            order.user = { username, email, phone,address };
         });
 
         console.log(adminOrdersResult);
@@ -110,11 +110,24 @@ function removeOrderGet(req, res, next) {
     })
 }
 
+function editAddressGet(req, res, next) {
+    const orderId = req.params.id;
+    const { address } = req.query;
+    Order.findById({ _id: orderId }).select('creatorId').then(order => {
+        return User.updateOne({ _id: order.creatorId }, { $set: { address } }).then((updatedUser) => {
+            res.send(updatedUser);
+        }).catch(err => {
+            next(err);
+        })
+    })
+}
+
 module.exports = {
     newProductGet,
     createOrderPost,
     adminOrdersGet,
     approveOrderGet,
     removeOrderGet,
-    myOrdersGet
+    myOrdersGet,
+    editAddressGet
 }

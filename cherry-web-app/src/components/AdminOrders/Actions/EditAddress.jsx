@@ -4,9 +4,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import orderService from '../../../services/order-service';
 
 function EditAddress(props) {
-    const { id, currAddress } = props.match.params;
-    orderService.postEditAddress(id, currAddress).then(res => {
-        if (res.ok) {
+    const { orderId, userAddress } = props.match.params;
+    userAddress && orderService.postEditAddress(orderId, userAddress).then(res => {
+        if (res && res.ok) {
             toast.info("Успешно променен адрес!", {
                 closeButton: false
             })
