@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import OrderedProducts from '../OrderedProducts/OrderedProducts';
 import Picker from '../../Home/Calendar/Picker/Picker';
 import commingDateToStr from '../../../shared/methods/comming-date-to-str';
+import bgStatus from '../../../shared/methods/bg-status';
 
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
@@ -33,25 +34,26 @@ const AdminSingle = ({ index, date, total, status, id, products, dateComming, us
     const statusNext = allStatus[indexOfStatus + 1];
     const statusBefore = allStatus[indexOfStatus - 1];
 
-    let currStatus = status;
-    if (status === "Comming") {
-        currStatus = commingDateToStr(dateComming);
-    }
-
     return (
         <Fragment>
             <tr>
                 <td>{index}</td>
                 <td>{date}</td>
                 <td>{total.toFixed(2)} лв</td>
-                <td>
+                <td className="picker">
                     {status === "Approve"
                         ? <Picker
-                            placeholder={status}
+                            placeholder={bgStatus(status)}
                             value={commingDate}
                             onChange={onChangeCommingDate.bind(this, 'commingDate')}
                         />
-                        : currStatus}
+                        : <Fragment>
+                            {status === "Comming"
+                                ? commingDateToStr(dateComming)
+                                : bgStatus(status)
+                            }
+                        </Fragment>
+                    }
                 </td>
                 <td>
                     <label className="check-ordered-products" htmlFor={index}>Виж</label>
@@ -66,7 +68,7 @@ const AdminSingle = ({ index, date, total, status, id, products, dateComming, us
                         </Link>
                         : <Link className="primary-btn remove" to={`/admin/remove-order/${id}`}></Link>
                     }
-                    {["Comming", "Done", "Archive"].includes(status)
+                    {["Approve", "Comming", "Done", "Archive"].includes(status)
                         ? <Link className="primary-btn back" to={`/admin/approve-order/${id}/${statusBefore}`}></Link>
                         : <Link className="primary-btn remove" to={`/admin/remove-order/${id}`}></Link>
                     }

@@ -47,7 +47,7 @@ class Picker extends React.Component {
   };
 
   render() {
-    const placeholderValue = this.props.placeholder || "Моля изберете дата";
+    const placeholderValue = this.props.placeholder || "Изберете";
     const props = this.props;
     const calendar = (<Calendar
       // locale={cn ? zhCN : enUS}
@@ -69,7 +69,7 @@ class Picker extends React.Component {
             <span>
               <input
                 placeholder={placeholderValue}
-                style={{ width: 70 }}
+                // style={{ width: 70 }}
                 disabled={props.disabled}
                 readOnly
                 value={value && value.format(getFormat(props.showTime)) || ''}

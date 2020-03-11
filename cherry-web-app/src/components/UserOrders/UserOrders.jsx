@@ -66,6 +66,7 @@ class UserOrders extends Component {
                                             index={index + 1}
                                             status={order.status}
                                             date={order.dateToStr}
+                                            dateComming={order.commingDate}
                                             total={order.total}
                                             products={order.productsJson}
                                         >

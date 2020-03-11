@@ -22,5 +22,5 @@ export default function commingDateToStr(commingDate) {
 
         default: bgMonth = ""; break;
     }
-    return "За " + day + " " + bgMonth + "-" +date.getHours();
+    return "За " + day + " " + bgMonth;
 }

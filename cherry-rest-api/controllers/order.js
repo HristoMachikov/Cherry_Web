@@ -68,7 +68,7 @@ function adminOrdersGet(req, res, next) {
     if (startDate && endDate) {
         query = { ...query, date: { $gte: startDate, $lte: endDate } };
     }
-    Order.find(query).populate("creatorId").lean().then(adminOrdersResult => {
+    Order.find(query).populate("creatorId").lean().sort({ date: -1 }).then(adminOrdersResult => {
 
         adminOrdersResult.forEach(function (order) {
             let { username, email, phone, address } = order.creatorId;

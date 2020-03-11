@@ -9,6 +9,8 @@ import orderService from '../../services/order-service';
 
 import dateToString from '../../shared/methods/date-to-string';
 
+import bgStatus from '../../shared/methods/bg-status';
+
 
 const addDateToString = (orders) => {
     let ordersArr = orders.map(order => {
@@ -84,15 +86,16 @@ const AdminOrders = () => {
             endDate.diff(startDate, 'days') <= 0;
     }
 
-    const bgStatus = (status) => {
-        switch (status) {
-            case "Pending": return "Чакащи";
-            case "Approve": return "Одобрени";
-            case "Comming": return "Идващи";
-            case "Done": return "Доставени";
-            default: return "Всички"
-        }
-    }
+    // const bgStatus = (status) => {
+    //     switch (status) {
+    //         case "Pending": return "Чакащи";
+    //         case "Approve": return "Одобрени";
+    //         case "Comming": return "Идващи";
+    //         case "Done": return "Доставени";
+    //         case "Archive": return "Архивни";
+    //         default: return "Всички"
+    //     }
+    // }
     return (
         <section className="site-section home">
             <article className="schedule" id="schedule">
@@ -105,35 +108,35 @@ const AdminOrders = () => {
                             <h2>{bgStatus(status)} поръчки</h2><span></span>
                         </header>
 
-                        <div 
-                        // style={{ width: 1024, margin: 20 }}
-                        >
-                            <span>Статус:</span>
-                            <select name="status" value={status} onChange={handleFormElementChange} placeholder="Изберете">
-                                <option value="">-</option>
-                                <option value="Pending">Чакащи</option>
-                                <option value="Approve">Одобрени</option>
-                                <option value="Comming">Идващи</option>
-                                <option value="Done">Доставени</option>
-                                {/* <option value="archive">Архиви</option> */}
-                            </select>
-                            <span>
-                                <span>От дата:</span>
+                        <div className="orders-search">
+                            <div>
+                                <span className="search-name">Статус:</span>
+                                <select name="status" value={status} onChange={handleFormElementChange} placeholder="Изберете">
+                                    <option value="">-</option>
+                                    <option value="Pending">Чакащи</option>
+                                    <option value="Approve">Одобрени</option>
+                                    <option value="Comming">Идващи</option>
+                                    <option value="Done">Доставени</option>
+                                    <option value="Archive">Архивни</option>
+                                </select>
+                            </div>
+                            <div className="picker">
+                                <span className="search-name">От дата:</span>
                                 <Picker
                                     disabledDate={disabledStartDate}
                                     value={startDate}
                                     onChange={onChangeStartDate.bind(this, 'startDate')}
                                 />
-                            </span>
+                            </div>
 
-                            <span>
-                                <span>До дата:</span>
+                            <div className="picker">
+                                <span className="search-name">До дата:</span>
                                 <Picker
                                     disabledDate={disabledEndDate}
                                     value={endDate}
                                     onChange={onChangeEndDate.bind(this, 'endDate')}
                                 />
-                            </span>
+                            </div>
                         </div>
                         {orders.length ? <table className="main-table">
                             <thead>

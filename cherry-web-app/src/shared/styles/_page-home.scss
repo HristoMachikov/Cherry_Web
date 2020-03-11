@@ -351,7 +351,7 @@
                 flex-wrap: wrap;
                 flex-basis: 100%;
 
-                a {
+                a.primary-btn {
                     margin: 0.1em auto;
                 }
                 @include mq(phone-small) {
@@ -362,7 +362,7 @@
                     position: relative;
                     padding-left: 34%;
 
-                    a {
+                    a.primary-btn {
                         text-align: center;
                         margin-right: auto;
                         flex-basis: 30%;
@@ -510,6 +510,8 @@
                     }
                 }
                 td.user-info {
+                    word-break: break-word;
+                
                     &:nth-of-type(1):before {  @include mq(phone-small) { content: "Име"; } }
                     &:nth-of-type(2):before {  @include mq(phone-small) { content: "Телефон"; } }
                     &:nth-of-type(3):before {  @include mq(phone-small) { content: "Email"; } }
@@ -517,13 +519,13 @@
                     &:nth-of-type(5):before {  @include mq(phone-small) { content: "Промени адрес"; } }
 
                     &:nth-child(1){
-                        flex:0 0 22.5%;
+                        flex:0 0 17.5%;
                     }
                     &:nth-child(2){
                         flex:0 0 22.5%;
                     }
                     &:nth-child(3){
-                        flex:0 0 20%;
+                        flex:0 0 25%;
                     }
                     &:nth-child(4){
                         flex:0 0 25%;
@@ -533,13 +535,9 @@
                     }
 
                     &.address{
-                        flex-grow: 1;
-
+                        // flex-grow: 1;
                         .edit-user-address {
                             width: 100%;
-                        }
-                        .user-address{
-                            
                         }
                     }
                 }
@@ -568,5 +566,38 @@
                 }
             }
         } 
+        .picker {
+            input {
+                width: 72px;
+
+                @include mq(tablet) {
+                    width: 96px;
+                }
+                @include mq(desktop) {
+                    width: 120px;
+                }
+                @include mq(desktop-huge) {
+                    width: 144px;
+                }
+            } 
+        }
+
+        .orders-search {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+           
+            > div {
+                padding-bottom: 0.5em;
+
+                &.picker{
+                    padding-left: 1em;
+                }
+            }
+
+            .search-name {
+                display: block;
+            }
+        }
     }
 }
