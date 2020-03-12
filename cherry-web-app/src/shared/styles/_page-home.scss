@@ -262,7 +262,7 @@
         .basket-totla {
             margin-top: 1em;
             display: flex;
-           align-items: center;
+            align-items: center;
 
             span {
                 flex-grow: 1;
@@ -284,263 +284,278 @@
             z-index: 10;
         
             thead {
-                background: var(--color-primary-site);
                 color: var(--color-primary-core-site);
                 flex-basis: 100%;
                 @include mq(phone-small) {
                     display: block;
                 }
-                tr {
+                 tr {
+                    display: flex;
+                    background: var(--color-primary-site);
+
                     @include mq(phone-small) {
                         position: absolute;
                         top: -9999px;
                         left: -9999px;
                     } 
+
+                    th {
+                        padding:0.5em 0;
+                        border-bottom: 1px solid var(--color-primary-site);
+                        @include mq(phone-small) {
+                            display: block;
+                        }
+                        &:nth-child(1){
+                            flex:0 0 5%;
+                        }
+                        &:nth-child(2){
+                            flex:0 0 35%;
+                        }
+                        &:nth-child(3){
+                            flex:0 0 15%;
+                        }
+                        &:nth-child(4){
+                            flex:0 0 16.5%;
+                        }
+                        &:nth-child(5){
+                            flex:0 0 8.5%;
+                        }
+                        &:nth-child(6){
+                            flex:0 0 20%;
+                        }
+                    }
+
+                    &.new-order {
+                        th {
+                            border-bottom: 1px solid var(--color-primary-site);
+                            @include mq(phone-small) {
+                                display: block;
+                            }
+                            &:nth-child(1){
+                                flex:0 0 22.5%;
+                            }
+                            &:nth-child(2){
+                                flex:0 0 15%;
+                            }
+                            &:nth-child(3){
+                                flex:0 0 10%;
+                            }
+                            &:nth-child(4){
+                                flex:0 0 20%;
+                            }
+                            &:nth-child(5){
+                                flex:0 0 15%;
+                            }
+                            &:nth-child(6){
+                                flex:0 0 17.5%;
+                            }
+                        }
+                    }
                 }
             }
+
             tbody {
                 flex-basis: 100%;
                
                 @include mq(phone-small) {
                     display: block;
                 }
-                tr:nth-child(even) {
-                    background: #EEE;
-                }
-            }
-            tr { 
-                text-align: center;
-                display: flex;
-               
-                @include mq(phone-small) {
-                    display: block;
-                    border: 1px solid var(--color-border-ligth);
-                }
-            }
-            th {
-                padding:0.5em 0;
-                border-bottom: 1px solid var(--color-primary-site);
-                @include mq(phone-small) {
-                    display: block;
-                }
-                &:nth-child(1){
-                    flex:0 0 5%;
-                }
-                &:nth-child(2){
-                    flex:0 0 35%;
-                }
-                &:nth-child(3){
-                    flex:0 0 15%;
-                }
-                &:nth-child(4){
-                    flex:0 0 16.5%;
-                }
-                &:nth-child(5){
-                    flex:0 0 8.5%;
-                }
-                &:nth-child(6){
-                    flex:0 0 20%;
-                }
-            }
-            td {
-                border-bottom: 1px solid var(--color-primary-site);
-                display: flex;
-                flex-grow: 1;
-                align-items:center;
-                justify-content:center;
-                flex-wrap: wrap;
-                flex-basis: 100%;
-
-                a.primary-btn {
-                    margin: 0.1em auto;
-                }
-                @include mq(phone-small) {
-                    text-align: left;
-                    display: block;
-                    border: none;
-                    border-bottom: 1px solid var(--color-border-ligth);
-                    position: relative;
-                    padding-left: 34%;
-
-                    a.primary-btn {
-                        text-align: center;
-                        margin-right: auto;
-                        flex-basis: 30%;
-                    }
-                }
-                &:before {
-                    @include mq(phone-small) {
-                        display: block;
-                        text-align: left;
-                        position: absolute;
-                        top: 50%;
-                        transform: translateY(-50%);
-                        left: 2%;
-                        width: 30%;
-                        white-space: nowrap;
-                        font-weight: bold;
-                    } 
-                }
-
-                &:nth-of-type(1):before {  @include mq(phone-small) { content: "Номер"; } }
-                &:nth-of-type(2):before {  @include mq(phone-small) { content: "Дата"; } }
-                &:nth-of-type(3):before {  @include mq(phone-small) { content: "Общо"; } }
-                &:nth-of-type(4):before {  @include mq(phone-small) { content: "Статус"; } }
-                &:nth-of-type(5):before {  @include mq(phone-small) { content: "Инфо"; } }
-                &:nth-of-type(6):before {  @include mq(phone-small) { content: "Action"; } }
-
-                &:nth-of-type(6) {  @include mq(phone-small) { display: flex; } }
-
-                &:nth-child(1){
-                    flex:0 0 5%;
-                }
-                &:nth-child(2){
-                    flex:0 0 35%;
-                }
-                &:nth-child(3){
-                    flex:0 0 15%;
-                }
-                &:nth-child(4){
-                    flex:0 0 16.5%;
-                }
-                &:nth-child(5){
-                    flex:0 0 8.5%;
-                }
-                &:nth-child(6){
-                    flex:0 0 20%;
-                }
-            }
-            // &.new-order{
-            tr.new-order{
-                th {
-                    border-bottom: 1px solid var(--color-primary-site);
-                    @include mq(phone-small) {
-                        display: block;
-                    }
-                    &:nth-child(1){
-                        flex:0 0 22.5%;
-                    }
-                    &:nth-child(2){
-                        flex:0 0 15%;
-                    }
-                    &:nth-child(3){
-                        flex:0 0 10%;
-                    }
-                    &:nth-child(4){
-                        flex:0 0 20%;
-                    }
-                    &:nth-child(5){
-                        flex:0 0 15%;
-                    }
-                    &:nth-child(6){
-                        flex:0 0 17.5%;
-                    }
-                }
-                td {
+                tr { 
+                    text-align: center;
                     display: flex;
-                    flex-grow: 1;
-                    align-items:center;
-                    justify-content:center;
-                    flex-wrap: wrap;
-
+                    
+                    &:nth-child(odd) {
+                        background: var(--color-primary-core-site);
+                    }
+                    &:nth-child(even) {
+                        background: var(--color-table-rows-even);
+                    }
+                    
                     @include mq(phone-small) {
-                        justify-content:left;
+                        display: block;
+                        border: 1px solid var(--color-border-ligth);
                     }
 
-                    span.multiply{
-                        padding: 0 0.1em;;
-                    }
-                  
-                    &:nth-of-type(1):before {  @include mq(phone-small) { content: "Снимка"; } }
-                    &:nth-of-type(2):before {  @include mq(phone-small) { content: "Сорт"; } }
-                    &:nth-of-type(3):before {  @include mq(phone-small) { content: "Цена"; } }
-                    &:nth-of-type(4):before {  @include mq(phone-small) { content: "Количество"; } }
-                    &:nth-of-type(5):before {  @include mq(phone-small) { content: "Сума"; } }
-                    &:nth-of-type(6):before {  @include mq(phone-small) { content: "Изтрий"; } }
-
-                    &:nth-child(1){
-                        flex:0 0 22.5%;
-                    }
-                    &:nth-child(2){
-                        flex:0 0 15%;
-                    }
-                    &:nth-child(3){
-                        flex:0 0 10%;
-                    }
-                    &:nth-child(4){
-                        flex:0 0 20%;
-                    }
-                    &:nth-child(5){
-                        flex:0 0 15%;
-                    }
-                    &:nth-child(6){
-                        flex:0 0 17.5%;
-                    }
-                }
-            }
-
-            tr.ordered-products {
-                @extend .new-order
-            }
-            
-            tr.ordered-products {
-               display: none;
-
-               td {
-                    &:nth-of-type(1):before {  @include mq(phone-small) { content: "Снимка"; } }
-                    &:nth-of-type(2):before {  @include mq(phone-small) { content: "Сорт"; } }
-                    &:nth-of-type(3):before {  @include mq(phone-small) { content: "Сума"; } }
-                    &:nth-of-type(4):before {  @include mq(phone-small) { content: "Количество"; } }
-                    &:nth-of-type(5):before {  @include mq(phone-small) { content: "Цена"; } }
-
-                    &:nth-child(1){
-                        flex:0 0 22.5%;
-                    }
-                    &:nth-child(2){
-                        flex:0 0 17.5%;
-                    }
-                    &:nth-child(3){
-                        flex:0 0 15%;
-                    }
-                    &:nth-child(4){
-                        flex:0 0 25%;
-                    }
-                    &:nth-child(5){
-                        flex:0 0 20%;
-                    }
-                }
-                td.user-info {
-                    word-break: break-word;
-                
-                    &:nth-of-type(1):before {  @include mq(phone-small) { content: "Име"; } }
-                    &:nth-of-type(2):before {  @include mq(phone-small) { content: "Телефон"; } }
-                    &:nth-of-type(3):before {  @include mq(phone-small) { content: "Email"; } }
-                    &:nth-of-type(4):before {  @include mq(phone-small) { content: "Адрес"; } }
-                    &:nth-of-type(5):before {  @include mq(phone-small) { content: "Промени адрес"; } }
-
-                    &:nth-child(1){
-                        flex:0 0 17.5%;
-                    }
-                    &:nth-child(2){
-                        flex:0 0 22.5%;
-                    }
-                    &:nth-child(3){
-                        flex:0 0 25%;
-                    }
-                    &:nth-child(4){
-                        flex:0 0 25%;
-                    }
-                    &:nth-child(5){
-                        flex:0 0 10%;
-                    }
-
-                    &.address{
-                        // flex-grow: 1;
-                        .edit-user-address {
-                            width: 100%;
+                    td {
+                        border-bottom: 1px solid var(--color-primary-site);
+                        display: flex;
+                        flex-grow: 1;
+                        align-items:center;
+                        justify-content:center;
+                        flex-wrap: wrap;
+                        flex-basis: 100%;
+        
+                        a.primary-btn {
+                            margin: 0.1em auto;
+                        }
+                        @include mq(phone-small) {
+                            text-align: left;
+                            display: block;
+                            border: none;
+                            border-bottom: 1px solid var(--color-border-ligth);
+                            position: relative;
+                            padding-left: 34%;
+        
+                            a.primary-btn {
+                                text-align: center;
+                                margin-right: auto;
+                                flex-basis: 30%;
+                            }
+                        }
+                        &:before {
+                            @include mq(phone-small) {
+                                display: block;
+                                text-align: left;
+                                position: absolute;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                left: 2%;
+                                width: 30%;
+                                white-space: nowrap;
+                                font-weight: bold;
+                            } 
+                        }
+        
+                        &:nth-of-type(1):before {  @include mq(phone-small) { content: "Номер"; } }
+                        &:nth-of-type(2):before {  @include mq(phone-small) { content: "Дата"; } }
+                        &:nth-of-type(3):before {  @include mq(phone-small) { content: "Общо"; } }
+                        &:nth-of-type(4):before {  @include mq(phone-small) { content: "Статус"; } }
+                        &:nth-of-type(5):before {  @include mq(phone-small) { content: "Инфо"; } }
+                        &:nth-of-type(6):before {  @include mq(phone-small) { content: "Action"; } }
+        
+                        &:nth-of-type(6) {  @include mq(phone-small) { display: flex; } }
+        
+                        &:nth-child(1){
+                            flex:0 0 5%;
+                        }
+                        &:nth-child(2){
+                            flex:0 0 35%;
+                        }
+                        &:nth-child(3){
+                            flex:0 0 15%;
+                        }
+                        &:nth-child(4){
+                            flex:0 0 16.5%;
+                        }
+                        &:nth-child(5){
+                            flex:0 0 8.5%;
+                        }
+                        &:nth-child(6){
+                            flex:0 0 20%;
                         }
                     }
-                }
+
+                    &.new-order{
+                        td {
+                            display: flex;
+                            flex-grow: 1;
+                            align-items:center;
+                            justify-content:center;
+                            flex-wrap: wrap;
+        
+                            @include mq(phone-small) {
+                                justify-content:left;
+                            }
+        
+                            span.multiply{
+                                padding: 0 0.1em;;
+                            }
+                          
+                            &:nth-of-type(1):before {  @include mq(phone-small) { content: "Снимка"; } }
+                            &:nth-of-type(2):before {  @include mq(phone-small) { content: "Сорт"; } }
+                            &:nth-of-type(3):before {  @include mq(phone-small) { content: "Цена"; } }
+                            &:nth-of-type(4):before {  @include mq(phone-small) { content: "Количество"; } }
+                            &:nth-of-type(5):before {  @include mq(phone-small) { content: "Сума"; } }
+                            &:nth-of-type(6):before {  @include mq(phone-small) { content: "Изтрий"; } }
+        
+                            &:nth-child(1){
+                                flex:0 0 22.5%;
+                            }
+                            &:nth-child(2){
+                                flex:0 0 15%;
+                            }
+                            &:nth-child(3){
+                                flex:0 0 10%;
+                            }
+                            &:nth-child(4){
+                                flex:0 0 20%;
+                            }
+                            &:nth-child(5){
+                                flex:0 0 15%;
+                            }
+                            &:nth-child(6){
+                                flex:0 0 17.5%;
+                            }
+                        }
+                    }
+
+                    &.ordered-products {
+                        @extend .new-order
+                    }
+
+                    &.ordered-products {
+                       display: none;
+                       background: var(--color-table-rows-products);
+                       
+                       td {
+                            &:nth-of-type(1):before {  @include mq(phone-small) { content: "Снимка"; } }
+                            &:nth-of-type(2):before {  @include mq(phone-small) { content: "Сорт"; } }
+                            &:nth-of-type(3):before {  @include mq(phone-small) { content: "Сума"; } }
+                            &:nth-of-type(4):before {  @include mq(phone-small) { content: "Количество"; } }
+                            &:nth-of-type(5):before {  @include mq(phone-small) { content: "Цена"; } }
+        
+                            &:nth-child(1){
+                                flex:0 0 22.5%;
+                            }
+                            &:nth-child(2){
+                                flex:0 0 17.5%;
+                            }
+                            &:nth-child(3){
+                                flex:0 0 15%;
+                            }
+                            &:nth-child(4){
+                                flex:0 0 25%;
+                            }
+                            &:nth-child(5){
+                                flex:0 0 20%;
+                            }
+        
+                            &.user-info {
+                                word-break: break-word;
+                                background: var(--color-table-rows-info);
+                            
+                                &:nth-of-type(1):before {  @include mq(phone-small) { content: "Име"; } }
+                                &:nth-of-type(2):before {  @include mq(phone-small) { content: "Телефон"; } }
+                                &:nth-of-type(3):before {  @include mq(phone-small) { content: "Email"; } }
+                                &:nth-of-type(4):before {  @include mq(phone-small) { content: "Адрес"; } }
+                                &:nth-of-type(5):before {  @include mq(phone-small) { content: "Промени адрес"; } }
+            
+                                &:nth-child(1){
+                                    flex:0 0 17.5%;
+                                }
+                                &:nth-child(2){
+                                    flex:0 0 22.5%;
+                                }
+                                &:nth-child(3){
+                                    flex:0 0 25%;
+                                }
+                                &:nth-child(4){
+                                    flex:0 0 25%;
+                                }
+                                &:nth-child(5){
+                                    flex:0 0 10%;
+                                }
+            
+                                &.address{
+                                    // flex-grow: 1;
+                                    .edit-user-address {
+                                        width: 100%;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }  
             }
 
             input.check-ordered-products {
@@ -571,7 +586,7 @@
                 width: 72px;
 
                 @include mq(tablet) {
-                    width: 96px;
+                    width: 90px;
                 }
                 @include mq(desktop) {
                     width: 120px;
@@ -592,7 +607,7 @@
 
                 &.picker{
                     padding-left: 1em;
-                }
+                }   
             }
 
             .search-name {

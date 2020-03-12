@@ -5,7 +5,9 @@ const User = require('../models/User');
 function newProductGet(req, res, next) {
     const cherryId = req.params.id;
     Cherry.findById(cherryId).then(currProd => {
-        res.send(currProd);
+        let { sort, imagePath, price, _id } = currProd;
+        let result = { sort, imagePath, price, _id };
+        res.send(result);
     }).catch(err => {
         next(err);
     });
@@ -31,7 +33,8 @@ function myOrdersGet(req, res, next) {
     User.findById({ _id: userId }).then((user) => {
         return Order.find({ _id: { $in: user.orders } }).sort({ date: -1 })
     }).then(orders => {
-        res.send(orders);
+        let filteredOrders = orders.filter(ord => ord.status !== "Archive")
+        res.send(filteredOrders);
     }).catch(err => {
         next(err);
     })
@@ -73,10 +76,9 @@ function adminOrdersGet(req, res, next) {
         adminOrdersResult.forEach(function (order) {
             let { username, email, phone, address } = order.creatorId;
             delete order.creatorId;
-            order.user = { username, email, phone,address };
+            order.user = { username, email, phone, address };
         });
 
-        console.log(adminOrdersResult);
         res.send(adminOrdersResult);
     }).catch(err => {
         next(err);

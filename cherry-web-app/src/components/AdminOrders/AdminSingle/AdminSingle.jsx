@@ -11,11 +11,12 @@ const allStatus = ["Pending", "Approve", "Comming", "Done", "Archive"];
 
 const AdminSingle = ({ index, date, total, status, id, products, dateComming, user }) => {
     const [commingDate, setCommingDate] = React.useState(null);
+    const [showInfo, setShowInfo] = React.useState(false);
     // React.useEffect(() => {
 
-    //     commingDate && commingDate.set({ 'hour': 23, 'minute': 59, 'second': 59 });
 
-    // }, [commingDate]);
+
+    // }, [showInfo, setShowInfo]);
     const onChangeCommingDate = (field, value) => {
         // console.log('onChange', field, value && value.format(FromPicker.getFormat(SHOW_TIME)));
         // value.set({ 'hour': 23, 'minute': 59, 'second': 59 });
@@ -27,6 +28,10 @@ const AdminSingle = ({ index, date, total, status, id, products, dateComming, us
         if (!commingDate && status === "Approve") {
             e.preventDefault()
         }
+    }
+
+    const onClickCheckbox = (event) => {
+        setShowInfo(event.target.checked);
     }
 
     const indexOfStatus = allStatus.indexOf(status);
@@ -56,7 +61,7 @@ const AdminSingle = ({ index, date, total, status, id, products, dateComming, us
                     }
                 </td>
                 <td>
-                    <label className="check-ordered-products" htmlFor={index}>Виж</label>
+                    <label className="check-ordered-products" htmlFor={index}>{showInfo ? "Скрий" : "Виж"}</label>
                     {/* <Link to={`/order/my-orders/${id}`}>Виж</Link> */}
                 </td>
                 <td>
@@ -74,7 +79,7 @@ const AdminSingle = ({ index, date, total, status, id, products, dateComming, us
                     }
                 </td>
             </tr>
-            <input className="check-ordered-products" type="checkbox" name={index} id={index} />
+            <input className="check-ordered-products" type="checkbox" name={index} id={index} onClick={onClickCheckbox} />
             <OrderedProducts products={products} user={user} id={id} />
         </Fragment>
     );
