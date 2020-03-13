@@ -2,7 +2,7 @@
 
 // import 'rc-calendar/assets/index.css';
 import React, { Fragment } from 'react';
-import Picker  from './Picker/Picker';
+import Picker from './Picker/Picker';
 import * as FromPicker from './Picker/Picker';
 
 // import Calendar from 'rc-calendar';
@@ -92,6 +92,7 @@ class Demo extends React.Component {
   state = {
     startValue: null,
     endValue: null,
+    canvasImg: null
   };
 
   onChange = (field, value) => {
@@ -101,7 +102,7 @@ class Demo extends React.Component {
     this.setState({
       [field]: value,
     });
-    
+
   }
 
   disabledEndDate = (endValue) => {
@@ -128,13 +129,26 @@ class Demo extends React.Component {
       endValue.diff(startValue, 'days') <= 0;
   }
 
+  onClickGenCanvas = (event) => {
+    var canvas = document.createElement("canvas");
+    canvas.width = 620;
+    canvas.height = 80;
+    var ctx = canvas.getContext('2d');
+    ctx.font = "30px Arial";
+    var text = event.target.value;
+    
+    ctx.fillText(text, 10, 50);
+    let canvasImg = canvas.toDataURL();
+    this.setState({ canvasImg });
+  }
+
   render() {
     const state = this.state;
-    console.log(this.state.startValue && this.state.startValue.toDate())
-    console.log(this.state.endValue && this.state.endValue.toDate())
+    // console.log(this.state.startValue && this.state.startValue.toDate())
+    // console.log(this.state.endValue && this.state.endValue.toDate())
     return (
-      <div 
-      style={{ width: 250, margin: 20 }}
+      <div
+        style={{ width: 250, margin: 20 }}
       >
         <p>
           От дата:
@@ -152,6 +166,11 @@ class Demo extends React.Component {
             value={state.endValue}
             onChange={this.onChange.bind(this, 'endValue')}
           />
+        </p>
+        <p>
+          <input onChange={e => this.onClickGenCanvas(e)}>
+          </input>
+          {state.canvasImg && <img src={state.canvasImg} alt="123" />}
         </p>
       </div>);
   }
