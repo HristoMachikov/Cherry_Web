@@ -16,6 +16,7 @@ import RemoveOrder from '../AdminOrders/Actions/RemoveOrder';
 import Store, { StoreContext } from "../Store/Store";
 import { loginSuccess } from "../Store/actions";
 
+const ArchiveOrder = React.lazy(() => import('../UserOrders/Actions/ArchiveOrder'));
 const EditAddress = React.lazy(() => import('../AdminOrders/Actions/EditAddress'));
 const Menu = React.lazy(() => import('../Menu/Menu'));
 const About = React.lazy(() => import('../About/About'));
@@ -103,6 +104,9 @@ const App = () => {
                                                 />
                                                 <Route path="/user/logout"
                                                     render={() => (isLogged ? <Logout /> : <Redirect to="/" />)}
+                                                />
+                                                <Route path="/user/archive-order/:id"
+                                                    render={({ history, match }) => (!isLogged ? <Redirect to="/user/login" /> : <ArchiveOrder match={match} history={history} />)}
                                                 />
                                                 <Route path="/order/products/:id"
                                                     render={({ history, match }) => (!isLogged ? <Redirect to="/user/login" /> : <Basket match={match} history={history} userId={user._id} />)}

@@ -3,14 +3,14 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import orderService from '../../../services/order-service';
 
-function EditAddress(props) {
-    const { orderId, userAddress } = props.match.params;
-    userAddress && orderService.getEditAddress(orderId, userAddress).then(res => {
-        if (res && res.ok) {
-            toast.info("Успешно променен адрес!", {
+function ArchiveOrder(props) {
+    const { id } = props.match.params;
+    orderService.getArchiveOrder(id).then(res => {
+        if (res.ok) {
+            toast.success("Успешно архивирана поръчка!", {
                 closeButton: false
             })
-            props.history.push('/admin/orders');
+            props.history.push('/order/my-orders');
         } else {
             toast.error(`${res}`, {
                 closeButton: false
@@ -22,4 +22,4 @@ function EditAddress(props) {
     })
     return null;
 }
-export default EditAddress;
+export default ArchiveOrder;

@@ -124,6 +124,15 @@ function editAddressGet(req, res, next) {
     })
 }
 
+function archiveOrderGet(req, res, next) {
+    const orderId = req.params.id;
+    Order.updateOne({ _id: orderId }, { $set: { status: "Archive" } }).then(updatedOrder => {
+        res.send(updatedOrder);
+    }).catch(err => {
+        next(err);
+    })
+}
+
 module.exports = {
     newProductGet,
     createOrderPost,
@@ -131,5 +140,6 @@ module.exports = {
     approveOrderGet,
     removeOrderGet,
     myOrdersGet,
-    editAddressGet
+    editAddressGet,
+    archiveOrderGet
 }

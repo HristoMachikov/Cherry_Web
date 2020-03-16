@@ -12,6 +12,7 @@ module.exports = (app) => {
     app.get('/admin/orders', auth(true, true), orderController.adminOrdersGet);
     app.post('/order/create', auth(), orderController.createOrderPost);
     app.get('/user/my-orders/:id', auth(), orderController.myOrdersGet);
+    app.get('/user/archive-order/:id', auth(), orderController.archiveOrderGet);
     app.get('/order/new-product/:id', auth(), orderController.newProductGet);
 
     app.get('/cherry/gallery/:id', auth(), cherryController.galleryGet);

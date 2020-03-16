@@ -421,7 +421,7 @@
                         &:nth-of-type(3):before {  @include mq(phone-small) { content: "Общо"; } }
                         &:nth-of-type(4):before {  @include mq(phone-small) { content: "Статус"; } }
                         &:nth-of-type(5):before {  @include mq(phone-small) { content: "Инфо"; } }
-                        &:nth-of-type(6):before {  @include mq(phone-small) { content: "Action"; } }
+                        &:nth-of-type(6):before {  @include mq(phone-small) { content: "Действия"; } }
         
                         &:nth-of-type(6) {  @include mq(phone-small) { display: flex; } }
         

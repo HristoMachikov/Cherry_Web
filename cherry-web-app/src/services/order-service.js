@@ -48,8 +48,15 @@ const orderService = {
             return res.json()
         }).catch((err) => console.error(err));
     },
-    postEditAddress: function (orderId, userAddress) {
+    getEditAddress: function (orderId, userAddress) {
         return fetch(`http://localhost:4000/admin/edit-address/${orderId}${`?address=${userAddress}`}`, {
+            credentials: 'include'
+        }).then((res) => {
+            return res.json()
+        }).catch((err) => console.error(err));
+    },
+    getArchiveOrder: function (orderId) {
+        return fetch(`http://localhost:4000/user/archive-order/${orderId}`, {
             credentials: 'include'
         }).then((res) => {
             return res.json()

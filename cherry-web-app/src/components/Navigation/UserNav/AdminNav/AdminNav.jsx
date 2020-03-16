@@ -13,7 +13,7 @@ function AdminNav({ isAdmin }) {
         </li>
     </Fragment> : <Fragment>
             <li>
-                <NavLink to="/order/my-orders" activeClassName="selected">Поръчани</NavLink>
+                <NavLink to="/order/my-orders" activeClassName="selected">Поръчки</NavLink>
             </li>
             <li>
                 <NavLink to="/order/products" activeClassName="selected">Кошница</NavLink>

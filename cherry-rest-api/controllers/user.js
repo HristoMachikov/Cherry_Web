@@ -4,6 +4,11 @@ const utils = require('../utils');
 const { userCookieName } = require('../app-config');
 const nodeMailer = require('nodemailer');
 
+function frontUser(user) {
+    let { username, roles, _id } = user;
+    return { username, roles, _id };
+}
+
 function loginPost(req, res, next) {
     const { email, password } = req.body;
 
@@ -17,7 +22,7 @@ function loginPost(req, res, next) {
             }
             const token = utils.jwt.createToken({ id: user._id });
             res.cookie(userCookieName, token);
-            res.send(user);
+            res.send(frontUser(user));
         }).catch(err => {
             res.status(401).send(err);
         });
@@ -27,7 +32,7 @@ function registerPost(req, res, next) {
     const { username, password, email, phone } = req.body;
 
     return User.create({ username, password, email, phone, roles: ['User'] }).then((newUser) => {
-        res.send(newUser);
+        res.send(frontUser(newUser));
     }).catch(err => {
         if (err.name === 'MongoError' && err.code === 11000) {
             const error = "Потребител с този Е-mail съществува!"
@@ -50,7 +55,7 @@ function authGet(req, res) {
     const token = req.cookies[userCookieName];
     utils.jwt.verifyToken(token)
         .then(({ id }) => User.findById(id))
-        .then(user => res.send(user))
+        .then(user => res.send(frontUser(user)))
         .catch(() => res.status(401).send('HELLO!'));
 }
 function sendEmailPost(req, res, next) {

@@ -55,7 +55,7 @@ class UserOrders extends Component {
                                         <th>Общо</th>
                                         <th>Статус</th>
                                         <th>Инфо</th>
-                                        <th>Action</th>
+                                        <th>Действия</th>
                                     </tr>
                                 </thead>
                                 <tbody>
