@@ -59,6 +59,10 @@ function authGet(req, res) {
         .catch(() => res.status(401).send('HELLO!'));
 }
 function sendEmailPost(req, res, next) {
+    let { firstname, lastname, email, theme, message } = req.body;
+
+    console.log({ firstname, lastname, email, theme, message });
+
     let transporter = nodeMailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
@@ -68,12 +72,12 @@ function sendEmailPost(req, res, next) {
             pass: 'Levski1914Gmail'
         }
     });
-    let fsd = 'Peter Petrov';
+    
     let mailOptions = {
-        from: '', // sender address
-        to: "hristo2635@abv.bg",//req.body.to, // list of receivers
-        subject: "Order cherries", // Subject line
-        text: "Hello! hristo2635@abv.bg", // plain text body
+        from: `${firstname} ${lastname}`, // sender address
+        to: "hristomachikov@gmail.com",//req.body.to, // list of receivers
+        subject: `Cherry question: ${theme}`, // Subject line
+        text: `Sender: ${email}\n${message}`, // plain text body
         // html: '<b>NodeJS Email Tutorial</b>' // html body
     };
 

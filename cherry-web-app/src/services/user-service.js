@@ -34,7 +34,7 @@ const userService = {
             return res.text()
         }).catch((err) => console.error(err));
     },
-    sendEmail: function () {
+    sendEmail: function (body) {
         return fetch(`http://localhost:4000/user/send-email`, {
             method: "POST",
             headers: {
@@ -42,7 +42,7 @@ const userService = {
                 'Content-Type': 'application/json'
             },
             credentials: 'include',
-            // body: JSON.stringify(body)
+            body: JSON.stringify(body)
         }).then((res) => {
             return res.status === 200 ? res.json() : res.text();
             // .then(text => Promise.reject(text));
