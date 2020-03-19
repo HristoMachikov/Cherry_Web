@@ -65,7 +65,7 @@ function Home(props) {
         <Info />
         <Why />
         <Order />
-        <Contacts />
+        <Contacts history={props.history} />
         <Location />
         <Calendar />
     </section>

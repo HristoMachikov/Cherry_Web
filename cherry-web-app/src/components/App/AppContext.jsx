@@ -134,7 +134,7 @@ const App = () => {
                                                     render={() => <Menu isAdmin={isAdmin} />}
                                                 />
                                                 <Route path="/" exact
-                                                    render={() => <Home isAdmin={isAdmin} />}
+                                                    render={({ history }) => <Home history={history} isAdmin={isAdmin} />}
                                                 />
                                                 <Route component={NotFound} />
                                             </Switch>

@@ -268,7 +268,7 @@ const schema = yup.object().shape({
     phone: yup
         .string()
         .required("Въведете телефон за връзка!")
-        .min(9, "Телефона трябва да е минимум 9 цифрен!")
+        .min(minLengthPhone, `Телефона трябва да е минимум ${minLengthPhone} цифрен!`)
 });
 export default withForm(Register, initialFormState, schema);
 // export default Register;
