@@ -74,10 +74,10 @@ function sendEmailPost(req, res, next) {
     });
     
     let mailOptions = {
-        from: `${firstname} ${lastname}`, // sender address
-        to: "hristomachikov@gmail.com",//req.body.to, // list of receivers
-        subject: `Cherry question: ${theme}`, // Subject line
-        text: `Sender: ${email}\n${message}`, // plain text body
+        from: `${email}`, // sender address will be replace with user
+        to: "hristomachikov@gmail.com", // list of receivers
+        subject: `Get Cherry and ${firstname} ${lastname} discuss: ${theme}`, // Subject line
+        text: `${message}\n\nSender: ${email}`, // plain text body
         // html: '<b>NodeJS Email Tutorial</b>' // html body
     };
 
@@ -88,7 +88,6 @@ function sendEmailPost(req, res, next) {
         }
         console.log('Message %s sent: %s', info.messageId, info.response);
         res.send(info);
-        // res.render('index');
     });
 }
 

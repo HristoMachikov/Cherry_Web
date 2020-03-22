@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+
 import { ToastContainer, toast } from 'react-toastify';
 import * as yup from 'yup'
 
@@ -36,13 +38,16 @@ const schema = yup.object().shape(validations);
 
 const validationsRunner = getValidationsRunnerForSchema(schema);
 
-function ContactForm({history}) {
+function ContactForm({ history }) {
 
-    let [firstname, setFirstname] = React.useState(null);
-    let [lastname, setLastname] = React.useState(null);
-    let [email, setEmail] = React.useState(null);
-    let [theme, setTheme] = React.useState(null);
-    let [message, setMessage] = React.useState(null);
+    const { executeRecaptcha } = useGoogleReCaptcha();
+    const [token, setToken] = React.useState("");
+
+    // let [firstname, setFirstname] = React.useState(null);
+    // let [lastname, setLastname] = React.useState(null);
+    // let [email, setEmail] = React.useState(null);
+    // let [theme, setTheme] = React.useState(null);
+    // let [message, setMessage] = React.useState(null);
 
     const firstnameFormControl = useFormControl('', validations.firstname);
     const lastnameFormControl = useFormControl('', validations.lastname);
@@ -50,38 +55,22 @@ function ContactForm({history}) {
     const themeFormControl = useFormControl('', validations.theme);
     const messageFormControl = useFormControl('', validations.message);
     const [serverError, setServerError] = React.useState(undefined);
-    const [firstnameError, setFirstnameError] = React.useState(undefined);
-    const [emailError, setEmailError] = React.useState(undefined);
-    const [themeError, setThemeError] = React.useState(undefined);
-    const [messageError, setMessageError] = React.useState(undefined);
 
-    // const onChangeNameHandler = (event) => {
-    //     let { name, value } = event.target;
-    //     if (name === "lastname") {
-    //         setLastname(value);
-    //     }
-    //     if (name === "firstname") {
-    //         setFirstname(value);
-    //     }
-    // }
+    const clickHandler = async () => {
+        if (!executeRecaptcha) {
+            return;
+        }
+        const result = await executeRecaptcha("");
+        setToken(result);
+    }
 
-    // const onChangeEmailHandler = (event) => {
-    //     setEmail(event.target.value);
-    // }
-
-    // const onChangeThemeHandler = (event) => {
-    //     setTheme(event.target.value);
-    // }
-
-    // const onChangeMessageHandler = (event) => {
-    //     setMessage(event.target.value);
-    // }
     // React.useEffect(() => {
 
     // }, [])
 
     const resetHandler = (e) => {
         e.preventDefault();
+
         e.target.firstname.value = "";
         e.target.lastname.value = "";
         e.target.email.value = "";
@@ -102,15 +91,26 @@ function ContactForm({history}) {
             message: messageFormControl.value
         }).then(data => {
             console.log(data)
-            userService.sendEmail(data).then(res=>{
+            userService.sendEmail(data).then(res => {
                 console.log(res);
-                toast.success("Съобщението е изпратено!", {
-                    closeButton: false
-                  });
-                  history.push('/');
+                if (res && res.messageId) {
+                    toast.success("Съобщението е изпратено!", {
+                        closeButton: false
+                    });
+                    history.push('/menu');
+                    history.push('/#contacts');
+                } else if (res === undefined
+                    || res.code === "EAUTH") {
+                    toast.error("Съобщението не е изпратено!", {
+                        closeButton: false
+                    })
+                }
+
             }).catch(error => {
                 if (typeof error === 'object') { throw error; }
                 setServerError(error);
+                console.log("Catch------------");
+                console.log(error);
             });
 
         }).catch(errors => {
@@ -121,6 +121,7 @@ function ContactForm({history}) {
             if (errors.message) { messageFormControl.setErrors(errors.message); }
             console.log(errors);
         })
+
     }, [firstnameFormControl, lastnameFormControl, emailFormControl, themeFormControl, messageFormControl, setServerError]
         // console.log({ firstname, lastname, email, theme, message })
 
@@ -138,8 +139,6 @@ function ContactForm({history}) {
         // },
         //  [firstname, lastname, email, theme, message]
     );
-
-    // console.log(firstname, lastname, email, theme, message);
 
     return (<div className="contact-form">
         <form onSubmit={resetHandler}>
@@ -162,7 +161,6 @@ function ContactForm({history}) {
                     <input type="text"
                         name="firstname"
                         id="firstname"
-                        // value={firstname}
                         onChange={firstnameFormControl.changeHandler} />
                     <span>Име</span>
                 </p>
@@ -214,8 +212,11 @@ function ContactForm({history}) {
                 <p className="btn">
                     <button className="primary-btn" type="submit">Изчисти</button>
                 </p>
+                <p className="btn">
+                    <button className="primary-btn" type="button" onClick={clickHandler} >Не съм робот!</button>
+                </p>
+                {token && <p>Token: {token}</p>}
             </div>
-
         </form>
     </div>);
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 import ContactForm from './ContactForm/ContactForm';
 
@@ -27,7 +28,11 @@ function Contacts({ history }) {
                 </li>
             </ul>
         </div>
-        <ContactForm history={history} />
+        <GoogleReCaptchaProvider
+            reCaptchaKey="6LfRJeMUAAAAAJFJCI5NUmLfkaS_XWr7JvdDQnmL"
+            language="bg">
+            <ContactForm history={history} />
+        </GoogleReCaptchaProvider>
     </article>);
 }
 
