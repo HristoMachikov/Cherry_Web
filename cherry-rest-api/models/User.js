@@ -19,6 +19,9 @@ const userSchema = new Schema({
         required: [true, 'Phone is required'],
     },
     address: { type: Schema.Types.String, default: "" },
+    newPassLinkId: { type: Schema.Types.String },
+    newPassword: { type: Schema.Types.String },
+    newPassSalt: { type: Schema.Types.String },
     orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
     cherries: [{ type: Schema.Types.ObjectId, ref: "Cherry" }],
     states: [{ type: Schema.Types.ObjectId, ref: "State" }],
@@ -38,6 +41,19 @@ userSchema.pre('save', function (next) {
         if (this.isNew && this.username === "Admin") {
             return next();
         }
+
+        // if (this.newPassword && this.newPassword !== "") {
+        //     this.newPassword = "";
+        //     this.newPassSalt = "";
+        //     this.newPassSalt = "";
+        //     next();
+        // }
+        console.log(this.newPassword);
+        if (this.newPassword) {
+            this.newPassword = undefined;
+            return next();
+        }
+
         const salt = encryption.generateSalt()
         const hash = encryption.generateHashedPassword(salt, this.password);
         this.password = hash;

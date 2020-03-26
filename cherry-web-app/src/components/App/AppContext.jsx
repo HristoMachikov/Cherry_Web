@@ -25,6 +25,9 @@ const LoginHookContext = React.lazy(() => import('../Login/LoginHookContext'));
 const Login = React.lazy(() => import('../Login/Login'));
 const Register = React.lazy(() => import('../Register/Register'));
 const Logout = React.lazy(() => import('../Logout/Logout'));
+const ChangePassword = React.lazy(() => import('../ChangePassword/ChangePassword'));
+const NewPassword = React.lazy(() => import('../NewPassword/NewPassword'));
+const ConfirmNewPassword = React.lazy(() => import('../ConfirmNewPassword/ConfirmNewPassword'));
 const Create = React.lazy(() => import('../Cherry/Create/Create'));
 const Edit = React.lazy(() => import('../Cherry/Edit/Edit'));
 const Remove = React.lazy(() => import('../Cherry/Remove/Remove'));
@@ -94,6 +97,16 @@ const App = () => {
                                                 {isAdmin && <Route path="/cherry/create"
                                                     render={({ history }) => <Create history={history} />}
                                                 />}
+                                                <Route path="/user/new-password/:linkId" exact
+                                                    render={({ history, match }) => (!isLogged ? <ConfirmNewPassword
+                                                        history={history} match={match}
+                                                    /> : <Redirect to="/" />)}
+                                                />
+                                                <Route path="/user/new-password" exact
+                                                    render={({ history }) => (!isLogged ? <NewPassword
+                                                        history={history}
+                                                    /> : <Redirect to="/" />)}
+                                                />
                                                 <Route path="/user/register" exact
                                                     render={({ history }) => (!isLogged ? <Register
                                                         history={history}
@@ -104,6 +117,9 @@ const App = () => {
                                                 />
                                                 <Route path="/user/logout"
                                                     render={() => (isLogged ? <Logout /> : <Redirect to="/" />)}
+                                                />
+                                                <Route path="/user/change-password" exact
+                                                    render={({ history }) => (!isLogged ? <Redirect to="/user/login" /> : <ChangePassword history={history} userId={user._id} />)}
                                                 />
                                                 <Route path="/user/archive-order/:id"
                                                     render={({ history, match }) => (!isLogged ? <Redirect to="/user/login" /> : <ArchiveOrder match={match} history={history} />)}
@@ -126,7 +142,7 @@ const App = () => {
                                                 {isAdmin && <Route path="/admin/remove-order/:id" exact
                                                     render={({ history, match }) => <RemoveOrder history={history} match={match} />}
                                                 />}
-                                                 {isAdmin && <Route path="/admin/edit-address/:orderId/:userAddress" exact
+                                                {isAdmin && <Route path="/admin/edit-address/:orderId/:userAddress" exact
                                                     render={({ history, match }) => <EditAddress history={history} match={match} />}
                                                 />}
                                                 <Route path="/about" exact component={About} />

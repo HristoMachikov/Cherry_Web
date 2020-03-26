@@ -48,7 +48,43 @@ const userService = {
             // .then(text => Promise.reject(text));
             // .then(res => res.text().then(text => res.status === 200 ? text : Promise.reject(text)));
         }).catch((err) => console.error(err));
+    },
+    setNewPassword: function (body, userId) {
+        return fetch(`http://localhost:4000/user/new-password`, {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify(body)
+        }).then((res) => {
+            return res.status === 200 ? res.json() : res.text();
+            // .then(text => Promise.reject(text));
+            // .then(res => res.text().then(text => res.status === 200 ? text : Promise.reject(text)));
+        }).catch((err) => console.error(err));
+    },
+    getConfirmNewPassword: function (linkId) {
+        return fetch(`http://localhost:4000/user/new-password/${linkId}`, {
+            credentials: 'include'
+        }).then((res) => {
+            return res.status === 200 ? res.json() : res.text();
+        }).catch((err) => console.error(err));
+    },
+    changePassword: function (body, userId) {
+        return fetch(`http://localhost:4000/user/change-password${`?userId=${userId}`}`, {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify(body)
+        }).then((res) => {
+            return res.status === 200 ? res.json() : res.text();
+        }).catch((err) => console.error(err));
     }
+
 };
 
 export default userService;

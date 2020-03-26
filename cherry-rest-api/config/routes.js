@@ -22,10 +22,14 @@ module.exports = (app) => {
     app.post('/cherry/create', auth(true, true), cherryController.createPost);
     app.get('/cherry/all', auth(true, true), cherryController.homeGetAdmin);
 
+    app.get('/user/new-password/:id', userController.confirmNewPassLinkGet);
+    app.post('/user/new-password', userController.setNewPassLinkPost);
+    app.post('/user/change-password', userController.changePasswordPost);
+    app.post('/user/send-email', userController.sendEmailPost);
     app.post('/user/login', userController.loginPost);
     app.post('/user/register', userController.registerPost);
     app.get('/user/logout', userController.logoutGet);
-    app.post('/user/send-email', userController.sendEmailPost);
+    
     app.get('/auth', userController.authGet);
 
     app.get('/', auth(false), homeController.homeGet);

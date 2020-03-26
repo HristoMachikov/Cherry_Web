@@ -107,7 +107,15 @@ const LoginHookContext = () => {
           <p className="form-btn">
             <button className="primary-btn" type="button" onClick={submitHandler}>Вход</button>
           </p>
-          <p className="question">Имаш ли <Link to="/user/register">Регистрация</Link>?</p>
+          <p className="question">
+            <span>
+              Имаш ли <Link to="/user/register">Регистрация</Link>?
+            </span>
+            <span>
+              Забравена <Link to="/user/new-password">парола</Link>?
+            </span>
+          </p>
+          {/* <p className="question">Искаш <Link to="/user/new-password">Нова парола</Link>?</p> */}
         </fieldset>
       </form>
     </section>

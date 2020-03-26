@@ -1,8 +1,21 @@
+const crypto = require("crypto");
+const nodeMailer = require('nodemailer');
+
 const User = require('../models/User');
 const TokenBlacklist = require('../models/TokenBlacklist');
 const utils = require('../utils');
 const { userCookieName } = require('../app-config');
-const nodeMailer = require('nodemailer');
+const encryption = require('../utils/encryption');
+
+const nodeMailerTransporter = {
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: 'hristomachikov@gmail.com',
+        pass: 'Levski1914Gmail'
+    }
+};
 
 function frontUser(user) {
     let { username, roles, _id } = user;
@@ -63,16 +76,7 @@ function sendEmailPost(req, res, next) {
 
     console.log({ firstname, lastname, email, theme, message });
 
-    let transporter = nodeMailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-            user: 'hristomachikov@gmail.com',
-            pass: 'Levski1914Gmail'
-        }
-    });
-    
+    let transporter = nodeMailer.createTransport(nodeMailerTransporter);
     let mailOptions = {
         from: `${email}`, // sender address will be replace with user
         to: "hristomachikov@gmail.com", // list of receivers
@@ -91,10 +95,125 @@ function sendEmailPost(req, res, next) {
     });
 }
 
+function changePasswordPost(req, res, next) {
+    const { oldPassword, newPassword } = req.body;
+    const { userId } = req.query;
+    console.log(userId)
+    User.findById({ _id: userId })
+        .then((user) => Promise.all([user, user ? user.matchPassword(oldPassword) : false]))
+        .then(([user, match]) => {
+            if (!match) {
+                const error = "Грешна стара парола!";
+                res.status(400).send(error);
+                return;
+            }
+            return Promise.all([user, user.matchPassword(newPassword)])
+        }).then(([user, match]) => {
+            if (match) {
+                const error = "Новата парола е като старата!";
+                res.status(400).send(error);
+                return;
+            }
+            return User.updateOne({ _id: userId }, { $set: { password: newPassword } })
+        }).then(updatedUser => {
+            res.send(updatedUser)
+        }).catch(err => {
+            res.status(401).send(err);
+        });
+}
+
+function setNewPassLinkPost(req, res, next) {
+    const { email, newPassword } = req.body;
+
+    User.findOne({ email })
+        .then((user) => {
+            if (!user) {
+                const error = "Не е намерен потребител с този e-mail!";
+                res.status(400).send(error);
+                return;
+            }
+            return Promise.all([user, user.matchPassword(newPassword)])
+        }).then(([user, match]) => {
+            if (match) {
+                const error = "Новата парола е като старата!";
+                res.status(400).send(error);
+                return;
+            }
+
+            const newPassLinkId = crypto.randomBytes(20).toString('hex');
+            // const newPassLinkId = Math.random().toString(36).substring(6);
+
+            const newPassSalt = encryption.generateSalt();
+            const newPassHash = encryption.generateHashedPassword(newPassSalt, newPassword);
+
+            let transporter = nodeMailer.createTransport(nodeMailerTransporter);
+            const confirmLink = `http://${req.hostname}${req.hostname === "localhost" ? ":3000" : ""}${req.url}/${newPassLinkId}`;
+
+            let dateNow = new Date;
+            let dateNewPassLink = new Date(dateNow);
+
+            dateNewPassLink.setMinutes(dateNow.getMinutes() + 15);
+            const dateNewPassLinkStr = dateNewPassLink.toLocaleDateString() + " - " + dateNewPassLink.toLocaleTimeString();
+
+            let mailOptions = {
+                from: ``, // sender address will be replace with user
+                to: `${email}`,
+                subject: `Get Cherry confirmation of the new password`,
+                html: `<p>За да потвърдите новата парола, моля отворете посочения линк:</p>
+                <a href="${confirmLink}">${confirmLink}</a></br>
+                 <p>Линка е активен до: ${dateNewPassLinkStr}</p></br>
+               <p> Ако не сте направили заявка за нова парола, моля не отворете посочения линк!</p>`,
+            };
+
+            return Promise.all([
+                User.updateOne({ email }, { $set: { newPassword: newPassHash, newPassSalt, newPassLinkId } }),
+                transporter.sendMail(mailOptions)
+            ])
+
+        }).then(([updatedUser, info]) => {
+            setTimeout(() => {
+                User.updateOne({ email }, { $set: { newPassword: undefined, newPassSalt: undefined, newPassLinkId: undefined } })
+                    .then(result => console.log(result))
+                    .catch(err => console.log(err))
+            }, 900000);//15 minutes
+            res.send(updatedUser);
+        }).
+        catch(err => {
+            res.status(401).send(err);
+        });
+};
+
+function confirmNewPassLinkGet(req, res, next) {
+    const newPassLinkId = req.params.id;
+    User.findOne({ newPassLinkId }).then(user => {
+        if (!user) {
+            const error = "Линка не е активен!";
+            res.status(400).send(error);
+            return;
+        }
+        return User.updateOne({ newPassLinkId }, {
+            $set: {
+                password: user.newPassword,
+                salt: user.newPassSalt,
+                newPassLinkId: undefined,
+                newPassword: undefined,
+                newPassSalt: undefined
+            }
+        })
+    }).then(updatedUser => {
+        res.send(updatedUser);
+    }).catch(error => {
+        res.status(401).send(error);
+    })
+};
+
 module.exports = {
     loginPost,
     registerPost,
     logoutGet,
     authGet,
-    sendEmailPost
+    sendEmailPost,
+    changePasswordPost,
+    setNewPassLinkPost,
+    confirmNewPassLinkGet
 };

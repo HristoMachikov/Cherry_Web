@@ -260,7 +260,7 @@ const schema = yup.object().shape({
         .mixed()
         .required("Повторете паролата!")
         .oneOf([yup.ref('password'), null], "Паролите не съвпадат!")
-        .notOneOf(['    ', null], "Въведете нова парола!"),
+        .notOneOf(['    ', null], "Въведете друга парола!"),
     email: yup
         .string()
         .required("Въведете E-mail!")
