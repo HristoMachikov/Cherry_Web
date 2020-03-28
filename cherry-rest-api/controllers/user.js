@@ -1,21 +1,12 @@
 const crypto = require("crypto");
 const nodeMailer = require('nodemailer');
+const bcrypt = require("bcrypt");
 
 const User = require('../models/User');
 const TokenBlacklist = require('../models/TokenBlacklist');
 const utils = require('../utils');
-const { userCookieName } = require('../app-config');
-const encryption = require('../utils/encryption');
-
-const nodeMailerTransporter = {
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-        user: 'hristomachikov@gmail.com',
-        pass: 'Levski1914Gmail'
-    }
-};
+const { userCookieName, saltRounds, nodeMailerTransporter } = require('../app-config');
+// const encryption = require('../utils/encryption');
 
 function frontUser(user) {
     let { username, roles, _id } = user;
@@ -114,7 +105,12 @@ function changePasswordPost(req, res, next) {
                 res.status(400).send(error);
                 return;
             }
-            return User.updateOne({ _id: userId }, { $set: { password: newPassword } })
+            // const newPassSalt = encryption.generateSalt();
+            // const newPassHash = encryption.generateHashedPassword(newPassSalt, newPassword);
+            // return User.updateOne({ _id: userId }, { $set: { password: newPassHash, salt: newPassSalt } })
+            return bcrypt.hash(newPassword, saltRounds)
+        }).then(newPassHash => {
+            return User.updateOne({ _id: userId }, { $set: { password: newPassHash } })
         }).then(updatedUser => {
             res.send(updatedUser)
         }).catch(err => {
@@ -139,12 +135,11 @@ function setNewPassLinkPost(req, res, next) {
                 res.status(400).send(error);
                 return;
             }
-
+            // const newPassSalt = encryption.generateSalt();
+            // const newPassHash = encryption.generateHashedPassword(newPassSalt, newPassword);
+            return bcrypt.hash(newPassword, saltRounds)
+        }).then(newPassHash => {
             const newPassLinkId = crypto.randomBytes(20).toString('hex');
-            // const newPassLinkId = Math.random().toString(36).substring(6);
-
-            const newPassSalt = encryption.generateSalt();
-            const newPassHash = encryption.generateHashedPassword(newPassSalt, newPassword);
 
             let transporter = nodeMailer.createTransport(nodeMailerTransporter);
             const confirmLink = `http://${req.hostname}${req.hostname === "localhost" ? ":3000" : ""}${req.url}/${newPassLinkId}`;
@@ -166,13 +161,12 @@ function setNewPassLinkPost(req, res, next) {
             };
 
             return Promise.all([
-                User.updateOne({ email }, { $set: { newPassword: newPassHash, newPassSalt, newPassLinkId } }),
+                User.updateOne({ email }, { $set: { newPassword: newPassHash, newPassLinkId } }),
                 transporter.sendMail(mailOptions)
             ])
-
         }).then(([updatedUser, info]) => {
             setTimeout(() => {
-                User.updateOne({ email }, { $set: { newPassword: undefined, newPassSalt: undefined, newPassLinkId: undefined } })
+                User.updateOne({ email }, { $set: { newPassword: undefined, newPassLinkId: undefined } })
                     .then(result => console.log(result))
                     .catch(err => console.log(err))
             }, 900000);//15 minutes
@@ -194,10 +188,10 @@ function confirmNewPassLinkGet(req, res, next) {
         return User.updateOne({ newPassLinkId }, {
             $set: {
                 password: user.newPassword,
-                salt: user.newPassSalt,
+                // salt: user.newPassSalt,
                 newPassLinkId: undefined,
                 newPassword: undefined,
-                newPassSalt: undefined
+                // newPassSalt: undefined
             }
         })
     }).then(updatedUser => {

@@ -1,5 +1,8 @@
 const { Schema, model } = require('mongoose');
-const encryption = require('../utils/encryption');
+// const encryption = require('../utils/encryption');
+const bcrypt = require('bcrypt');
+const { saltRounds } = require('../app-config');
+
 const userSchema = new Schema({
     username: {
         type: String,
@@ -21,44 +24,38 @@ const userSchema = new Schema({
     address: { type: Schema.Types.String, default: "" },
     newPassLinkId: { type: Schema.Types.String },
     newPassword: { type: Schema.Types.String },
-    newPassSalt: { type: Schema.Types.String },
+    // newPassSalt: { type: Schema.Types.String },
     orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
     cherries: [{ type: Schema.Types.ObjectId, ref: "Cherry" }],
     states: [{ type: Schema.Types.ObjectId, ref: "State" }],
-    salt: { type: Schema.Types.String },
+    // salt: { type: Schema.Types.String },
     roles: [{ type: Schema.Types.String }]
 })
 
 userSchema.methods = {
     matchPassword: function (password) {
-        let result = encryption.generateHashedPassword(this.salt, password) === this.password
-        return result;
+        // return encryption.generateHashedPassword(this.salt, password) === this.password;
+        return bcrypt.compare(password, this.password);
     }
 }
 
 userSchema.pre('save', function (next) {
     if (this.isModified('password')) {
-        if (this.isNew && this.username === "Admin") {
-            return next();
-        }
-
-        // if (this.newPassword && this.newPassword !== "") {
-        //     this.newPassword = "";
-        //     this.newPassSalt = "";
-        //     this.newPassSalt = "";
-        //     next();
-        // }
-        console.log(this.newPassword);
-        if (this.newPassword) {
-            this.newPassword = undefined;
-            return next();
-        }
-
-        const salt = encryption.generateSalt()
-        const hash = encryption.generateHashedPassword(salt, this.password);
-        this.password = hash;
-        this.salt = salt;
-        next();
+        if (this.isNew && this.username === "Admin") return next();
+        // const salt = encryption.generateSalt()
+        // const hash = encryption.generateHashedPassword(salt, this.password);
+        // this.password = hash;
+        // this.salt = salt;
+        // next();
+        bcrypt.genSalt(saltRounds, (err, salt) => {
+            if (err) { next(err); return; }
+            bcrypt.hash(this.password, salt, (err, hash) => {
+                if (err) { next(err); return; }
+                this.password = hash;
+                next();
+            });
+        });
+        return;
     }
     next();
 });
@@ -72,14 +69,16 @@ User.seedAdmin = async () => {
         if (users.length > 0) {
             return;
         }
-        const salt = encryption.generateSalt();
-        const hashedPass = encryption.generateHashedPassword(salt, 'Admin');
+
+        const hashedPass = await bcrypt.hash('Admin', saltRounds)
+        // const salt = encryption.generateSalt();
+        // const hashedPass = encryption.generateHashedPassword(salt, 'Admin');
         return User.create({
             username: 'Admin',
             password: hashedPass,
             email: 'admin@admin.com',
             phone: '0123456789',
-            salt,
+            // salt,
             roles: ['Admin']
         });
     } catch (error) {
