@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+
+import ReCAPTCHA from "react-google-recaptcha";
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,11 +18,13 @@ class NewPassword extends Component {
 
     onChangeHandler = this.props.controlOnChangeHandlerFactory();
 
+    recaptchaRef = React.createRef();
+
     submitHandler = (event) => {
         event.preventDefault();
 
         this.props.runValidations()
-            .then(formData => { 
+            .then(formData => {
                 const errors = this.props.getFormErrorState();
 
                 const firstError = this.getFirstControlError('email')
@@ -33,7 +38,8 @@ class NewPassword extends Component {
                 if (!!errors) { return; }
                 const data = this.props.getFormState();
 
-                return userService.setNewPassword(data).then((res) => {
+                const recaptchaValue = this.recaptchaRef.current.getValue();
+                return recaptchaValue && userService.setNewPassword(data).then((res) => {
                     if (res && res.ok) {
                         toast.warn(`Потвърдете на посочения E-mail!`, {
                             closeButton: false
@@ -102,6 +108,12 @@ class NewPassword extends Component {
                                 onChange={this.onChangeHandler}
                             />
                             <span></span>
+                        </p>
+                        <p className="form-recaptcha">
+                            <ReCAPTCHA
+                                ref={this.recaptchaRef}
+                                sitekey="6LfiEOUUAAAAANkH2wPh2uyvGJ1VVlI4VYyrauSB"
+                            />
                         </p>
 
                         <p className="form-btn">

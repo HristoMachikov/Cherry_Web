@@ -1,5 +1,6 @@
 import React from 'react';
 
+import ReCAPTCHA from "react-google-recaptcha";
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -40,9 +41,6 @@ const validationsRunner = getValidationsRunnerForSchema(schema);
 
 function ContactForm({ history }) {
 
-    const { executeRecaptcha } = useGoogleReCaptcha();
-    const [token, setToken] = React.useState("");
-
     // let [firstname, setFirstname] = React.useState(null);
     // let [lastname, setLastname] = React.useState(null);
     // let [email, setEmail] = React.useState(null);
@@ -56,13 +54,21 @@ function ContactForm({ history }) {
     const messageFormControl = useFormControl('', validations.message);
     const [serverError, setServerError] = React.useState(undefined);
 
-    const clickHandler = async () => {
-        if (!executeRecaptcha) {
-            return;
-        }
-        const result = await executeRecaptcha("");
-        setToken(result);
-    }
+    const recaptchaRef = React.useRef();
+    // const onChange = (value) => {
+    //     console.log("Captcha value:", value);
+    // }
+
+    // const { executeRecaptcha } = useGoogleReCaptcha();
+    // const [token, setToken] = React.useState("");
+
+    // const clickHandler = async () => {
+    //     if (!executeRecaptcha) {
+    //         return;
+    //     }
+    //     const result = await executeRecaptcha("");
+    //     setToken(result);
+    // }
 
     // React.useEffect(() => {
 
@@ -76,10 +82,16 @@ function ContactForm({ history }) {
         e.target.email.value = "";
         e.target.theme.value = "";
         e.target.message.value = "";
+        firstnameFormControl.setValue("");
+        lastnameFormControl.setValue("");
+        emailFormControl.setValue("");
+        themeFormControl.setValue("");
+        messageFormControl.setValue("");
         firstnameFormControl.setErrors([]);
         emailFormControl.setErrors([]);
         themeFormControl.setErrors([]);
         messageFormControl.setErrors([]);
+        recaptchaRef.current.reset();
     };
 
     const submitHandler = React.useCallback(() => {
@@ -91,7 +103,10 @@ function ContactForm({ history }) {
             message: messageFormControl.value
         }).then(data => {
             console.log(data)
-            userService.sendEmail(data).then(res => {
+            const recaptchaValue = recaptchaRef.current.getValue();
+            console.log(recaptchaValue);
+            // props.onSubmit(recaptchaValue);
+            recaptchaValue && userService.sendEmail(data).then(res => {
                 console.log(res);
                 if (res && res.messageId) {
                     toast.success("Съобщението е изпратено!", {
@@ -105,14 +120,12 @@ function ContactForm({ history }) {
                         closeButton: false
                     })
                 }
-
             }).catch(error => {
                 if (typeof error === 'object') { throw error; }
                 setServerError(error);
                 console.log("Catch------------");
                 console.log(error);
             });
-
         }).catch(errors => {
             if (errors.firstname) { firstnameFormControl.setErrors(errors.firstname); }
             if (errors.lastname) { lastnameFormControl.setErrors(errors.lastname); }
@@ -121,24 +134,7 @@ function ContactForm({ history }) {
             if (errors.message) { messageFormControl.setErrors(errors.message); }
             console.log(errors);
         })
-
-    }, [firstnameFormControl, lastnameFormControl, emailFormControl, themeFormControl, messageFormControl, setServerError]
-        // console.log({ firstname, lastname, email, theme, message })
-
-        //     userService.sendEmail({ firstname, lastname, email, theme, message })
-        //         .then(data => {
-
-        //             console.log(data);
-
-        //         }).catch(errors => {
-
-
-        //             console.log(errors)
-
-        //         })
-        // },
-        //  [firstname, lastname, email, theme, message]
-    );
+    }, [firstnameFormControl, lastnameFormControl, emailFormControl, themeFormControl, messageFormControl, setServerError]);
 
     return (<div className="contact-form">
         <form onSubmit={resetHandler}>
@@ -205,6 +201,13 @@ function ContactForm({ history }) {
                 // value={message} 
                 />
             </p>
+            <div className="form-recaptcha">
+                <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey="6LfiEOUUAAAAANkH2wPh2uyvGJ1VVlI4VYyrauSB"
+                    // onChange={onChange}
+                />
+            </div>
             <div className="form-btn">
                 <p className="btn">
                     <button className="primary-btn" type="button" onClick={submitHandler}>Изпрати</button>
@@ -212,10 +215,10 @@ function ContactForm({ history }) {
                 <p className="btn">
                     <button className="primary-btn" type="submit">Изчисти</button>
                 </p>
-                <p className="btn">
+                {/* <p className="btn">
                     <button className="primary-btn" type="button" onClick={clickHandler} >Не съм робот!</button>
                 </p>
-                {token && <p>Token: {token}</p>}
+                {token && <p>Token: {token}</p>} */}
             </div>
         </form>
     </div>);

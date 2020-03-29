@@ -208,6 +208,11 @@
                     padding: 1em;
                 }
             }
+            
+            .form-recaptcha {
+                display: flex;
+                justify-content: center;
+            }
         }
     }
 }

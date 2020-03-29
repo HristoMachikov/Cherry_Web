@@ -28,11 +28,11 @@ function Contacts({ history }) {
                 </li>
             </ul>
         </div>
-        <GoogleReCaptchaProvider
+        {/* <GoogleReCaptchaProvider
             reCaptchaKey="6LfRJeMUAAAAAJFJCI5NUmLfkaS_XWr7JvdDQnmL"
-            language="bg">
+            language="bg"> */}
             <ContactForm history={history} />
-        </GoogleReCaptchaProvider>
+        {/* </GoogleReCaptchaProvider> */}
     </article>);
 }
 
