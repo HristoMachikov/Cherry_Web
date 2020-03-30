@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ReCAPTCHA from "react-google-recaptcha";
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+// import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 import { ToastContainer, toast } from 'react-toastify';
 import * as yup from 'yup'
@@ -31,8 +31,8 @@ const validations = {
     message: yup
         .string()
         .required(requiredField)
-        .min(minLength, `Съобщението трябва да е поне ${minLength} символа!`)
-        .max(80, `Съобщението трябва да е не повече от 80 символа!`)
+        .min(minLength, `Трябва да е поне ${minLength} символа!`)
+        .max(80, `Трябва да е не повече от 80 символа!`)
 };
 
 const schema = yup.object().shape(validations);
@@ -70,10 +70,6 @@ function ContactForm({ history }) {
     //     setToken(result);
     // }
 
-    // React.useEffect(() => {
-
-    // }, [])
-
     const resetHandler = (e) => {
         e.preventDefault();
 
@@ -102,18 +98,16 @@ function ContactForm({ history }) {
             theme: themeFormControl.value,
             message: messageFormControl.value
         }).then(data => {
-            console.log(data)
+            
             const recaptchaValue = recaptchaRef.current.getValue();
-            console.log(recaptchaValue);
-            // props.onSubmit(recaptchaValue);
             recaptchaValue && userService.sendEmail(data).then(res => {
-                console.log(res);
+                // console.log(res);
                 if (res && res.messageId) {
                     toast.success("Съобщението е изпратено!", {
                         closeButton: false
                     });
                     history.push('/menu');
-                    history.push('/#contacts');
+                    history.push('/');
                 } else if (res === undefined
                     || res.code === "EAUTH") {
                     toast.error("Съобщението не е изпратено!", {
@@ -123,8 +117,7 @@ function ContactForm({ history }) {
             }).catch(error => {
                 if (typeof error === 'object') { throw error; }
                 setServerError(error);
-                console.log("Catch------------");
-                console.log(error);
+                // console.log(error);
             });
         }).catch(errors => {
             if (errors.firstname) { firstnameFormControl.setErrors(errors.firstname); }
@@ -142,17 +135,18 @@ function ContactForm({ history }) {
                 <h6>Изпратете запитване</h6>
             </div>
             <span className="errors">
-                {firstnameFormControl.errors && firstnameFormControl.errors[0] !== requiredField && firstnameFormControl.errors[0]}
+                {/* {firstnameFormControl.errors && firstnameFormControl.errors[0] !== requiredField && firstnameFormControl.errors[0]}
                 <p> {emailFormControl.errors && emailFormControl.errors[0] !== requiredField && emailFormControl.errors[0]}</p>
                 <p>{themeFormControl.errors && themeFormControl.errors[0] !== requiredField && themeFormControl.errors[0]}</p>
-                <p>{messageFormControl.errors && messageFormControl.errors[0] !== requiredField && messageFormControl.errors[0]}</p>
+                <p>{messageFormControl.errors && messageFormControl.errors[0] !== requiredField && messageFormControl.errors[0]}</p> */}
                 <p>{serverError && serverError}</p>
             </span>
             <div className="name">
                 <p className="firstname">
                     <label htmlFor="firstname">
                         Име:
-                    <span>*{firstnameFormControl.errors && firstnameFormControl.errors[0] === requiredField && firstnameFormControl.errors[0]}</span>
+                    {/* <span>*{firstnameFormControl.errors && firstnameFormControl.errors[0] === requiredField && firstnameFormControl.errors[0]}</span> */}
+                    <span>*{firstnameFormControl.errors && firstnameFormControl.errors[0]}</span>
                     </label>
                     <input type="text"
                         name="firstname"
@@ -172,7 +166,7 @@ function ContactForm({ history }) {
             </div>
             <p className="email">
                 <label htmlFor="email">E-mail:
-                <span>*{emailFormControl.errors && emailFormControl.errors[0] === requiredField && emailFormControl.errors[0]}</span>
+                <span>*{emailFormControl.errors && emailFormControl.errors[0]}</span>
                 </label>
                 <input type="email"
                     name="email"
@@ -182,7 +176,7 @@ function ContactForm({ history }) {
             </p>
             <p className="theme">
                 <label htmlFor="theme">Тема:
-                <span>*{themeFormControl.errors && themeFormControl.errors[0] === requiredField && themeFormControl.errors[0]}</span>
+                <span>*{themeFormControl.errors && themeFormControl.errors[0]}</span>
                 </label>
                 <input type="text"
                     name="theme"
@@ -192,7 +186,7 @@ function ContactForm({ history }) {
             </p>
             <p className="message">
                 <label htmlFor="message">Съобщение:
-                <span>* {messageFormControl.errors && messageFormControl.errors[0] === requiredField && messageFormControl.errors[0]}</span>
+                <span>* {messageFormControl.errors && messageFormControl.errors[0]}</span>
                 </label>
                 <textarea name="message"
                     id="message"

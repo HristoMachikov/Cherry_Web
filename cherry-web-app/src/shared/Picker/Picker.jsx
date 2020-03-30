@@ -4,16 +4,16 @@ import React from 'react';
 import Calendar from 'rc-calendar';
 import DatePicker from 'rc-calendar/lib/Picker';
 
-import zhCN from 'rc-calendar/lib/locale/zh_CN';
-import enUS from 'rc-calendar/lib/locale/en_US';
+// import zhCN from 'rc-calendar/lib/locale/zh_CN';
+// import enUS from 'rc-calendar/lib/locale/en_US';
 import bgBG from 'rc-calendar/lib/locale/bg_BG';
 
 import 'rc-time-picker/assets/index.css';
 import TimePickerPanel from 'rc-time-picker/lib/Panel';
 
 import moment from 'moment';
-import 'moment/locale/zh-cn';
-import 'moment/locale/en-gb';
+// import 'moment/locale/zh-cn';
+// import 'moment/locale/en-gb';
 import 'moment/locale/bg';
 
 const format = 'DD.MM.YYYY HH:mm:ss';

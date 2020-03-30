@@ -2,15 +2,14 @@ import React, { Component, Fragment } from 'react';
 
 import AdminSingle from './AdminSingle/AdminSingle';
 
-import Picker from '../Home/Calendar/Picker/Picker';
-import * as FromPicker from '../Home/Calendar/Picker/Picker';
+import Picker from '../../shared/Picker/Picker';
+// import * as FromPicker from '../../shared/Picker/Picker';
 
 import orderService from '../../services/order-service';
 
 import dateToString from '../../shared/methods/date-to-string';
 
 import bgStatus from '../../shared/methods/bg-status';
-
 
 const addDateToString = (orders) => {
     let ordersArr = orders.map(order => {
@@ -49,7 +48,6 @@ const AdminOrders = () => {
                 setOrders(orders);
             }
         }).catch(err => console.log(err))
-
     }, [status, setStatus, startDate, endDate]);
 
     const onChangeStartDate = (field, value) => {

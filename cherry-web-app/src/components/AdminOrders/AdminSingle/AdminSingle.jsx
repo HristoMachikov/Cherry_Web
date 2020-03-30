@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import OrderedProducts from '../OrderedProducts/OrderedProducts';
-import Picker from '../../Home/Calendar/Picker/Picker';
+import Picker from '../../../shared/Picker/Picker';
 import commingDateToStr from '../../../shared/methods/comming-date-to-str';
 import bgStatus from '../../../shared/methods/bg-status';
 
@@ -12,16 +12,9 @@ const allStatus = ["Pending", "Approve", "Comming", "Done", "Archive"];
 const AdminSingle = ({ index, date, total, status, id, products, dateComming, user }) => {
     const [commingDate, setCommingDate] = React.useState(null);
     const [showInfo, setShowInfo] = React.useState(false);
-    // React.useEffect(() => {
-
-
-
-    // }, [showInfo, setShowInfo]);
+  
     const onChangeCommingDate = (field, value) => {
-        // console.log('onChange', field, value && value.format(FromPicker.getFormat(SHOW_TIME)));
-        // value.set({ 'hour': 23, 'minute': 59, 'second': 59 });
         setCommingDate(value)
-        // console.log(value.locale('bg').utcOffset(2))
     };
 
     const onClickNextStatus = (e) => {
