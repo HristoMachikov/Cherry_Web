@@ -2,10 +2,12 @@ import React, { Component, Fragment } from 'react';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '../../shared/styles/toast-position.scss';
 
 import Product from './Product/Product';
 import orderService from '../../services/order-service';
 // const BasketContext = createContext({});
+const toastProps = { closeButton: false, className: 'toast-position' };
 
 class Basket extends Component {
     constructor(props) {
@@ -115,18 +117,14 @@ class Basket extends Component {
         orderService.postOrder({ total, creatorId: userId, productsJson }).then(res => {
             console.log(res)
             if (res.ok) {
-                toast.success("Поръчката е изпратена!", {
-                    closeButton: false
-                })
+                toast.success("Поръчката е изпратена!", toastProps)
                 localStorage.removeItem('state');
                 this.props.history.push({
                     pathname: '/',
                     state: {}
                 });
             } else {
-                toast.error("Поръчката не е изпратена!", {
-                    closeButton: false
-                })
+                toast.error("Поръчката не е изпратена!", toastProps)
                 return null;
             }
         }).catch(err => {

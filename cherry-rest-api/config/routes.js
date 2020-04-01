@@ -32,5 +32,5 @@ module.exports = (app) => {
     
     app.get('/auth', userController.authGet);
 
-    app.get('/', auth(false), homeController.homeGet);
+    app.get('/home', auth(false), homeController.homeGet);
 };

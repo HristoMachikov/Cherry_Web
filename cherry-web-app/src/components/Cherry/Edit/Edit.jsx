@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 // import './shared/styles/_forms.scss';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '../../../shared/styles/toast-position.scss';
 
 import cherryService from '../../../services/cherry-service';
 
+const toastProps = { closeButton: false, className: 'toast-position' };
 const camelCased = myString => (
     myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
 );
@@ -36,14 +38,10 @@ class Edit extends Component {
         const { sort, description, imagePath, isPublic, price, _id } = this.state;
         cherryService.postEdit(id, { sort, description, imagePath, isPublic, price, _id }).then(res => {
             if (res === "Успешна промяна!") {
-                toast.info(`${res}`, {
-                    closeButton: false
-                })
-                this.props.history.push('/');
+                toast.info(`${res}`, toastProps)
+                this.props.history.push('/menu');
             } else {
-                toast.error(`${res}`, {
-                    closeButton: false
-                })
+                toast.error(`${res}`, toastProps)
                 return null;
             }
 

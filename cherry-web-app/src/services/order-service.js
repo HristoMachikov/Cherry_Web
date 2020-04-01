@@ -1,6 +1,8 @@
+import { hostName } from '../config/app-config';
+
 const orderService = {
     getNewProduct: function (id) {
-        return fetch(`http://localhost:4000/order/new-product${id ? `/${id}` : ""}`, {
+        return fetch(`${hostName}/order/new-product${id ? `/${id}` : ""}`, {
             // return fetch(`http://localhost:9999/api/origami${id ? `/${id}` : ""}${limit ? `?limit=${limit}` : ""}`).then((res) => {
             credentials: 'include'
         }).then((res) => {
@@ -8,7 +10,7 @@ const orderService = {
         }).catch((err) => console.error(err));
     },
     postOrder: function (body) {
-        return fetch(`http://localhost:4000/order/create`, {
+        return fetch(`${hostName}/order/create`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json, text/plain',
@@ -21,42 +23,42 @@ const orderService = {
         }).catch((notConectionErr) => console.error(notConectionErr));
     },
     getUserOrders: function (id) {
-        return fetch(`http://localhost:4000/user/my-orders/${id}`, {
+        return fetch(`${hostName}/user/my-orders/${id}`, {
             credentials: 'include'
         }).then((res) => {
             return res.json()
         }).catch((err) => console.error(err));
     },
     getAdminOrders: function (status, startDate, endDate) {
-        return fetch(`http://localhost:4000/admin/orders${`?status=${status}`}${startDate ? `&startDate=${startDate}` : ""}${endDate ? `&endDate=${endDate}` : ""}`, {
+        return fetch(`${hostName}/admin/orders${`?status=${status}`}${startDate ? `&startDate=${startDate}` : ""}${endDate ? `&endDate=${endDate}` : ""}`, {
             credentials: 'include'
         }).then((res) => {
             return res.json()
         }).catch((err) => console.error(err));
     },
     getApproveOrder: function (id, status, commingDate) {
-        return fetch(`http://localhost:4000/admin/approve-order/${id}${`?status=${status}`}${commingDate ? `&commingDate=${commingDate}` : ""}`, {
+        return fetch(`${hostName}/admin/approve-order/${id}${`?status=${status}`}${commingDate ? `&commingDate=${commingDate}` : ""}`, {
             credentials: 'include'
         }).then((res) => {
             return res.json()
         }).catch((err) => console.error(err));
     },
     getRemoveOrder: function (id) {
-        return fetch(`http://localhost:4000/admin/remove-order/${id}`, {
+        return fetch(`${hostName}/admin/remove-order/${id}`, {
             credentials: 'include'
         }).then((res) => {
             return res.json()
         }).catch((err) => console.error(err));
     },
     getEditAddress: function (orderId, userAddress) {
-        return fetch(`http://localhost:4000/admin/edit-address/${orderId}${`?address=${userAddress}`}`, {
+        return fetch(`${hostName}/admin/edit-address/${orderId}${`?address=${userAddress}`}`, {
             credentials: 'include'
         }).then((res) => {
             return res.json()
         }).catch((err) => console.error(err));
     },
     getArchiveOrder: function (orderId) {
-        return fetch(`http://localhost:4000/user/archive-order/${orderId}`, {
+        return fetch(`${hostName}/user/archive-order/${orderId}`, {
             credentials: 'include'
         }).then((res) => {
             return res.json()

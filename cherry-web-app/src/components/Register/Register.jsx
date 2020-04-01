@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '../../shared/styles/toast-position.scss';
 
 import withForm from '../../shared/hocs/withForm';
 
@@ -12,7 +13,7 @@ import userService from '../../services/user-service';
 
 import { minLength, minLengthPhone } from '../../config/app-config';
 // import minLengthPhone from '../../config/app-config';
-
+const toastProps = { closeButton: false, className: 'toast-position' };
 
 class Register extends Component {
 
@@ -86,23 +87,17 @@ class Register extends Component {
                     || this.getFirstControlError('email')
                     || this.getFirstControlError('phone');
 
-                firstError && toast.warn(firstError, {
-                    closeButton: false
-                })
+                firstError && toast.warn(firstError, toastProps)
 
                 if (!!errors) { return; }
                 const data = this.props.getFormState();
                 console.log(data)
                 return userService.register(data).then((res) => {
                     if (res.username) {
-                        toast.success(`Успешна регистрация!`, {
-                            closeButton: false
-                        })
+                        toast.success(`Успешна регистрация!`, toastProps)
                         this.props.history.push('/user/login');
                     } else {
-                        toast.error(res, {
-                            closeButton: false
-                        })
+                        toast.error(res, toastProps)
                     }
                 })
             }).catch(err => {
@@ -175,7 +170,7 @@ class Register extends Component {
                             <span></span>
                         </p>
                         <p className="form-field password">
-                            <label htmlFor="repeat-password">Повтори Парола</label>
+                            <label htmlFor="repeat-password">Повтори паролата</label>
                             <input
                                 className={`form-input${classErrorRepeatPassword}`}
                                 type="password"

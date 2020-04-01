@@ -8,7 +8,7 @@ const Navigation = ({ username, isAdmin }) => {
     return (<nav className="site-navigation">
         <ul>
             <li>
-                <NavLink to="/about" activeClassName="selected">Начало</NavLink >
+                <NavLink to="/about" activeClassName="selected">За нас</NavLink >
 
             </li>
             <li>

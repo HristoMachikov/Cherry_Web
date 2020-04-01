@@ -1,21 +1,22 @@
+import { hostName } from '../config/app-config';
+
 const cherryService = {
     getProducts: function () {
-        return fetch(`http://localhost:4000`, {
+        return fetch(`${hostName}/home`, {
             credentials: 'include'
         }).then((res) => {
-            // return fetch(`http://localhost:9999/api/origami${id ? `/${id}` : ""}${limit ? `?limit=${limit}` : ""}`).then((res) => {
             return res.json()
         }).catch((notConectionErr) => console.error(notConectionErr));
     },
     getProductsAdmin: function () {
-        return fetch(`http://localhost:4000/cherry/all`, {
+        return fetch(`${hostName}/cherry/all`, {
             credentials: 'include'
         }).then((res) => {
             return res.json()
         }).catch((notConectionErr) => console.error(notConectionErr));
     },
     getRemove: function (id) {
-        return fetch(`http://localhost:4000/cherry/remove/${id}`, {
+        return fetch(`${hostName}/cherry/remove/${id}`, {
             credentials: 'include'
         }
         ).then((res) => {
@@ -23,7 +24,7 @@ const cherryService = {
         }).catch((notConectionErr) => console.error(notConectionErr));
     },
     getEdit: function (id) {
-        return fetch(`http://localhost:4000/cherry/edit/${id}`, {
+        return fetch(`${hostName}/cherry/edit/${id}`, {
             credentials: 'include'
         }).then((res) => {
             return res.json()
@@ -31,7 +32,7 @@ const cherryService = {
     },
     postEdit: function (id, body) {
 
-        return fetch(`http://localhost:4000/cherry/edit/${id}`, {
+        return fetch(`${hostName}/cherry/edit/${id}`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json, text/plain',
@@ -45,7 +46,7 @@ const cherryService = {
     },
     postCreate: function (body) {
 
-        return fetch(`http://localhost:4000/cherry/create`, {
+        return fetch(`${hostName}/cherry/create`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json, text/plain',
@@ -58,7 +59,7 @@ const cherryService = {
         }).catch((notConectionErr) => console.error(notConectionErr));
     },
     getGallery: function (id) {
-        return fetch(`http://localhost:4000/cherry/gallery/${id}`, {
+        return fetch(`${hostName}/cherry/gallery/${id}`, {
             credentials: 'include',
         }
         ).then((res) => {

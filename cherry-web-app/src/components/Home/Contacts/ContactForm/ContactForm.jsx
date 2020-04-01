@@ -9,7 +9,7 @@ import * as yup from 'yup'
 import userService from '../../../../services/user-service';
 
 import { useFormControl, getValidationsRunnerForSchema } from '../../../../shared/hocs/withForm'
-import { minLength, minLengthFirstName } from '../../../../config/app-config';
+import { minLength, minLengthFirstName, minReCaptchaWidth, reCaptchaSiteKey } from '../../../../config/app-config';
 
 const requiredField = "Здължително поле!";
 const validations = {
@@ -39,6 +39,18 @@ const schema = yup.object().shape(validations);
 
 const validationsRunner = getValidationsRunnerForSchema(schema);
 
+function useWindowSize() {
+    const [size, setSize] = React.useState(window.innerWidth);
+    React.useLayoutEffect(() => {
+        function updateSize() {
+            setSize(window.innerWidth);
+        }
+        window.addEventListener('resize', updateSize);
+        return () => window.removeEventListener('resize', updateSize);
+    }, []);
+    return size;
+}
+
 function ContactForm({ history }) {
 
     // let [firstname, setFirstname] = React.useState(null);
@@ -53,6 +65,8 @@ function ContactForm({ history }) {
     const themeFormControl = useFormControl('', validations.theme);
     const messageFormControl = useFormControl('', validations.message);
     const [serverError, setServerError] = React.useState(undefined);
+
+    const windowInnerWidth = useWindowSize();
 
     const recaptchaRef = React.useRef();
     // const onChange = (value) => {
@@ -98,7 +112,7 @@ function ContactForm({ history }) {
             theme: themeFormControl.value,
             message: messageFormControl.value
         }).then(data => {
-            
+
             const recaptchaValue = recaptchaRef.current.getValue();
             recaptchaValue && userService.sendEmail(data).then(res => {
                 // console.log(res);
@@ -146,7 +160,7 @@ function ContactForm({ history }) {
                     <label htmlFor="firstname">
                         Име:
                     {/* <span>*{firstnameFormControl.errors && firstnameFormControl.errors[0] === requiredField && firstnameFormControl.errors[0]}</span> */}
-                    <span>*{firstnameFormControl.errors && firstnameFormControl.errors[0]}</span>
+                        <span>*{firstnameFormControl.errors && firstnameFormControl.errors[0]}</span>
                     </label>
                     <input type="text"
                         name="firstname"
@@ -198,8 +212,8 @@ function ContactForm({ history }) {
             <div className="form-recaptcha">
                 <ReCAPTCHA
                     ref={recaptchaRef}
-                    sitekey="6LfiEOUUAAAAANkH2wPh2uyvGJ1VVlI4VYyrauSB"
-                    // onChange={onChange}
+                    sitekey={reCaptchaSiteKey}
+                    size={windowInnerWidth < minReCaptchaWidth ? "compact" : "normal"}
                 />
             </div>
             <div className="form-btn">

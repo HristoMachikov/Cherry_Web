@@ -2,6 +2,9 @@ import React from 'react';
 import { ActionTypes, loginSuccess, loginFailure, logoutSuccess, logoutFailure } from './actions';
 import userService from '../../services/user-service';
 import { toast } from 'react-toastify';
+import '../../shared/styles/toast-position.scss';
+const toastProps = { closeButton: false, className: 'toast-position' };
+
 export const StoreContext = React.createContext({});
 
 const initialState = {
@@ -18,10 +21,10 @@ const asyncActionMap = {
         ({ user }) => userService.login(user)
             .then(user => {
                 if (user.username) {
-                    toast.success(`Здравей, ${user.username}!`, { closeButton: false });
+                    toast.success(`Здравей, ${user.username}!`, toastProps);
                     return loginSuccess(user);
                 } else {
-                    toast.error(user, { closeButton: false });
+                    toast.error(user, toastProps);
                     return loginFailure(user);
                 }
             })
@@ -32,7 +35,7 @@ const asyncActionMap = {
     [ActionTypes.Logout]:
         () => userService.logout()
             .then((result) => {
-                toast.success(result, { closeButton: false })
+                toast.success(result, toastProps)
                 return logoutSuccess();
             })
             .catch(error => logoutFailure(error))

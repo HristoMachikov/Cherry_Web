@@ -62,10 +62,9 @@ function authGet(req, res) {
         .then(user => res.send(frontUser(user)))
         .catch(() => res.status(401).send('HELLO!'));
 }
+
 function sendEmailPost(req, res, next) {
     let { firstname, lastname, email, theme, message } = req.body;
-
-    console.log({ firstname, lastname, email, theme, message });
 
     let transporter = nodeMailer.createTransport(nodeMailerTransporter);
     let mailOptions = {
@@ -89,7 +88,7 @@ function sendEmailPost(req, res, next) {
 function changePasswordPost(req, res, next) {
     const { oldPassword, newPassword } = req.body;
     const { userId } = req.query;
-    console.log(userId)
+
     User.findById({ _id: userId })
         .then((user) => Promise.all([user, user ? user.matchPassword(oldPassword) : false]))
         .then(([user, match]) => {

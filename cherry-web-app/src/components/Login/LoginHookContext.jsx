@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 // import { useHistory  } from 'react-router-dom';
 // import withForm from '../../shared/hocs/withForm';
 import { ToastContainer, toast } from 'react-toastify';
+import '../../shared/styles/toast-position.scss';
 
 import * as yup from 'yup';
 
@@ -10,8 +11,9 @@ import { StoreContext } from '../Store/Store';
 import { login } from '../Store/actions';
 
 import { minLength } from '../../config/app-config';
-
 import { useFormControl, getValidationsRunnerForSchema } from '../../shared/hocs/withForm';
+
+const toastProps = { closeButton: false, className: 'toast-position' };
 
 const validations = {
   email: yup
@@ -67,9 +69,7 @@ const LoginHookContext = () => {
 
       const firstError = getFirstEmailFormControlError || getFirstPasswordFormControlError
 
-      firstError && toast.warn(firstError, {
-        closeButton: false
-      })
+      firstError && toast.warn(firstError, toastProps)
     })
   }, [emailFormControl, passwordFormControl, dispatch]);
 

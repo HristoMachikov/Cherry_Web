@@ -76,7 +76,7 @@ User.seedAdmin = async () => {
         return User.create({
             username: 'Admin',
             password: hashedPass,
-            email: 'admin@admin.com',
+            email: 'hristomachikov@gmail.com',
             phone: '0123456789',
             // salt,
             roles: ['Admin']

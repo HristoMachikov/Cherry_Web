@@ -5,6 +5,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '../../shared/styles/toast-position.scss';
 
 import withForm from '../../shared/hocs/withForm';
 
@@ -12,13 +13,26 @@ import * as yup from 'yup'
 
 import userService from '../../services/user-service';
 
-import { minLength } from '../../config/app-config';
+import { minLength, minReCaptchaWidth, reCaptchaSiteKey } from '../../config/app-config';
+
+const toastProps = { closeButton: false, className: 'toast-position' };
 
 class NewPassword extends Component {
+    //
+    state = { windowInnerWidth: window.innerWidth };
+    componentDidMount() {
+        window.addEventListener('resize', this.updateWindowDimensions);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+    updateWindowDimensions = () => {
+        this.setState({ windowInnerWidth: window.innerWidth });
+    }
+    //
+    recaptchaRef = React.createRef();
 
     onChangeHandler = this.props.controlOnChangeHandlerFactory();
-
-    recaptchaRef = React.createRef();
 
     submitHandler = (event) => {
         event.preventDefault();
@@ -31,9 +45,7 @@ class NewPassword extends Component {
                     || this.getFirstControlError('newPassword')
                     || this.getFirstControlError('repeatNewPassword');
 
-                firstError && toast.warn(firstError, {
-                    closeButton: false
-                })
+                firstError && toast.warn(firstError, toastProps)
 
                 if (!!errors) { return; }
                 const data = this.props.getFormState();
@@ -41,14 +53,10 @@ class NewPassword extends Component {
                 const recaptchaValue = this.recaptchaRef.current.getValue();
                 return recaptchaValue && userService.setNewPassword(data).then((res) => {
                     if (res && res.ok) {
-                        toast.warn(`Потвърдете на посочения E-mail!`, {
-                            closeButton: false
-                        })
+                        toast.warn(`Потвърдете на посочения E-mail!`, toastProps)
                         this.props.history.push('/user/login');
                     } else {
-                        toast.error(res, {
-                            closeButton: false
-                        })
+                        toast.error(res, toastProps)
                     }
                 })
             }).catch(err => console.log(err));
@@ -112,7 +120,8 @@ class NewPassword extends Component {
                         <p className="form-recaptcha">
                             <ReCAPTCHA
                                 ref={this.recaptchaRef}
-                                sitekey="6LfiEOUUAAAAANkH2wPh2uyvGJ1VVlI4VYyrauSB"
+                                sitekey={reCaptchaSiteKey}
+                                size={this.state.windowInnerWidth < minReCaptchaWidth ? "compact" : "normal"}
                             />
                         </p>
 

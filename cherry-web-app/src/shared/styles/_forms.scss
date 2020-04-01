@@ -95,10 +95,11 @@
     .form-btn{
         padding-bottom: 0;
         text-align: center;
+        display: flex;
 
         .primary-btn {
             display: inline-block;
-            margin: 1rem 0;
+            margin: 1rem auto;
         }
     }
     .question {
@@ -107,6 +108,9 @@
 
         a:hover{
             color: var(--color-link-hover);
+        }
+        &>span:not(:first-child){
+            padding-left: 0.25em;
         }
     }
 

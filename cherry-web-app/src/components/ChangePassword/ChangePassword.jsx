@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '../../shared/styles/toast-position.scss';
 
 import withForm from '../../shared/hocs/withForm';
 
@@ -10,6 +11,8 @@ import * as yup from 'yup'
 import userService from '../../services/user-service';
 
 import { minLength } from '../../config/app-config';
+
+const toastProps = { closeButton: false, className: 'toast-position' };
 
 class ChangePassword extends Component {
 
@@ -26,9 +29,7 @@ class ChangePassword extends Component {
                     || this.getFirstControlError('newPassword')
                     || this.getFirstControlError('repeatNewPassword');
 
-                firstError && toast.warn(firstError, {
-                    closeButton: false
-                })
+                firstError && toast.warn(firstError, toastProps)
 
                 if (!!errors) { return; }
                 const data = this.props.getFormState();
@@ -36,14 +37,10 @@ class ChangePassword extends Component {
                 console.log(userId)
                 return userService.changePassword(data, userId).then((res) => {
                     if (res && res.ok) {
-                        toast.success(`Паролата е сменена успешно!`, {
-                            closeButton: false
-                        })
+                        toast.success(`Паролата е сменена успешно!`, toastProps)
                         this.props.history.push('/');
                     } else {
-                        toast.error(res, {
-                            closeButton: false
-                        })
+                        toast.error(res, toastProps)
                     }
                 })
             }).catch(err => console.log(err));
