@@ -8,28 +8,18 @@ dbConnector().then(() => {
     require('./config/express')(app);
     require('./config/routes')(app);
 
-    app.listen(config.port, console.log(`Listening on port ${config.port}!`));
+    // const https = require('https');
+    // const http = require('http');
+    // const fs = require('fs');
+    // https.createServer({
+    //     key: fs.readFileSync('./key.pem'),
+    //     cert: fs.readFileSync('./cert.pem'),
+    //     passphrase: ''
+    // }, app)
+    //     .listen(config.port);
 
-}).catch(console.error);
+    // http.createServer(app).listen(80));
 
+       app.listen(config.port, console.log(`Listening on port ${config.port}!`));
 
-// const mongodb = require('mongodb');
-// const MongoClient = mongodb.MongoClient;
-// const connectionStr = 'mongodb://localhost:27017';
-// const client = new MongoClient(connectionStr);
-// client.connect(function (err, client) {
-//     if (err) {
-//         console.error(err);
-//         return;
-//     }
-//     const db = client.db('testdb');
-//     const users = db.collection('users');
-
-//     users.insert({ name: 'Pavel' }).then(qr => {
-//         console.log(qr);
-
-//         users.deleteMany({ name: 'Pavel' }).then(qr => {
-//             console.log(qr.result);
-//         });
-//     });
-// });
+}).catch(console.error);;

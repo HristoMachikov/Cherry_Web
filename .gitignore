@@ -1,5 +1,9 @@
 node_modules
 build
+/cherry-rest-api/key.pem
+/cherry-rest-api/cert.pem
+/cherry-rest-api/rest-config.js
+/cherry-web-app/src/config/web-config.js
 
 # dependencies
 /node_modules

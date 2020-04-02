@@ -6,16 +6,14 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import cherryService from '../../../services/cherry-service';
 
+import { cloudinaryWidget } from '../../../config/web-config';
+
 const camelCased = myString => (
     myString.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
 );
 
 let galleryArr = [];
-const myWidget = cloudinary.createUploadWidget({
-    cloudName: 'deslhiz2y',
-    apiKey: '843597855354654',
-    uploadPreset: 'cherry-web'
-}, (error, result) => {
+const myWidget = cloudinary.createUploadWidget(cloudinaryWidget, (error, result) => {
     if (!error && result && result.event === "success") {
         // console.log('Done! Here is the image info: ', result.info);
         galleryArr.push(result.info.url)

@@ -19,7 +19,9 @@ const toastProps = { closeButton: false, className: 'toast-position' };
 
 class NewPassword extends Component {
     //
-    state = { windowInnerWidth: window.innerWidth };
+    state = {
+        windowInnerWidth: window.innerWidth,
+    };
     componentDidMount() {
         window.addEventListener('resize', this.updateWindowDimensions);
     }
@@ -53,7 +55,7 @@ class NewPassword extends Component {
                 const recaptchaValue = this.recaptchaRef.current.getValue();
                 return recaptchaValue && userService.setNewPassword(data).then((res) => {
                     if (res && res.ok) {
-                        toast.warn(`Потвърдете на посочения E-mail!`, toastProps)
+                        toast.warn(`Потвърдете на посочения E-mail, до 15 минути!`, toastProps)
                         this.props.history.push('/user/login');
                     } else {
                         toast.error(res, toastProps)
