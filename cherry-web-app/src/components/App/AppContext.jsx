@@ -2,7 +2,7 @@ import React, { Component, Suspense, Fragment } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
-import userService from '../../services/user-service';
+import { hostName } from '../../config/app-config';
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -46,7 +46,7 @@ function parseCookies() {
 const Auth = ({ children }) => {
     const { dispatch } = React.useContext(StoreContext);
     React.useEffect(() => {
-        fetch("http://localhost:4000/auth", { credentials: "include" })
+        fetch(`${hostName}/auth`, { credentials: "include" })
             .then(res =>
                 res.status === 200
                     ? res.json()

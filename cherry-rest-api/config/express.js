@@ -15,8 +15,8 @@ module.exports = (app) => {
 
     //TODO: Setup cors
     app.use(cors({
-        origin: 'http://localhost:3000',
-        // origin: 'http://getcherry.online',
+        origin: 'http://localhost',
+        // origin: 'https://getcherry.online',
         credentials:true
     }));
 
@@ -35,8 +35,8 @@ module.exports = (app) => {
     })
 
     //TODO: Setup the static files
-    app.use(express.static('static'));
-    // app.use(express.static('../cherry-web-app/build'));
-    
+    app.use(express.static('../cherry-web-app/build'));
+
+    // app.use(express.static('static'));
     // app.use(express.static(path.resolve(__basedir + 'static')));
 };
