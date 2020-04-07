@@ -4,7 +4,7 @@ const minLength = 4;
 const minLengthPhone = 9;
 const minReCaptchaWidth = 384;
 const hostName = "";
-// "proxy": "http://localhost:80",
+
 module.exports = {
     reCaptchaSiteKey,
     minLengthFirstName,

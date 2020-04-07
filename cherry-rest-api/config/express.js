@@ -35,7 +35,7 @@ module.exports = (app) => {
     })
 
     //TODO: Setup the static files
-    app.use(express.static('../cherry-web-app/build'));
+    //app.use(express.static('../cherry-web-app/build'));
 
     // app.use(express.static('static'));
     // app.use(express.static(path.resolve(__basedir + 'static')));
