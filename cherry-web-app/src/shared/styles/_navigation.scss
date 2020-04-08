@@ -5,6 +5,30 @@
     @include mq(tablet) {
         display: block;
     }
+//..
+    & > ul {
+
+        & > li:not(:first-child) {
+            @include mq(tablet) {
+                padding-left: 0.1em;
+                // text-align: center; 
+            } 
+        }
+
+        ul {
+            display: none;
+            position: absolute;
+            top:0;
+            right: 100%;
+            z-index:1000;
+            // width: 9em;
+            @include mq(tablet) {
+                top:100%;
+                right: 0;
+            }
+        }
+    }
+//..
     ul {
         padding: 0;
         list-style: none;
@@ -14,17 +38,62 @@
         }
 
         li {
-            overflow: hidden;
+            display: block;
+            position: relative;
+
+            text-align: center;
+            margin: 0.25em auto;
+
+            // overflow: hidden;
             @include mq(tablet) {
                 display: flex;
                 flex-grow: 1;
             }
-            &:not(:first-child) {
-                @include mq(tablet) {
-                    padding-left: 0.1em;
-                } 
+            
+//
+            & > ul > li {
+               margin-top: 0; 
+               margin-right: 0.25em;
             }
 
+            &:hover > ul {
+                display: block;
+            }
+
+            &:hover > a{
+                font-weight: bold;
+            }
+            & ul {
+
+                @include mq(tablet) {
+                   padding-top: calc(var( --spacing-layout-elements, 2em) / 2);
+                }
+
+                li {
+                    @include mq(tablet) {
+                        margin-right: 0;
+                        // width: 7em;
+                    }
+
+                    a {
+                        @include mq(tablet) {
+                            // text-decoration: none;
+                            // color: var(--color-primary-site);
+                            // text-transform: uppercase;
+                            // padding: 0.5em 1em;
+                            // border: 1px solid var(--color-main-site);
+                            // outline: none;
+                            //
+                            // font-size: 1em;
+                            // display: block;
+                            background: var(--color-primary-core-site);
+                            border-radius: 0.5em;
+                            border: 1px solid var(--color-primary-site);
+                        }
+                    }
+                }
+            }
+//
             a {
                 text-decoration: none;
                 color: var(--color-primary-site);
@@ -42,7 +111,7 @@
 
                 @include mq(tablet) {
                     display: flex;
-                    border: none;
+                    border: var(--color-primary-site);
                     border-radius: 0;
                     background: none;
                     font-size: 1em;
@@ -101,8 +170,8 @@
         z-index: 2;
     }
     .toggle-nav:checked+.site-header .site-navigation li {
-        text-align: center;
-        margin: 0.25em 0;
+        // text-align: center;
+        // margin: 0.25em 0;
     }
     .toggle-nav:checked+.site-header .toggle-nav-btn .menu:before {
         content: "\f00d";
