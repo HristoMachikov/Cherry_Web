@@ -214,6 +214,7 @@ function ContactForm({ history }) {
                     ref={recaptchaRef}
                     sitekey={reCaptchaSiteKey}
                     size={windowInnerWidth < minReCaptchaWidth ? "compact" : "normal"}
+                    hl={"bg"}
                 />
             </div>
             <div className="form-btn">

@@ -124,6 +124,7 @@ class NewPassword extends Component {
                                 ref={this.recaptchaRef}
                                 sitekey={reCaptchaSiteKey}
                                 size={this.state.windowInnerWidth < minReCaptchaWidth ? "compact" : "normal"}
+                                hl={"bg"}
                             />
                         </p>
 
